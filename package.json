@@ -1,0 +1,14 @@
+{
+  "name": "restaurant-xyz-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --open",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test tests/reservation-validation.test.mjs tests/reservation-service.test.mjs"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

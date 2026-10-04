@@ -1,303 +1,239 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Page</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="shortcut icon" type="image/png" href="img/fav.jpeg" />
-    <link rel="stylesheet" type="text/css" href="Style/style.css" />
-  </head>
-  <body>
-    <div class="bton">
-      <img src="arrow-up-solid.svg"  class="icone">
-    </div>
-    <header>
-      <div class="entete">
-        <div class="page-item">
-          <h1 id="logo"><a href="#presentation">Restaurant XYZ</a></h1>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="shortcut icon" type="image/png" href="img/fav.jpeg" />
+</head>
+
+<body>
+  <div class="bton">
+    <img src="img/icons/arrow-up-solid.svg" class="icone" />
+  </div>
+  <header>
+    <div class="entete">
+      <div class="page-item">
+        <h1 id="logo"><a href="#presentation">Restaurant XYZ</a></h1>
+      </div>
+      <div class="page-item2">
+        <div class="hamburger">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
         </div>
-        <div class="page-item2">
-            <div class="hamburger">
-              <div class="line"></div>
-              <div class="line"></div>
-              <div class="line"></div>
-            </div>
-            <nav class="nav-bar">
-              <ul class="nav-links">
-                <li>
-                  <a href="#presentation"
-                    ><i class="fa-solid fa-house"></i>&nbsp;&nbsp;Accueil</a>
-                </li>
-                <li>
-                  <a href="#menu"
-                    ><i class="fa-solid fa-list-ul"></i>&nbsp;&nbsp;Menu</a
-                  >
-                </li>
-                <li>
-                  <a href="#reservation"
-                    ><i class="fa-solid fa-check-to-slot"></i>&nbsp;&nbsp;Réservation</a
-                  >
-                </li>
-                <li>
-                  <a href="#contact"
-                    ><i class="fa-solid fa-address-book"></i>&nbsp;&nbsp;Contact</a
-                  >
-                </li>
-              </ul>
-          </nav>
-          <!--
+        <nav class="nav-bar">
+          <ul class="nav-links">
+            <li>
+              <a href="#presentation"><i class="fa-solid fa-house"></i>&nbsp;&nbsp;Accueil</a>
+            </li>
+            <li>
+              <a href="#menu"><i class="fa-solid fa-list-ul"></i>&nbsp;&nbsp;Menu</a>
+            </li>
+            <li>
+              <a href="#reservation"><i class="fa-solid fa-check-to-slot"></i>&nbsp;&nbsp;Réservation</a>
+            </li>
+            <li>
+              <a href="#contact"><i class="fa-solid fa-address-book"></i>&nbsp;&nbsp;Contact</a>
+            </li>
+          </ul>
+        </nav>
+        <!--
              <div class="page-item3">
               <a href="#"><i class="fa-regular fa-user"></i>&nbsp;&nbsp;S'inscrire</a>
               <a href="#"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Se connecter</a>
             </div>
           -->
-         
-         <!--<span><i class="fa-solid fa-cart-shopping"></i></span>-->
+
+        <!--<span><i class="fa-solid fa-cart-shopping"></i></span>-->
+      </div>
+    </div>
+  </header>
+  <main>
+    <section id="presentation">
+      <h2 class="sousTitre">Bienvenue chez Restaurant XYZ</h2>
+      <p class="">
+        Notre restaurant est fier de servir des plats frais et délicieux,
+        préparés avec des ingrédients de qualité.
+      </p>
+      <a href="#reservation" class="button">Réservez une table</a>
+    </section>
+    <section id="menu">
+      <h2>Menu</h2>
+      <p class="p-menu">
+        Nos menus gastronomique se caractérisent par la qualité de ces
+        ingrédients.
+      </p>
+      <div class="block-center">
+        <div class="item-1">
+          <h3>Entrées</h3>
+          <div>
+            <i class="fa-solid fa-check"></i>&nbsp; Salade de chèvre chaud
+          </div>
+          <div>
+            <i class="fa-solid fa-check"></i>&nbsp; Terrine de foie gras
+          </div>
+          <div>
+            <i class="fa-solid fa-check"></i>&nbsp; Carpaccio de boeuf
+          </div>
+        </div>
+
+        <div class="item-2">
+          <h3>Plats principaux</h3>
+          <div><i class="fa-solid fa-check"></i>&nbsp;Steak grillé</div>
+          <div><i class="fa-solid fa-check"></i>&nbsp;Filet de saumon</div>
+          <div>
+            <i class="fa-solid fa-check"></i>&nbsp;Risotto aux champignons
+          </div>
+        </div>
+
+        <div class="item-3">
+          <h3>Desserts</h3>
+          <div>
+            <i class="fa-solid fa-check"></i>&nbsp;Cheesecake aux fraises
+          </div>
+          <div><i class="fa-solid fa-check"></i>&nbsp;Tarte Tatin</div>
+          <div><i class="fa-solid fa-check"></i>&nbsp;Crème brûlée</div>
         </div>
       </div>
-    </header>
-    <main>
-      <section id="presentation">
-        <h2 class="sousTitre">Bienvenue chez Restaurant XYZ</h2>
-        <p class="">
-          Notre restaurant est fier de servir des plats frais et délicieux,
-          préparés avec des ingrédients de qualité.
-        </p>
-        <a href="#reservation" class="button">Réservez une table</a>
-      </section>
-      <section id="menu">
-        <h2>Menu</h2>
-        <p class="p-menu">
-          Nos menus gastronomique se caractérisent par la qualité de ces
-          ingrédients.
-        </p>
-        <div class="block-center">
-          <div class="item-1">
-            <h3>Entrées</h3>
-            <div>
-              <i class="fa-solid fa-check"></i>&nbsp; Salade de chèvre chaud
-            </div>
-            <div>
-              <i class="fa-solid fa-check"></i>&nbsp; Terrine de foie gras
-            </div>
-            <div>
-              <i class="fa-solid fa-check"></i>&nbsp; Carpaccio de boeuf
-            </div>
-          </div>
-
-          <div class="item-2">
-            <h3>Plats principaux</h3>
-            <div><i class="fa-solid fa-check"></i>&nbsp;Steak grillé</div>
-            <div><i class="fa-solid fa-check"></i>&nbsp;Filet de saumon</div>
-            <div>
-              <i class="fa-solid fa-check"></i>&nbsp;Risotto aux champignons
-            </div>
-          </div>
-
-          <div class="item-3">
-            <h3>Desserts</h3>
-            <div>
-              <i class="fa-solid fa-check"></i>&nbsp;Cheesecake aux fraises
-            </div>
-            <div><i class="fa-solid fa-check"></i>&nbsp;Tarte Tatin</div>
-            <div><i class="fa-solid fa-check"></i>&nbsp;Crème brûlée</div>
-          </div>
+    </section>
+    <section id="reservation">
+      <h2>Réservation</h2>
+      <p class="p-reservation">
+        Réservez une table en remplissant le formulaire ci-dessous. Nous vous
+        contacterons pour confirmer votre réservation.
+      </p>
+      <p class="reservation-note">
+        Les champs seront transmis à l'API lorsqu'elle sera configurée. La réservation n'est confirmée qu'après sa réponse.
+      </p>
+      <form id="reservation-form" class="container-sm col-10">
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom</label>
+          <input type="text" class="form-control" id="nom" name="nom" autocomplete="name" maxlength="100" required />
         </div>
-      </section>
-      <section id="reservation">
-        <h2>Réservation</h2>
-        <p class="p-reservation">
-          Réservez une table en remplissant le formulaire ci-dessous. Nous vous
-          contacterons pour confirmer votre réservation.
-        </p>
-        <form class="container-sm col-10">
-          <div class="mb-3">
-            <label
-              for="exampleFormControlInput1"
-              placeholder=".form-control-lg"
-              class="form-label"
-              >Nom</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="nom"
-              name="nom"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
-          </div>
+        <div class="mb-3">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" autocomplete="email" maxlength="254" required />
+        </div>
 
-          <div class="mb-3">
-            <label for="telephone">Téléphone</label>
-            <input
-              type="tel"
-              class="form-control"
-              id="telephone"
-              name="telephone"
-              required
-            />
-          </div>
+        <div class="mb-3">
+          <label for="telephone">Téléphone</label>
+          <input type="tel" class="form-control" id="telephone" name="telephone" autocomplete="tel" inputmode="tel" minlength="6" maxlength="32" required />
+        </div>
 
-          <div class="mb-3">
-            <label for="date">Date</label>
-            <input
-              type="date"
-              class="form-control"
-              id="date"
-              name="date"
-              required
-            />
-          </div>
+        <div class="mb-3">
+          <label for="date">Date</label>
+          <input type="date" class="form-control" id="date" name="date" required />
+        </div>
 
-          <div class="mb-3">
-            <label for="heure">Heure</label>
-            <input
-              type="time"
-              class="form-control"
-              id="heure"
-              name="heure"
-              required
-            />
-          </div>
+        <div class="mb-3">
+          <label for="heure">Heure</label>
+          <input type="time" class="form-control" id="heure" name="heure" required />
+        </div>
 
+        <div class="mb-3">
           <label for="personnes">Nombre de personnes</label>
-          <input
-            type="number"
-            class="form-control"
-            id="personnes"
-            name="personnes"
-            min="1"
-            max="10"
-            required
-          />
-          <input type="button" class="button-2" value="Réserver" />
-        </form>
-      </section>
-      <section id="contact">
-        <h2>Contactez-nous</h2>
-        <p class="p-contact">
-          Nous sommes à votre disposition pour répondre à toutes vos questions
-          ou demandes de renseignements. N'hésitez pas à nous contacter par
-          téléphone ou par email, ou à nous rendre visite à notre adresse
-          ci-dessous.
-        </p>
-        <div class="block-carte">
-          <div class="nousContacter">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5249.501392566462!2d2.359133139712204!3d48.86296417247797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e1f06e2b70f%3A0x40b82c3688c9460!2sParis!5e0!3m2!1sfr!2sfr!4v1678867219908!5m2!1sfr!2sfr"
-              width="600"
-              height="450"
-              style="border: 0"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-          <div class="nousContacter">
-            <p>
-              <strong><i class="fa-solid fa-phone"></i>&nbsp;Téléphone:</strong>
-              01 23 45 67 89
-            </p>
-
-            <p>
-              <strong><i class="fa-solid fa-envelope"></i>&nbsp;Email:</strong>
-              info@restaurantxyz.com
-            </p>
-
-            <p>
-              <strong
-                ><i class="fa-sharp fa-solid fa-location-dot"></i
-                >&nbsp;Adresse:</strong
-              >
-              123 rue de la Fontaine, 75001 Paris
-            </p>
-          </div>
+          <input type="number" class="form-control" id="personnes" name="personnes" min="1" max="10" step="1" required />
         </div>
-      </section>
-      <section id="avis">
-        <h2>Ce qu'ils pensent de nous</h2>
-        <div class="card-avis">
-          <div class="card-1">
-            <img src="img/jean-françois.jpeg" alt="" />
-            <h4>Jean François</h4>
-            <div class="stras">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fa-regular fa-star"></i>
-            </div>
-            <p>
-               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-            tenetur consequatur sequi illo, odit cumque quae aspernatur
-            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
-            odit mollitia quos sit necessitatibus?
-        
-            </p>
-          </div>
-          <div class="card-2">
-            <img src="img/marie-anne.jpeg" alt="" />
-            <h4>Marie anne</h4>
-            <div class="stras">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <p>
-               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-            tenetur consequatur sequi illo, odit cumque quae aspernatur
-            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
-            odit mollitia quos sit necessitatibus?
-            </p>
-          </div>
-
-          <div class="card-3">
-            <img src="img/jean-luc.jpeg" alt="" />
-            <h4>Jean-luc</h4>
-            <div class="stras">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fa-regular fa-star"></i>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-            tenetur consequatur sequi illo, odit cumque quae aspernatur
-            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
-            odit mollitia quos sit necessitatibus?
-            </p>
-          </div>
+        <button type="submit" class="button-2">Envoyer la demande</button>
+      </form>
+      <p id="reservation-status" class="reservation-status" role="status" aria-live="polite"></p>
+    </section>
+    <section id="contact">
+      <h2>Contactez-nous</h2>
+      <p class="p-contact">
+        Nous sommes à votre disposition pour répondre à toutes vos questions
+        ou demandes de renseignements. N'hésitez pas à nous contacter par
+        téléphone ou par email, ou à nous rendre visite à notre adresse
+        ci-dessous.
+      </p>
+      <div class="block-carte">
+        <div class="nousContacter">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5249.501392566462!2d2.359133139712204!3d48.86296417247797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e1f06e2b70f%3A0x40b82c3688c9460!2sParis!5e0!3m2!1sfr!2sfr!4v1678867219908!5m2!1sfr!2sfr" width="600" height="450" style="border: 0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-      </section>
-    </main>
+        <div class="nousContacter">
+          <p>
+            <strong><i class="fa-solid fa-phone"></i>&nbsp;Téléphone:</strong>
+            01 23 45 67 89
+          </p>
 
-    <footer>
-      <div class="footer_section">
+          <p>
+            <strong><i class="fa-solid fa-envelope"></i>&nbsp;Email:</strong>
+            info@restaurantxyz.com
+          </p>
+
+          <p>
+            <strong><i class="fa-sharp fa-solid fa-location-dot"></i>&nbsp;Adresse:</strong>
+            123 rue de la Fontaine, 75001 Paris
+          </p>
+        </div>
+      </div>
+    </section>
+    <section id="avis">
+      <h2>Ce qu'ils pensent de nous</h2>
+      <div class="card-avis">
+        <div class="card-1">
+          <img src="img/jean-françois.jpeg" alt="" />
+          <h4>Jean François</h4>
+          <div class="stras">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
+            tenetur consequatur sequi illo, odit cumque quae aspernatur
+            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
+            odit mollitia quos sit necessitatibus?
+
+          </p>
+        </div>
+        <div class="card-2">
+          <img src="img/marie-anne.jpeg" alt="" />
+          <h4>Marie anne</h4>
+          <div class="stras">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
+            tenetur consequatur sequi illo, odit cumque quae aspernatur
+            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
+            odit mollitia quos sit necessitatibus?
+          </p>
+        </div>
+
+        <div class="card-3">
+          <img src="img/jean-luc.jpeg" alt="" />
+          <h4>Jean-luc</h4>
+          <div class="stras">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
+            tenetur consequatur sequi illo, odit cumque quae aspernatur
+            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
+            odit mollitia quos sit necessitatibus?
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer_section">
       <div class="block-footer">
         <div class="A-propos-footer">
           <h3>A propos</h3>
@@ -313,7 +249,7 @@
             <i class="fa-brands fa-square-instagram"></i>
             <i class="fa-brands fa-square-twitter"></i>
           </div>
-          
+
         </div>
         <div class="liens-rapides">
           <h3>Liens rapides</h3>
@@ -323,7 +259,7 @@
             <a href="#">Reservation</a>
             <a href="#">Contact</a>
           </div>
-          </div>
+        </div>
         <div class="contact-footer">
           <h3>Contactez-nous</h3>
           <p>
@@ -337,20 +273,20 @@
           </p>
 
           <p>
-           <i class="fa-sharp fa-solid fa-location-dot"></i
-              >&nbsp;Adresse:
+            <i class="fa-sharp fa-solid fa-location-dot"></i>&nbsp;Adresse:
             123 rue de la Fontaine, 75001 Paris
           </p>
         </div>
-      <!--<hr class="m-4" />-->
-      
+        <!--<hr class="m-4" />-->
+
       </div>
-      
-       <p>
-          &#169; <span id="year"></span> Copyright | All Rights Reserved to Restaurant XYZ
-        </p>
-      </div>
-    </footer>
-    <script src="Js/app.js" charset="utf-8"></script>
-  </body>
+
+      <p>
+        &#169; <span id="year"></span> Copyright | All Rights Reserved to Restaurant XYZ
+      </p>
+    </div>
+  </footer>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>

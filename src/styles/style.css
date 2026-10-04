@@ -63,7 +63,7 @@ header {
 #presentation {
   position: relative;
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), #4d4a4a),
-    url("../img/section.jpg");
+    url("../../img/section.jpg");
   background-position: center;
   background-size: cover;
   height: 100vh;
@@ -197,6 +197,27 @@ nav a {
 
 .button-2:hover {
   background-color: rgb(245, 245, 197);
+}
+
+.reservation-note,
+.reservation-status {
+  max-width: 720px;
+  margin: 1rem auto;
+  line-height: 1.5;
+}
+
+.reservation-note {
+  font-size: 0.9rem;
+}
+
+.reservation-status:empty {
+  display: none;
+}
+
+.reservation-status:not(:empty) {
+  padding: 0.75rem 1rem;
+  border-left: 3px solid #666;
+  background-color: #f5f5f5;
 }
 
 /*======================= BUTTON reservation ===============*/
