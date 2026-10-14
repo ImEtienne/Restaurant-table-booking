@@ -18,7 +18,17 @@ const hamburger = document.querySelector(".hamburger");
 const navBar = document.querySelector(".nav-bar");
 if (hamburger && navBar) {
   hamburger.addEventListener("click", () => {
-    navBar.classList.toggle("active");
+    const isOpen = navBar.classList.toggle("active");
+    hamburger.setAttribute("aria-expanded", String(isOpen));
+    hamburger.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
+  });
+
+  navBar.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navBar.classList.remove("active");
+      hamburger.setAttribute("aria-expanded", "false");
+      hamburger.setAttribute("aria-label", "Ouvrir le menu");
+    });
   });
 }
 
