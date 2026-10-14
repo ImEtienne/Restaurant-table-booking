@@ -4,28 +4,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Page</title>
+  <title>Restaurant XYZ | Menu et réservation</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="shortcut icon" type="image/png" href="img/fav.jpeg" />
 </head>
 
 <body>
-  <div class="bton">
-    <img src="img/icons/arrow-up-solid.svg" class="icone" />
-  </div>
+  <button class="bton" type="button" aria-label="Revenir en haut">
+    <img src="img/icons/arrow-up-solid.svg" class="icone" alt="" />
+  </button>
   <header>
     <div class="entete">
       <div class="page-item">
         <h1 id="logo"><a href="#presentation">Restaurant XYZ</a></h1>
       </div>
       <div class="page-item2">
-        <div class="hamburger">
+        <button class="hamburger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="site-navigation">
           <div class="line"></div>
           <div class="line"></div>
           <div class="line"></div>
-        </div>
-        <nav class="nav-bar">
+        </button>
+        <nav class="nav-bar" id="site-navigation">
           <ul class="nav-links">
             <li>
               <a href="#presentation"><i class="fa-solid fa-house"></i>&nbsp;&nbsp;Accueil</a>
@@ -41,32 +41,18 @@
             </li>
           </ul>
         </nav>
-        <!--
-             <div class="page-item3">
-              <a href="#"><i class="fa-regular fa-user"></i>&nbsp;&nbsp;S'inscrire</a>
-              <a href="#"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Se connecter</a>
-            </div>
-          -->
-
-        <!--<span><i class="fa-solid fa-cart-shopping"></i></span>-->
       </div>
     </div>
   </header>
   <main>
     <section id="presentation">
-      <h2 class="sousTitre">Bienvenue chez Restaurant XYZ</h2>
-      <p class="">
-        Notre restaurant est fier de servir des plats frais et délicieux,
-        préparés avec des ingrédients de qualité.
-      </p>
+      <h2 class="sousTitre">Le plaisir de se retrouver à table</h2>
+      <p>Une adresse parisienne pour partager un repas et prendre le temps de savourer.</p>
       <a href="#reservation" class="button">Réservez une table</a>
     </section>
     <section id="menu">
       <h2>Menu</h2>
-      <p class="p-menu">
-        Nos menus gastronomique se caractérisent par la qualité de ces
-        ingrédients.
-      </p>
+      <p class="p-menu">Entrées, plats et desserts : découvrez la carte du Restaurant XYZ.</p>
       <div class="block-center">
         <div class="item-1">
           <h3>Entrées</h3>
@@ -107,7 +93,7 @@
         contacterons pour confirmer votre réservation.
       </p>
       <p class="reservation-note">
-        Les champs seront transmis à l'API lorsqu'elle sera configurée. La réservation n'est confirmée qu'après sa réponse.
+        Le service de réservation en ligne est en cours de configuration. Aucune donnée n’est envoyée pour le moment.
       </p>
       <form id="reservation-form" class="container-sm col-10">
         <div class="mb-3">
@@ -144,12 +130,7 @@
     </section>
     <section id="contact">
       <h2>Contactez-nous</h2>
-      <p class="p-contact">
-        Nous sommes à votre disposition pour répondre à toutes vos questions
-        ou demandes de renseignements. N'hésitez pas à nous contacter par
-        téléphone ou par email, ou à nous rendre visite à notre adresse
-        ci-dessous.
-      </p>
+      <p class="p-contact">Une question ou une demande particulière ? Contactez-nous ou retrouvez-nous à Paris.</p>
       <div class="block-carte">
         <div class="nousContacter">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5249.501392566462!2d2.359133139712204!3d48.86296417247797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e1f06e2b70f%3A0x40b82c3688c9460!2sParis!5e0!3m2!1sfr!2sfr!4v1678867219908!5m2!1sfr!2sfr" width="600" height="450" style="border: 0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -173,60 +154,43 @@
       </div>
     </section>
     <section id="avis">
-      <h2>Ce qu'ils pensent de nous</h2>
+      <h2>Ils nous ont fait confiance</h2>
       <div class="card-avis">
         <div class="card-1">
-          <img src="img/jean-françois.jpeg" alt="" />
+          <img src="img/jean-françois.jpeg" alt="Portrait de Jean François" />
           <h4>Jean François</h4>
-          <div class="stras">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fa-regular fa-star"></i>
+          <div class="stras" aria-label="4 étoiles sur 5">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fa-regular fa-star" aria-hidden="true"></i>
           </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-            tenetur consequatur sequi illo, odit cumque quae aspernatur
-            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
-            odit mollitia quos sit necessitatibus?
-
-          </p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam tenetur consequatur sequi illo, odit cumque quae aspernatur provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum odit mollitia quos sit necessitatibus?</p>
         </div>
         <div class="card-2">
-          <img src="img/marie-anne.jpeg" alt="" />
-          <h4>Marie anne</h4>
-          <div class="stras">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
+          <img src="img/marie-anne.jpeg" alt="Portrait de Marie Anne" />
+          <h4>Marie Anne</h4>
+          <div class="stras" aria-label="5 étoiles sur 5">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
           </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-            tenetur consequatur sequi illo, odit cumque quae aspernatur
-            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
-            odit mollitia quos sit necessitatibus?
-          </p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam tenetur consequatur sequi illo, odit cumque quae aspernatur provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum odit mollitia quos sit necessitatibus?</p>
         </div>
-
         <div class="card-3">
-          <img src="img/jean-luc.jpeg" alt="" />
-          <h4>Jean-luc</h4>
-          <div class="stras">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fa-regular fa-star"></i>
+          <img src="img/jean-luc.jpeg" alt="Portrait de Jean-Luc" />
+          <h4>Jean-Luc</h4>
+          <div class="stras" aria-label="4 étoiles sur 5">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <i class="fa-regular fa-star" aria-hidden="true"></i>
           </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-            tenetur consequatur sequi illo, odit cumque quae aspernatur
-            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
-            odit mollitia quos sit necessitatibus?
-          </p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam tenetur consequatur sequi illo, odit cumque quae aspernatur provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum odit mollitia quos sit necessitatibus?</p>
         </div>
       </div>
     </section>
@@ -237,27 +201,21 @@
       <div class="block-footer">
         <div class="A-propos-footer">
           <h3>A propos</h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-            tenetur consequatur sequi illo, odit cumque quae aspernatur
-            provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum
-            odit mollitia quos sit necessitatibus?
-          </p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam tenetur consequatur sequi illo, odit cumque quae aspernatur provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum odit mollitia quos sit necessitatibus?</p>
           <div class="social_links">
             <i class="fa-brands fa-github"></i>
             <i class="fa-brands fa-linkedin"></i>
             <i class="fa-brands fa-square-instagram"></i>
             <i class="fa-brands fa-square-twitter"></i>
           </div>
-
         </div>
         <div class="liens-rapides">
           <h3>Liens rapides</h3>
           <div class="liens">
-            <a href="#">Accueil</a>
-            <a href="#">Menu</a>
-            <a href="#">Reservation</a>
-            <a href="#">Contact</a>
+            <a href="#presentation">Accueil</a>
+            <a href="#menu">Menu</a>
+            <a href="#reservation">Réservation</a>
+            <a href="#contact">Contact</a>
           </div>
         </div>
         <div class="contact-footer">
@@ -277,8 +235,6 @@
             123 rue de la Fontaine, 75001 Paris
           </p>
         </div>
-        <!--<hr class="m-4" />-->
-
       </div>
 
       <p>
