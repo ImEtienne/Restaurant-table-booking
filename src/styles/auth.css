@@ -1,0 +1,69 @@
+.auth-page { background: var(--soft); }
+.auth-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 7%; }
+.auth-brand { font-family: "Yellowtail", cursive; font-size: 1.7rem; color: var(--ink); }
+.auth-page a { color: var(--accent); }
+.auth-header .auth-brand { color: var(--ink); }
+.auth-main { display: grid; grid-template-columns: 1fr 1fr; width: min(100% - 3rem, 1040px); margin: 2rem auto 4rem; background: var(--paper); border-radius: 16px; overflow: hidden; box-shadow: 0 16px 50px #292b2710; }
+.auth-intro { display: flex; flex-direction: column; justify-content: flex-end; padding: 3rem; color: white; background: linear-gradient(180deg, #19171444, #191714ed), url('/img/section.jpg') center / cover; min-height: 570px; }
+.auth-eyebrow { text-transform: uppercase; font-size: .78rem; letter-spacing: .15em; font-weight: 600; }
+.auth-intro h1 { font-family: "Montserrat", sans-serif; font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.2; margin: 1rem 0; }
+.auth-intro p { line-height: 1.8; }
+.auth-panel { padding: 2.5rem; }
+.auth-tabs { display: flex; gap: 1.5rem; border-bottom: 1px solid #dedbd3; margin-bottom: 2rem; }
+.auth-tabs a { padding-bottom: .8rem; color: var(--muted); }
+.auth-tabs button { padding: 0 0 .8rem; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--muted); font: inherit; cursor: pointer; }
+.auth-tabs [aria-selected="true"] { border-bottom-color: var(--accent); color: var(--accent); font-weight: 600; }
+.auth-panel [hidden] { display: none; }
+.auth-tabs [aria-current="page"] { border-bottom: 3px solid var(--accent); color: var(--accent); font-weight: 600; }
+.auth-panel h2 { font-size: 1.5rem; margin: 0 0 .5rem; }
+.auth-description, .auth-footnote { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+.auth-field { margin-top: 1.2rem; }
+.auth-field label { display: block; margin-bottom: .4rem; font-size: .9rem; font-weight: 500; }
+.auth-field input { width: 100%; min-width: 0; border: 1px solid #c9c5bc; border-radius: 7px; padding: .8rem; font: inherit; background: white; color: var(--ink); }
+.auth-password { display: flex; border: 1px solid #c9c5bc; border-radius: 7px; }
+.auth-password input { border: 0; }
+.auth-password button { border: 0; border-radius: 7px; padding: .5rem .7rem; background: transparent; color: var(--accent); cursor: pointer; font: inherit; font-size: .8rem; }
+.auth-hint { display: block; font-size: .8rem; color: var(--muted); margin-top: .4rem; }
+.auth-submit { width: 100%; margin-top: 1.5rem; padding: .9rem; background: var(--accent); color: white; border: 0; border-radius: 7px; font: inherit; cursor: pointer; }
+.auth-submit:hover { background: var(--accent-hover); }
+.auth-page button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.auth-status:not(:empty) { background: var(--soft); border-left: 3px solid var(--accent); padding: 1rem; font-size: .9rem; line-height: 1.7; }
+.auth-footnote { text-align: center; margin-top: 1.5rem; }
+.auth-fullscreen .auth-header {
+  position: absolute;
+  z-index: 1;
+  inset: 0 0 auto;
+  padding: 1.5rem 3%;
+}
+.auth-fullscreen .auth-brand { color: #fff; }
+.auth-fullscreen .auth-main {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.auth-fullscreen .auth-intro {
+  justify-content: center;
+  padding: 7rem clamp(2rem, 6vw, 7rem);
+}
+.auth-fullscreen .auth-intro h1 { font-size: clamp(2.2rem, 4vw, 4rem); }
+.auth-fullscreen .auth-intro p { max-width: 32rem; }
+.auth-fullscreen .auth-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 7rem clamp(2rem, 6vw, 7rem) 4rem;
+}
+.auth-fullscreen .auth-panel > * { width: 100%; max-width: 440px; margin-left: auto; margin-right: auto; }
+@media(max-width: 760px) {
+  .auth-fullscreen .auth-header { position: relative; background: var(--ink); padding: 1rem; }
+  .auth-fullscreen .auth-header a { color: #fff; }
+  .auth-fullscreen .auth-main { min-height: calc(100svh - 4rem); }
+  .auth-fullscreen .auth-intro { min-height: 260px; padding: 2.5rem 1.75rem; }
+  .auth-fullscreen .auth-intro h1 { font-size: 2rem; }
+  .auth-fullscreen .auth-panel { padding: 2rem 1.75rem; }
+}
+@media(max-width: 760px) { .auth-main { grid-template-columns: 1fr; margin-top: 1rem; } .auth-intro { min-height: 220px; padding: 1.75rem; } .auth-panel { padding: 1.75rem; } .auth-header { padding: 1rem; font-size: .85rem; } .auth-brand { font-size: 1.35rem; } }

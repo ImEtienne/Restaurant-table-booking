@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Connexion à Restaurant XYZ.">
+  <title>Connexion | Restaurant XYZ</title>
+  <link rel="icon" href="/img/fav.jpeg">
+</head>
+
+<body class="auth-page auth-fullscreen">
+  <div class="auth-header"><a class="auth-brand" href="/">Restaurant XYZ</a><a href="/">Retour au restaurant</a></div>
+  <main class="auth-main">
+    <section class="auth-intro" aria-labelledby="auth-welcome">
+      <span class="auth-eyebrow">Restaurant XYZ · Votre espace</span>
+      <h1 id="auth-welcome">Heureux de vous retrouver.</h1>
+      <p>Retrouvez l'accueil et la convivialité de notre restaurant dans votre espace personnel.</p>
+    </section>
+    <section class="auth-panel" aria-labelledby="auth-title">
+      <nav class="auth-tabs" role="tablist" aria-label="Accès au compte">
+        <button type="button" id="login-tab" role="tab" aria-controls="login-panel" aria-selected="true" data-auth-switch="login">Connexion</button>
+        <button type="button" id="register-tab" role="tab" aria-controls="register-panel" aria-selected="false" tabindex="-1" data-auth-switch="register">Inscription</button>
+      </nav>
+      <div id="login-panel" role="tabpanel" aria-labelledby="login-tab">
+        <h2 id="auth-title">Connexion</h2>
+        <p class="auth-description">Renseignez vos identifiants pour accéder à votre compte.</p>
+        <p class="auth-description" id="auth-availability">L'accès aux comptes sera bientôt disponible.</p>
+        <form id="login-form" data-auth-form aria-describedby="auth-availability">
+
+          <div class="auth-field"><label for="email">Adresse email</label><input type="email" id="email" name="email" autocomplete="email" maxlength="254" required></div>
+          <div class="auth-field"><label for="password">Mot de passe</label>
+            <div class="auth-password"><input type="password" id="password" name="password" autocomplete="current-password" required><button type="button" data-toggle-password="password" aria-controls="password" aria-pressed="false">Afficher</button></div>
+          </div>
+
+          <button class="auth-submit" type="submit">Se connecter</button>
+        </form>
+        <p id="login-status" data-auth-status class="auth-status" role="status" aria-live="polite"></p>
+        <p class="auth-footnote">Pas encore de compte ? <a href="#register" data-auth-switch="register">S'inscrire</a></p>
+      </div>
+      <div id="register-panel" role="tabpanel" aria-labelledby="register-tab" hidden>
+        <h2 id="register-title">Créer un compte</h2>
+        <p class="auth-description">Renseignez vos informations pour préparer votre inscription.</p>
+        <p class="auth-description" id="register-availability">L'accès aux comptes sera bientôt disponible.</p>
+        <form id="register-form" data-auth-form aria-describedby="register-availability">
+          <div class="auth-field"><label for="register-name">Nom complet</label><input id="register-name" name="name" autocomplete="name" maxlength="100" required></div>
+          <div class="auth-field"><label for="register-email">Adresse email</label><input type="email" id="register-email" name="email" autocomplete="email" maxlength="254" required></div>
+          <div class="auth-field"><label for="register-password">Mot de passe</label>
+            <div class="auth-password"><input type="password" id="register-password" name="password" autocomplete="new-password" minlength="8" aria-describedby="register-password-hint" required><button type="button" data-toggle-password="register-password" aria-controls="register-password" aria-pressed="false">Afficher</button></div><small class="auth-hint" id="register-password-hint">Au moins 8 caractères.</small>
+          </div>
+          <div class="auth-field"><label for="register-password_confirmation">Confirmer le mot de passe</label>
+            <div class="auth-password"><input type="password" id="register-password_confirmation" name="password_confirmation" autocomplete="new-password" required><button type="button" data-toggle-password="register-password_confirmation" aria-controls="register-password_confirmation" aria-pressed="false">Afficher</button></div>
+          </div>
+          <button class="auth-submit" type="submit">Cr&#233;er mon compte</button>
+        </form>
+        <p id="register-status" data-auth-status class="auth-status" role="status" aria-live="polite"></p>
+        <p class="auth-footnote">D&#233;j&#224; un compte ? <a href="#login" data-auth-switch="login">Se connecter</a></p>
+      </div>
+      <noscript>Activez JavaScript pour utiliser ce formulaire.</noscript>
+    </section>
+  </main>
+  <script type="module" src="/src/scripts/auth.js"></script>
+</body>
+
+</html>
