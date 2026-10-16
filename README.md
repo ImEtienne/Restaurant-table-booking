@@ -32,6 +32,23 @@ Le projet "Site de Réservation de Table" est une application web interactive d�
 - `public/img/` : images et icônes statiques servies par Vite.
 - `tests/` : tests automatisés des règles de réservation.
 
+## Administration
+
+En développement (`npm run dev`), les appels admin et CSRF passent par le proxy Vite vers l’origine de `VITE_API_BASE_URL`, pour conserver une origine unique côté navigateur. Redémarrer Vite après modification de sa configuration. En production, le service utilise directement `VITE_API_BASE_URL` et nécessite la configuration Sanctum/CORS décrite ci-dessous.
+
+L’entrée `/dashboard.html` adapte la sidebar, les cartes, le tableau et le thème du dossier de référence `dashboard-design - Copie`, conservé intact. Les styles admin sont chargés séparément du site public.
+
+- `src/admin/main.js` : session, navigation, filtres, pagination et décisions.
+- `src/admin/reservationTable.mjs` : rendu du tableau avec données traitées comme texte.
+- `src/services/adminService.mjs` : requêtes Sanctum, cookies et CSRF.
+- `src/styles/admin.css` : présentation et adaptation mobile du dashboard.
+
+La connexion existante appelle maintenant `/api/admin/login`. L’inscription publique reste indisponible dans l’API ; créer les administrateurs côté Laravel avec `php artisan admin:create email@example.com`.
+
+En développement, ouvrir le frontend avec le même hôte que l’API (`127.0.0.1` des deux côtés ou `localhost` des deux côtés). Configurer côté Laravel les origines réelles dans `FRONTEND_URLS` et les hôtes avec ports dans `SANCTUM_STATEFUL_DOMAINS`, avec CORS autorisant les cookies et les en-têtes CSRF. `VITE_API_BASE_URL` se termine par `/api` ; l’initialisation CSRF utilise la racine du backend.
+
+Les statistiques globales utilisent `/api/admin/stats`, `/api/admin/stats/daily` et `/api/admin/stats/hourly`, avec une période indépendante des filtres du tableau (366 jours maximum, bornes incluses). Sans dates : les 30 derniers jours selon le fuseau du restaurant. Elles portent sur la date prévue de réservation et les statuts actuels. Les personnes demandées incluent les refus ; les personnes confirmées ne mesurent pas la présence effective. Le total du tableau vient de `meta.total`. Confirmer/refuser n’envoie aucun email.
+
 ## Commandes
 
 - `npm install` : installe les dépendances du projet.
