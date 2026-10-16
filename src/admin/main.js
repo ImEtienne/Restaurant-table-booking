@@ -4,6 +4,7 @@ import { renderReservations } from "./reservationTable.mjs";
 import { renderMetrics, validatePeriod } from "./statistics.mjs";
 import { showToast } from "../scripts/toast.js";
 import { searchReservations } from "./search.mjs";
+import { mountAccounts } from "./accounts.js";
 
 const api = createAdminService();
 const $ = (id) => document.getElementById(`admin-${id}`);
@@ -13,7 +14,48 @@ let busy = false;
 let filters = {};
 let period = {};
 let statsBusy = false;
+let currentUser = null;
+let accounts = null;
 let currentReservations = [];
+let searchVersion = 0;
+$("global-search").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const query = $("global-query").value.trim();
+  const version = ++searchVersion;
+  $("global-results").hidden = false;
+  $("global-status").textContent = "Recherche en cours…";
+  $("global-users").replaceChildren();
+  $("global-reservations").replaceChildren();
+  $("global-results").setAttribute("aria-busy", "true");
+  try {
+    const result = await api.search(query);
+    if (version !== searchVersion) return;
+    const { users, reservations } = result.data;
+    for (const user of users) {
+      const item = document.createElement("li");
+      item.textContent = `${user.name} · ${user.email} · ${user.is_admin ? "Administrateur" : "Utilisateur"}`;
+      $("global-users").append(item);
+    }
+    if (!users.length) $("global-users").textContent = "Aucun utilisateur trouvé.";
+    renderReservations($("global-reservations"), reservations);
+    // Les décisions restent dans le tableau principal pour conserver un seul parcours de traitement.
+    $("global-reservations").querySelectorAll("button[data-id]").forEach((button) => { button.disabled = true; button.title = "Traitez cette demande depuis le tableau des réservations."; });
+    const more = result.meta.has_more.users || result.meta.has_more.reservations;
+    $("global-status").textContent = `${users.length} utilisateur(s) et ${reservations.length} réservation(s) pour « ${query} ».${more ? " D’autres résultats existent : précisez votre recherche." : ""}`;
+  } catch (error) {
+    if (version !== searchVersion) return;
+    $("global-status").textContent = error.status === 429 ? "Trop de recherches. Patientez une minute avant de réessayer." : error.message;
+    if ([401, 403, 419].includes(error.status)) handleError(error);
+  } finally {
+    if (version === searchVersion) $("global-results").setAttribute("aria-busy", "false");
+  }
+});
+$("close-search").addEventListener("click", () => {
+  searchVersion++;
+  $("global-results").hidden = true;
+  $("global-results").setAttribute("aria-busy", "false");
+  $("global-query").focus();
+});
 function renderSearch() {
   const matches = searchReservations(currentReservations, $("search").value);
   renderReservations($("rows"), matches);
@@ -124,7 +166,7 @@ $("rows").addEventListener("click", async (event) => {
 });
 $("logout").addEventListener("click", async () => {
   $("logout").disabled = true;
-  try { await api.logout(); location.replace("/login.html"); }
+  try { await api.userLogout(); location.replace("/login.html"); }
   catch (error) { handleError(error); $("logout").disabled = false; }
 });
 $("menu").addEventListener("click", () => {
@@ -132,11 +174,17 @@ $("menu").addEventListener("click", () => {
   $("menu").setAttribute("aria-expanded", String(open));
 });
 function section() {
-  const reservations = location.hash === "#reservations";
-  $("statistics").hidden = reservations;
-  $("title").textContent = reservations ? "Réservations" : "Tableau de bord";
+  let selectedSection = location.hash.slice(1) || "dashboard";
+  if (!["dashboard", "reservations", "users", "profile"].includes(selectedSection)) selectedSection = "dashboard";
+  if (currentUser && !currentUser.is_admin) selectedSection = "profile";
+  const accountSection = ["users", "profile"].includes(selectedSection);
+  $("statistics").hidden = selectedSection !== "dashboard";
+  $("reservation-section").hidden = accountSection;
+  $("accounts").hidden = !accountSection;
+  $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil" }[selectedSection];
+  accounts?.activate(selectedSection);
   document.querySelectorAll("[data-section]").forEach((link) => {
-    if (link.dataset.section === (reservations ? "reservations" : "dashboard")) link.setAttribute("aria-current", "page");
+    if (link.dataset.section === selectedSection) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
   document.body.classList.remove("admin-menu-open");
@@ -157,18 +205,36 @@ $("theme").addEventListener("click", () => {
 });
 async function initialize() {
   try {
-    const { data: user } = await api.me();
-    if (!user.is_admin) { location.replace("/login.html"); return; }
-    $("identity").textContent = user.name;
+    const { data: user } = await api.profile();
+    currentUser = user;
+    function updateIdentity(updated) {
+      $("identity").textContent = updated.name;
+      document.querySelectorAll('[data-section="dashboard"], [data-section="reservations"], [data-section="users"]').forEach((link) => { link.hidden = !updated.is_admin; });
+      $("global-search").hidden = !updated.is_admin;
+      if (!updated.is_admin) {
+        searchVersion++;
+        $("global-results").hidden = true;
+        $("global-users").replaceChildren();
+        $("global-reservations").replaceChildren();
+        section();
+      }
+    }
+    updateIdentity(user);
+    accounts = mountAccounts({ api, currentUser, onIdentity: updateIdentity, onSessionError: handleError });
     $("logout").disabled = false;
+    $("global-search").querySelectorAll("input, button").forEach((control) => { control.disabled = !user.is_admin; });
     $("private").hidden = false;
     try {
       if (sessionStorage.getItem("auth-success")) {
         sessionStorage.removeItem("auth-success");
-        showToast("Connexion réussie. Bienvenue dans votre espace administrateur.", "success");
+        showToast(user.is_admin ? "Connexion réussie. Bienvenue dans votre espace administrateur." : "Connexion réussie. Bienvenue dans votre espace personnel.", "success");
       }
     } catch { /* Notification facultative. */ }
-    await Promise.allSettled([load(), loadStats()]);
+    section();
+    if (user.is_admin) {
+      await api.me();
+      await Promise.allSettled([load(), loadStats()]);
+    }
   } catch (error) { handleError(error); }
 }
 initialize();

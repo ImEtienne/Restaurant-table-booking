@@ -43,7 +43,13 @@ L’entrée `/dashboard.html` adapte la sidebar, les cartes, le tableau et le th
 - `src/services/adminService.mjs` : requêtes Sanctum, cookies et CSRF.
 - `src/styles/admin.css` : présentation et adaptation mobile du dashboard.
 
-La connexion existante appelle maintenant `/api/admin/login`. L’inscription publique reste indisponible dans l’API ; créer les administrateurs côté Laravel avec `php artisan admin:create email@example.com`.
+La connexion appelle `/api/login`, puis oriente les administrateurs vers le dashboard et les autres comptes vers `/dashboard.html#profile`. La déconnexion utilise `/api/logout`. L’inscription publique reste indisponible : les comptes se créent dans « Utilisateurs » ou via la commande Laravel `php artisan admin:create email@example.com`.
+
+« Utilisateurs » propose une liste paginée, une fiche de modification, la création et la suppression avec confirmation. Les modifications utilisent `PATCH /api/admin/users/{id}` ; `PUT` est une alternative documentée. Les droits se modifient via la case Administrateur. Le serveur reste responsable du refus de suppression de soi-même et de suppression/rétrogradation du dernier administrateur (409).
+
+« Mon profil » utilise `GET/PATCH /api/profile`. Le mot de passe actuel est exigé pour modifier l’email ou le mot de passe ; aucun rôle n’est envoyé. Les nouveaux mots de passe sont de 12 à 1 024 caractères, avec confirmation. Les formulaires affichent les erreurs par champ et des notifications toast.
+
+Les tests utilisent des API et DOM simulés et couvrent les contrats HTTP, CSRF, validations, rendu, créations, erreurs, permissions visibles et doubles soumissions. Ils ne remplacent pas une recette avec comptes réels dans un navigateur.
 
 En développement, ouvrir le frontend avec le même hôte que l’API (`127.0.0.1` des deux côtés ou `localhost` des deux côtés). Configurer côté Laravel les origines réelles dans `FRONTEND_URLS` et les hôtes avec ports dans `SANCTUM_STATEFUL_DOMAINS`, avec CORS autorisant les cookies et les en-têtes CSRF. `VITE_API_BASE_URL` se termine par `/api` ; l’initialisation CSRF utilise la racine du backend.
 

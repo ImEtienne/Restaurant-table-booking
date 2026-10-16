@@ -4,7 +4,8 @@ import vm from "node:vm";
 import { readFile } from "node:fs/promises";
 import { validateAuth, authErrorMessage } from "../src/scripts/auth-validation.mjs";
 
-test("auth tabs switch in place and login submits once without native navigation", async () => {
+for (const isAdmin of [true, false]) {
+test(`auth tabs switch without reload and ${isAdmin ? "admin" : "ordinary account"} login submits once to the correct destination`, async () => {
   const listeners = new Map();
   function node(id, dataset = {}) {
     return { id, dataset, attributes: {}, hidden: false, value: "", textContent: "", disabled: false,
@@ -44,7 +45,7 @@ test("auth tabs switch in place and login submits once without native navigation
   };
   const source = (await readFile(new URL("../src/scripts/auth.js", import.meta.url), "utf8")).replace(/^import .*;\r?\n/gm, "");
   vm.runInNewContext(source, { validateAuth, authErrorMessage, showToast() {}, document, location, window: { addEventListener() {} }, createAdminService: () => ({
-    login: (sentEmail, sentPassword) => {
+    userLogin: (sentEmail, sentPassword) => {
       calls++;
       assert.equal(sentEmail, "admin@example.com");
       assert.equal(sentPassword, "secret");
@@ -64,9 +65,10 @@ test("auth tabs switch in place and login submits once without native navigation
   await listeners.get("login-form:submit")(event);
   assert.equal(calls, 1);
   assert.equal(submit.disabled, true);
-  resolveLogin({ data: { is_admin: true } });
+  resolveLogin({ data: { is_admin: isAdmin } });
   await first;
-  assert.equal(location.assigned, "/dashboard.html");
+  assert.equal(location.assigned, isAdmin ? "/dashboard.html" : "/dashboard.html#profile");
   assert.equal(password.value, "");
   assert.equal(prevented, 4);
 });
+}

@@ -14,6 +14,8 @@
       <nav aria-label="Administration">
         <a href="#dashboard" class="admin-nav-dashboard" data-section="dashboard" aria-current="page">Tableau de bord</a>
         <a href="#reservations" class="admin-nav-reservations" data-section="reservations">Réservations</a>
+        <a href="#users" class="admin-nav-users" data-section="users">Utilisateurs</a>
+        <a href="#profile" class="admin-nav-profile" data-section="profile">Mon profil</a>
         <a href="/" class="admin-nav-external">Voir le restaurant ↗</a>
       </nav>
       <div class="admin-sidebar-footer"><span class="admin-caption">Espace de gestion</span><p>Restaurant XYZ</p></div>
@@ -22,6 +24,11 @@
       <header class="admin-header">
         <button type="button" id="admin-menu" aria-controls="admin-sidebar" aria-expanded="false">Menu</button>
         <div class="admin-user"><span class="admin-user-symbol" aria-hidden="true"></span><span id="admin-identity">Vérification de la session…</span><small>Administration du restaurant</small></div>
+        <form id="admin-global-search" class="admin-global-search" role="search">
+          <label class="admin-sr-only" for="admin-global-query">Rechercher dans les utilisateurs et réservations</label>
+          <input type="search" id="admin-global-query" name="q" placeholder="Retrouvez un client ou une réservation…" minlength="2" maxlength="100" required disabled>
+          <button type="submit" aria-label="Lancer la recherche" title="Lancer la recherche" disabled><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
+        </form>
         <div class="admin-header-actions">
           <button type="button" id="admin-theme" aria-pressed="false">Mode sombre</button>
           <button type="button" id="admin-logout" disabled>Déconnexion</button>
@@ -32,6 +39,15 @@
         <h1 id="admin-title">Tableau de bord</h1>
         <p id="admin-notice" role="status" aria-live="polite">Chargement de votre espace…</p>
         <div id="admin-private" hidden>
+          <section id="admin-accounts" class="admin-reservations" hidden aria-label="Gestion du compte"></section>
+          <section id="admin-global-results" class="admin-reservations" aria-labelledby="admin-global-title" hidden>
+            <div class="admin-section-heading"><h2 id="admin-global-title">Recherche globale</h2><button type="button" id="admin-close-search">Fermer</button></div>
+            <p id="admin-global-status" role="status" aria-live="polite"></p>
+            <h3>Utilisateurs</h3><ul id="admin-global-users"></ul>
+            <h3>Réservations</h3>
+            <div class="admin-table-wrap" role="region" aria-label="Réservations trouvées" tabindex="0"><table><thead><tr><th>Client</th><th>Contact</th><th>Date / heure</th><th>Personnes</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="admin-global-reservations"></tbody></table></div>
+            <p>Recherche indépendante des filtres du tableau. Jusqu’à 5 résultats par type ; précisez le texte si nécessaire.</p>
+          </section>
           <section id="admin-statistics" aria-label="Statistiques des réservations">
           <form id="admin-period" class="admin-filters">
             <label>Début<input type="date" name="start_date"></label>
@@ -53,7 +69,7 @@
           <details class="admin-reservations"><summary>Évolution quotidienne</summary><div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques quotidiennes"><table><thead><tr><th>Date</th><th>Total</th><th>En attente</th><th>Confirmées</th><th>Refusées</th><th>Personnes demandées</th><th>Personnes confirmées</th></tr></thead><tbody id="admin-daily"></tbody></table></div></details>
           <details class="admin-reservations"><summary>Répartition par heure</summary><div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques horaires"><table><thead><tr><th>Heure</th><th>Total</th><th>En attente</th><th>Confirmées</th><th>Refusées</th><th>Personnes demandées</th><th>Personnes confirmées</th></tr></thead><tbody id="admin-hourly"></tbody></table></div></details>
           </section>
-          <section class="admin-reservations" aria-labelledby="reservation-title">
+          <section id="admin-reservation-section" class="admin-reservations" aria-labelledby="reservation-title">
             <div class="admin-section-heading"><h2 id="reservation-title">Gestion des réservations</h2><button type="button" id="admin-refresh">Actualiser</button></div>
             <div class="admin-search">
               <label for="admin-search">Rechercher une réservation</label>

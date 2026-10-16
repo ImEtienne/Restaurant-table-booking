@@ -13,7 +13,7 @@ export function validateAuth(values, register = false) {
 }
 
 export function authErrorMessage(error) {
-  if (error.status === 422) return "Connexion refusée. Vérifiez votre email et votre mot de passe. Un compte administrateur est nécessaire.";
+  if (error.status === 422) return "Connexion refusée. Vérifiez votre email et votre mot de passe.";
   if (error.status === 429) return `Trop de tentatives. Réessayez ${error.retryAfter ? `dans ${error.retryAfter} secondes` : "dans une minute"}.`;
   if (error.code === "CSRF_COOKIE_MISSING") return "Le cookie de sécurité est inaccessible. Autorisez les cookies du site, puis rechargez la page.";
   if (error.status === 419) return "Votre session de sécurité a expiré. Rechargez la page et réessayez.";

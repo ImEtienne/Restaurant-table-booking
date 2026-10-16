@@ -110,10 +110,10 @@ form.addEventListener("submit", async (event) => {
   submit.textContent = "Connexion en cours…";
   form.setAttribute("aria-busy", "true");
   try {
-    await adminApi.login(form.elements.namedItem("email").value.trim(), password.value);
+    const { data: user } = await adminApi.userLogin(form.elements.namedItem("email").value.trim(), password.value);
     password.value = "";
     try { sessionStorage.setItem("auth-success", "1"); } catch { /* Optional flash. */ }
-    location.assign("/dashboard.html");
+    location.assign(user.is_admin ? "/dashboard.html" : "/dashboard.html#profile");
   } catch (error) {
     const apiErrors = {};
     for (const [field, messages] of Object.entries(error.errors || {})) {

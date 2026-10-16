@@ -2,6 +2,22 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createAdminService, AdminApiError } from "../src/services/adminService.mjs";
 
+test("global search uses q and per-type limit with encoded literal characters", async () => {
+  let requested;
+  const result = { data: { users: [], reservations: [] }, meta: { has_more: { users: true, reservations: false } } };
+  const api = createAdminService({ baseUrl: "http://localhost:8000/api", fetchImpl: async (url, options) => {
+    requested = new URL(url);
+    assert.equal(options.credentials, "include");
+    return { ok: true, status: 200, json: async () => result };
+  } });
+  assert.equal(await api.search(" #42%_! ", 5), result);
+  assert.equal(requested.pathname, "/api/admin/search");
+  assert.equal(requested.searchParams.get("q"), "#42%_!");
+  assert.equal(requested.searchParams.get("limit"), "5");
+  for (const query of ["", "a", "a".repeat(101)]) assert.throws(() => api.search(query));
+  for (const limit of [0, 21, 1.5]) assert.throws(() => api.search("Ada", limit));
+});
+
 test("development proxy keeps CSRF and login requests on the frontend origin", async () => {
   const calls = [];
   const api = createAdminService({ baseUrl: "/api", getCookie: () => "XSRF-TOKEN=test",
