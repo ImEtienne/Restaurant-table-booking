@@ -1,0 +1,19 @@
+
+/* Icônes SVG locales : aucune police d’icônes externe. */
+.admin-page .icon-dashboard { --admin-icon: url("/img/admin-icons/dashboard.svg"); }
+.admin-page .icon-calendar { --admin-icon: url("/img/admin-icons/calendar.svg"); }
+.admin-page .icon-clock { --admin-icon: url("/img/admin-icons/clock.svg"); }
+.admin-page .icon-check { --admin-icon: url("/img/admin-icons/check.svg"); }
+.admin-page .icon-close { --admin-icon: url("/img/admin-icons/close.svg"); }
+.admin-page .icon-users { --admin-icon: url("/img/admin-icons/users.svg"); }
+.admin-page .icon-usercheck { --admin-icon: url("/img/admin-icons/usercheck.svg"); }
+.admin-page .icon-chart { --admin-icon: url("/img/admin-icons/chart.svg"); }
+.admin-page .icon-percent { --admin-icon: url("/img/admin-icons/percent.svg"); }
+.admin-page .icon-external { --admin-icon: url("/img/admin-icons/external.svg"); }
+.admin-page .icon-refresh { --admin-icon: url("/img/admin-icons/refresh.svg"); }
+.admin-page .icon-filter { --admin-icon: url("/img/admin-icons/filter.svg"); }
+.admin-page .icon-logout { --admin-icon: url("/img/admin-icons/logout.svg"); }
+.admin-page .icon-moon { --admin-icon: url("/img/admin-icons/moon.svg"); }
+.admin-page .icon-menu { --admin-icon: url("/img/admin-icons/menu.svg"); }
+.admin-page .icon-arrowleft { --admin-icon: url("/img/admin-icons/arrowleft.svg"); }
+.admin-page .icon-arrowright { --admin-icon: url("/img/admin-icons/arrowright.svg"); }

@@ -3,6 +3,7 @@ import { createAdminService } from "../services/adminService.mjs";
 import { renderReservations } from "./reservationTable.mjs";
 import { renderMetrics, validatePeriod } from "./statistics.mjs";
 import { showToast } from "../scripts/toast.js";
+import { searchReservations } from "./search.mjs";
 
 const api = createAdminService();
 const $ = (id) => document.getElementById(`admin-${id}`);
@@ -12,6 +13,14 @@ let busy = false;
 let filters = {};
 let period = {};
 let statsBusy = false;
+let currentReservations = [];
+function renderSearch() {
+  const matches = searchReservations(currentReservations, $("search").value);
+  renderReservations($("rows"), matches);
+  $("search-count").textContent = $("search").value.trim()
+    ? `${matches.length} résultat(s) sur ${currentReservations.length} réservation(s) de cette page.` : "";
+}
+$("search").addEventListener("input", renderSearch);
 
 async function loadStats() {
   if (statsBusy) return;
@@ -73,12 +82,15 @@ async function load() {
   $("notice").textContent = "Chargement des réservations…";
   try {
     const result = await api.reservations({ ...filters, page });
-    renderReservations($("rows"), result.data);
+    currentReservations = result.data;
+    renderSearch();
     lastPage = result.meta.last_page;
     page = result.meta.current_page;
     $("page-number").textContent = `Page ${page} sur ${lastPage} · ${result.meta.total} réservation(s)`;
     $("notice").textContent = "";
   } catch (error) {
+    currentReservations = [];
+    $("search-count").textContent = "";
     $("rows").replaceChildren();
     $("page-number").textContent = "Résultats indisponibles";
     handleError(error);
