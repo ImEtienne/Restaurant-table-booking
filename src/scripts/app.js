@@ -51,7 +51,7 @@ function handleScroll() {
 
   if (window.scrollY > 0) {
     header.classList.add("fixed-header");
-    const color = window.scrollY > 550 ? "#333" : "#fff";
+    const color = "#fff";
     setNavColor(color);
     if (logo) logo.style.color = color;
   } else {

@@ -1,0 +1,5 @@
+.toast-region { position: fixed; top: 1.25rem; right: 1.25rem; z-index: 2000; width: min(420px, calc(100vw - 2.5rem)); }
+.site-toast { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.2rem; background: #fff; color: #292b27; border: 1px solid #ddd; border-left: 4px solid #a4472d; border-radius: 8px; box-shadow: 0 8px 30px #0003; font: 14px/1.6 sans-serif; }
+.site-toast-success { border-left-color: #287342; }
+.site-toast button { flex-shrink: 0; margin-left: auto; padding: 0 .3rem; border: 0; background: transparent; color: inherit; font-size: 1.4rem; cursor: pointer; }
+.site-toast button:focus-visible { outline: 2px solid #a4472d; }

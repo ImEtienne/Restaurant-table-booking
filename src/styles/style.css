@@ -51,10 +51,11 @@ header {
 .fixed-header {
   position: fixed;
   top: 0;
-  background: rgba(41, 43, 39, 0.9);
+  background: rgba(65, 65, 64, 0.9);
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(10px);
+  color: #fff;
 }
 
 #logo {

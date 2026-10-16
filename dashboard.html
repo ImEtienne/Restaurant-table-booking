@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administration | Restaurant XYZ</title>
+  <link rel="icon" href="/img/fav.jpeg">
+</head>
+<body class="admin-page">
+  <div class="admin-shell">
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <a class="admin-brand" href="/">Restaurant XYZ</a>
+      <span class="admin-caption">Administration</span>
+      <nav aria-label="Administration">
+        <a href="#dashboard" data-section="dashboard" aria-current="page">Tableau de bord</a>
+        <a href="#reservations" data-section="reservations">Réservations</a>
+        <a href="/">Voir le restaurant ↗</a>
+      </nav>
+      <p>Un accueil soigné commence par une réservation bien préparée.</p>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-header">
+        <button type="button" id="admin-menu" aria-controls="admin-sidebar" aria-expanded="false">Menu</button>
+        <span id="admin-identity">Vérification de la session…</span>
+        <div class="admin-header-actions">
+          <button type="button" id="admin-theme" aria-pressed="false">Mode sombre</button>
+          <button type="button" id="admin-logout" disabled>Déconnexion</button>
+        </div>
+      </header>
+      <div class="admin-content">
+        <p class="admin-caption">Restaurant XYZ / Administration</p>
+        <h1 id="admin-title">Tableau de bord</h1>
+        <p id="admin-notice" role="status" aria-live="polite">Chargement de votre espace…</p>
+        <div id="admin-private" hidden>
+          <section id="admin-statistics" aria-label="Statistiques des réservations">
+          <form id="admin-period" class="admin-filters">
+            <label>Début<input type="date" name="start_date"></label>
+            <label>Fin<input type="date" name="end_date"></label>
+            <button type="submit">Afficher les statistiques</button><button type="reset">Période par défaut</button>
+          </form>
+          <p id="admin-period-label">Par défaut : les 30 derniers jours, selon la date prévue de réservation.</p>
+          <p id="admin-stats-notice" role="status" aria-live="polite"></p>
+          <div class="admin-stats" id="admin-stats" aria-label="Résumé de la période">
+            <article class="admin-card"><h2>Réservations</h2><strong id="admin-total">—</strong><p>Sur la période sélectionnée</p></article>
+            <article class="admin-card"><h2>En attente</h2><strong id="admin-pending">—</strong></article>
+            <article class="admin-card"><h2>Confirmées</h2><strong id="admin-confirmed">—</strong></article>
+            <article class="admin-card"><h2>Refusées</h2><strong id="admin-rejected">—</strong></article>
+            <article class="admin-card"><h2>Personnes demandées</h2><strong id="admin-guests">—</strong><p>Tous statuts, refus compris</p></article>
+            <article class="admin-card"><h2>Personnes confirmées</h2><strong id="admin-confirmed-guests">—</strong><p>Ne mesure pas la présence effective</p></article>
+            <article class="admin-card"><h2>Taille moyenne des groupes</h2><strong id="admin-average">—</strong></article>
+            <article class="admin-card"><h2>Taux de confirmation</h2><strong id="admin-rate">—</strong></article>
+          </div>
+          <details class="admin-reservations"><summary>Évolution quotidienne</summary><div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques quotidiennes"><table><thead><tr><th>Date</th><th>Total</th><th>En attente</th><th>Confirmées</th><th>Refusées</th><th>Personnes demandées</th><th>Personnes confirmées</th></tr></thead><tbody id="admin-daily"></tbody></table></div></details>
+          <details class="admin-reservations"><summary>Répartition par heure</summary><div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques horaires"><table><thead><tr><th>Heure</th><th>Total</th><th>En attente</th><th>Confirmées</th><th>Refusées</th><th>Personnes demandées</th><th>Personnes confirmées</th></tr></thead><tbody id="admin-hourly"></tbody></table></div></details>
+          </section>
+          <section class="admin-reservations" aria-labelledby="reservation-title">
+            <div class="admin-section-heading"><h2 id="reservation-title">Gestion des réservations</h2><button type="button" id="admin-refresh">Actualiser</button></div>
+            <form id="admin-filters" class="admin-filters">
+              <label>Date<input type="date" name="date"></label>
+              <label>Statut<select name="status"><option value="">Tous les statuts</option><option value="pending">En attente</option><option value="confirmed">Confirmée</option><option value="rejected">Refusée</option></select></label>
+              <button type="submit">Filtrer</button><button type="reset">Réinitialiser</button>
+            </form>
+            <div class="admin-table-wrap" tabindex="0" role="region" aria-label="Tableau des réservations">
+              <table><caption class="admin-sr-only">Demandes de réservation du restaurant</caption><thead><tr><th scope="col">Client</th><th scope="col">Contact</th><th scope="col">Date / heure</th><th scope="col">Personnes</th><th scope="col">Statut</th><th scope="col">Actions</th></tr></thead><tbody id="admin-rows"></tbody></table>
+            </div>
+            <p>La confirmation modifie le statut. Aucun email n’est envoyé automatiquement.</p>
+            <nav class="admin-pagination" aria-label="Pages des réservations"><button type="button" id="admin-prev" disabled>Précédent</button><span id="admin-page-number"></span><button type="button" id="admin-next" disabled>Suivant</button></nav>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/src/admin/main.js"></script>
+</body>
+</html>

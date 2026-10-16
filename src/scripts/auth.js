@@ -1,5 +1,11 @@
 import "../styles/style.css";
 import "../styles/auth.css";
+import { createAdminService } from "../services/adminService.mjs";
+
+import { validateAuth, authErrorMessage } from "./auth-validation.mjs";
+import { showToast } from "./toast.js";
+
+const adminApi = createAdminService();
 
 const tabs = [...document.querySelectorAll('[role="tab"]')];
 function showPanel() {
@@ -44,21 +50,83 @@ form.querySelectorAll("[data-toggle-password]").forEach((button) => {
   });
 });
 
-function validateConfirmation() {
-  confirmation?.setCustomValidity(
-    confirmation.value !== password.value ? "Les mots de passe doivent être identiques." : "",
-  );
+const inputs = [...form.querySelectorAll("input")];
+form.noValidate = true;
+const fieldErrors = new Map();
+for (const input of inputs) {
+  const error = document.createElement("small");
+  error.id = `${input.id}-error`;
+  error.className = "auth-field-error";
+  input.closest(".auth-field").append(error);
+  input.setAttribute("aria-describedby", [input.getAttribute("aria-describedby"), error.id].filter(Boolean).join(" "));
+  fieldErrors.set(input.name, error);
 }
-
+function values() {
+  return Object.fromEntries(inputs.map((input) => [input.name, input.value]));
+}
+function showErrors(errors) {
+  for (const input of inputs) {
+    const message = errors[input.name] || "";
+    fieldErrors.get(input.name).textContent = message;
+    input.setAttribute("aria-invalid", String(Boolean(message)));
+  }
+}
+let submitted = false;
+form.addEventListener("focusout", () => {
+  showErrors(validateAuth(values(), Boolean(confirmation)));
+});
 form.addEventListener("input", () => {
   status.textContent = "";
-  if (confirmation) validateConfirmation();
+  if (submitted) showErrors(validateAuth(values(), Boolean(confirmation)));
+  else {
+    for (const input of inputs) {
+      if (input.getAttribute("aria-invalid") === "true") {
+        const errors = validateAuth(values(), Boolean(confirmation));
+        fieldErrors.get(input.name).textContent = errors[input.name] || "";
+        input.setAttribute("aria-invalid", String(Boolean(errors[input.name])));
+      }
+    }
+  }
 });
-
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (confirmation) validateConfirmation();
-  if (!form.reportValidity()) return;
-  status.textContent = "Ce service sera disponible prochainement. Aucune donnée n’a été envoyée. Les accès administrateur seront attribués par le restaurant.";
+  const submit = form.querySelector('[type="submit"]');
+  if (submit.disabled) return;
+  submitted = true;
+  const errors = validateAuth(values(), Boolean(confirmation));
+  showErrors(errors);
+  if (Object.keys(errors).length) {
+    showToast("Certains champs sont incorrects. Consultez les indications sous les champs.");
+    inputs.find((input) => errors[input.name])?.focus();
+    return;
+  }
+  if (form.id !== "login-form") {
+    showToast("L’inscription publique n’est pas disponible. Contactez le restaurant pour obtenir un accès administrateur.");
+    return;
+  }
+  const label = submit.textContent;
+  submit.disabled = true;
+  submit.classList.add("is-loading");
+  submit.textContent = "Connexion en cours…";
+  form.setAttribute("aria-busy", "true");
+  try {
+    await adminApi.login(form.elements.namedItem("email").value.trim(), password.value);
+    password.value = "";
+    try { sessionStorage.setItem("auth-success", "1"); } catch { /* Optional flash. */ }
+    location.assign("/dashboard.html");
+  } catch (error) {
+    const apiErrors = {};
+    for (const [field, messages] of Object.entries(error.errors || {})) {
+      if (fieldErrors.has(field)) apiErrors[field] = Array.isArray(messages) ? messages.join(" ") : String(messages);
+    }
+    showErrors(apiErrors);
+    inputs.find((input) => apiErrors[input.name])?.focus();
+    showToast(authErrorMessage(error));
+  } finally {
+    submit.disabled = false;
+    submit.classList.remove("is-loading");
+    submit.textContent = label;
+    form.setAttribute("aria-busy", "false");
+  }
 });
 });

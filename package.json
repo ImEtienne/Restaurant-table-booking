@@ -6,7 +6,7 @@
     "dev": "vite --open",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test tests/reservation-validation.test.mjs tests/reservation-service.test.mjs"
+    "test": "node --test tests/*.test.mjs"
   },
   "devDependencies": {
     "vite": "^6.0.0"

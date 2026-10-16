@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Dashboard Design</title>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-blog sidebar-logo"></i>
+                <span class="sidebar-title">ZinoBlog</span>
+            </div>
+            <ul role="menubar">
+                <li><a href="#" class="menu-item" data-target="dashboard" role="menuitem" aria-label="Tableau de bord"><i class="fas fa-desktop"></i>Tableau de Bord</a></li>
+                <li>
+                    <a href="#" class="menu-item" data-target="articles" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Articles"><i class="fas fa-newspaper"></i>Articles</a>
+                    <ul class="submenu" id="articles" role="menu" aria-label="Sous-menu Articles">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-list"></i> Tous les Articles</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-plus"></i> Ajouter un Article</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-folder"></i> Catégories</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-tags"></i> Tags</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-target="medias" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Médias"><i class="fas fa-photo-video"></i>Médias</a>
+                    <ul class="submenu" id="medias" role="menu" aria-label="Sous-menu Médias">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-photo-video"></i>Bibliothèque de Médias</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-upload"></i> Ajouter un Média</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-target="commentaires" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Commentaires"><i class="fas fa-comments"></i>Commentaires</a>
+                    <ul class="submenu" id="commentaires" role="menu" aria-label="Sous-menu Commentaires">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-comments"></i>Tous les Commentaires</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-hourglass-half"></i>Commentaires en Attente</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-target="utilisateurs" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Utilisateurs"><i class="fas fa-users"></i>Utilisateurs</a>
+                    <ul class="submenu" id="utilisateurs" role="menu" aria-label="Sous-menu Utilisateurs">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-users"></i> Tous les Utilisateurs</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-user-plus"></i> Ajouter un Utilisateur</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-user-shield"></i> Rôles et Permissions</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-target="apparence" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Apparence"><i class="fas fa-paint-brush"></i> Apparence</a>
+                    <ul class="submenu" id="apparence" role="menu" aria-label="Sous-menu Apparence">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-palette"></i> Thèmes</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-cogs"></i> Personnaliser</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-th-large"></i> Widgets</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-bars"></i> Menus</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-target="plugins" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Plugins"><i class="fas fa-plug"></i> Plugins</a>
+                    <ul class="submenu" id="plugins" role="menu" aria-label="Sous-menu Plugins">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-plug"></i> Tous les Plugins</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-plus"></i> Ajouter un Plugin</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-cogs"></i> Paramètres plugins</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-target="reglages" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Réglages"><i class="fas fa-cogs"></i> Réglages</a>
+                    <ul class="submenu" id="reglages" role="menu" aria-label="Sous-menu Réglages">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-cog"></i> Général</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-pen"></i> Écriture</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-book"></i> Lecture</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-comments"></i> Discussion</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-photo-video"></i> Médias</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-link"></i> Permaliens</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-target="outils" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Outils"><i class="fas fa-tools"></i> Outils</a>
+                    <ul class="submenu" id="outils" role="menu" aria-label="Sous-menu Outils">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-file-import"></i> Importer</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-file-export"></i> Exporter</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-heartbeat"></i> Santé du Site</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-target="support" role="menuitem" aria-expanded="false" aria-haspopup="true" aria-label="Support et Aide"><i class="fas fa-question-circle"></i> Support / Aide</a>
+                    <ul class="submenu" id="support" role="menu" aria-label="Sous-menu Support">
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-book"></i> Documentation</a></li>
+                        <li><a href="#" role="menuitem" tabindex="0"><i class="fas fa-life-ring"></i> Forum de Support</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        <main>
+            <div class="header">
+                <header class="main-header">
+                    <div class="search-bar">
+                        <div class="search-input-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" placeholder="Rechercher des articles, utilisateurs, commentaires..." class="search-input">
+                        </div>
+                    </div>
+                    <div class="user-avatar">
+                        
+                            <i class="fas fa-moon fa-lg theme-toggle" onclick="toggleTheme()" aria-label="Basculer entre le mode sombre et clair" tabindex="0" role="button"></i>
+                        
+                        <div class="icon-container" role="button" tabindex="0" aria-label="Messages (5 non lus)">
+                            <i class="fas fa-envelope fa-lg envelope-icon"></i>
+                            <span class="badge" aria-hidden="true">5</span> 
+                        </div>
+                        <div class="icon-container" role="button" tabindex="0" aria-label="Notifications (3 nouvelles)">
+                            <i class="fas fa-bell fa-lg notification-icon"></i>
+                            <span class="badge" aria-hidden="true">3</span> 
+                        </div>
+                        <span class="separator" aria-hidden="true"></span>
+                        <div class="avatar" onclick="toggleDropdown()" role="button" tabindex="0" aria-label="Menu utilisateur" aria-expanded="false" aria-haspopup="true">
+                            <img src="images/avatar.jpg" alt="Avatar utilisateur">
+                            <!--<span class="user-info">Etienne K.</span>-->
+                        </div>
+                        <div class="avatar-dropdown" id="avatarDropdown" role="menu" aria-label="Menu utilisateur">
+                            <a href="#" role="menuitem" tabindex="0"><i class="fas fa-user"></i>Profil</a>
+                            <a href="#" role="menuitem" tabindex="0"><i class="fas fa-bell"></i>Notifications</a>
+                            <a href="#" role="menuitem" tabindex="0"><i class="fas fa-envelope"></i>Messages</a>
+                            <a href="#" role="menuitem" tabindex="0"><i class="fas fa-cog"></i>Paramètres</a>
+                            <a href="#" role="menuitem" tabindex="0"><i class="fas fa-history"></i>Historique</a>
+                            <a href="#" role="menuitem" tabindex="0"><i class="fas fa-question-circle"></i>Aide</a>
+                            <a href="#" role="menuitem" tabindex="0"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
+                        </div>
+                    </div>
+                </header>
+            </div>
+            <div class="main-container">
+                <div aria-label="breadcrumb">
+                    <ul class="breadcrumb">
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-folder-open"></i> Category</a></li>
+                        <li><a href="#"><i class="fas fa-folder"></i> Subcategory</a></li>
+                        <li><span><i class="fas fa-file-alt"></i> Current Page</span></li>
+                    </ul>
+                </div>
+
+                <div class="title-card">
+                    <h4>Récente Statistique</h4>
+                </div>
+                <div class="dashboard">
+                    <!-- Card: Nombre d'utilisateurs -->
+                    <div class="card">
+                        <i class="fas fa-users"></i>
+                        <h3>Utilisateurs</h3>
+                        <p>1,234 utilisateurs</p>
+                    </div>
+
+                    <!-- Card: Nombre d'articles publiés -->
+                    <div class="card">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Articles publiés</h3>
+                        <p>56 articles</p>
+                    </div>
+
+                    <!-- Card: Nombre de catégories -->
+                    <div class="card">
+                        <i class="fas fa-tags"></i>
+                        <h3>Catégories</h3>
+                        <p>12 catégories</p>
+                    </div>
+
+                    <!-- Card: Nombre de commentaires -->
+                    <div class="card">
+                        <i class="fas fa-comments"></i>
+                        <h3>Commentaires</h3>
+                        <p>342 commentaires</p>
+                    </div>
+
+                    <!-- Card: Nombre de visiteurs -->
+                    <div class="card">
+                        <i class="fas fa-eye"></i>
+                        <h3>Visiteurs</h3>
+                        <p>10,567 visiteurs</p>
+                    </div>
+                </div>
+
+                <div class="head-table">
+                    <div class="title-table">
+                        <h1>Gestion des Utilisateurs</h1>
+                    </div>
+                    <div class="btn-add-user">
+                        <a href="#" class="add-user-button">
+                            <i class="fas fa-user-plus"></i> Add User
+                        </a>
+                    </div>
+                </div>
+                
+                <table class="user-table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Date d'inscription</th>
+                        <th>Status</th>
+                        <th class="action-icons">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- User Rows (Données fictives) -->
+                    <tr>
+                        <td>1</td>
+                        <td>Jean Dupont</td>
+                        <td>jean.dupont@example.com</td>
+                        <td>2023-09-01</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Marie Leclerc</td>
+                        <td>marie.leclerc@example.com</td>
+                        <td>2023-08-15</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Paul Martin</td>
+                        <td>paul.martin@example.com</td>
+                        <td>2023-08-25</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Julie Bernard</td>
+                        <td>julie.bernard@example.com</td>
+                        <td>2023-07-10</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Lucas Petit</td>
+                        <td>lucas.petit@example.com</td>
+                        <td>2023-06-05</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <!-- Add as many rows as needed, here's a total of 20 users -->
+                    <tr>
+                        <td>6</td>
+                        <td>Claire Fournier</td>
+                        <td>claire.fournier@example.com</td>
+                        <td>2023-05-20</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Antoine Duret</td>
+                        <td>antoine.duret@example.com</td>
+                        <td>2023-04-25</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Emma Lefevre</td>
+                        <td>emma.lefevre@example.com</td>
+                        <td>2023-04-05</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Romain Didier</td>
+                        <td>romain.didier@example.com</td>
+                        <td>2023-03-15</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Sophie Mercier</td>
+                        <td>sophie.mercier@example.com</td>
+                        <td>2023-02-22</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Yves Delon</td>
+                        <td>yves.delon@example.com</td>
+                        <td>2023-01-12</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Anne Faure</td>
+                        <td>anne.faure@example.com</td>
+                        <td>2022-12-05</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>Pierre Moulin</td>
+                        <td>pierre.moulin@example.com</td>
+                        <td>2022-11-19</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Camille Rousseau</td>
+                        <td>camille.rousseau@example.com</td>
+                        <td>2022-10-27</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Luc Garnier</td>
+                        <td>luc.garnier@example.com</td>
+                        <td>2022-09-18</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>Elise Perrin</td>
+                        <td>elise.perrin@example.com</td>
+                        <td>2022-08-09</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>Victor Masson</td>
+                        <td>victor.masson@example.com</td>
+                        <td>2022-07-05</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Sarah Roche</td>
+                        <td>sarah.roche@example.com</td>
+                        <td>2022-06-12</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td>Damien Fontaine</td>
+                        <td>damien.fontaine@example.com</td>
+                        <td>2022-05-19</td>
+                        <td><span class="status-active">Actif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>Eva Bourgeois</td>
+                        <td>eva.bourgeois@example.com</td>
+                        <td>2022-04-11</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                        <td class="action-icons" role="group" aria-label="Actions">
+                        <button class="action-btn action-view" aria-label="Voir les détails de l'utilisateur" title="Voir"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn action-edit" aria-label="Modifier l'utilisateur" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" aria-label="Supprimer l'utilisateur" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                 <div class="footer">
+                    <p>&copy; Copyright 2024 ZinoBlog. Tous droits réservés.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
