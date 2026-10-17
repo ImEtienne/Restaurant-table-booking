@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import { readFile } from "node:fs/promises";
 import { accountPayload } from "../src/admin/account-validation.mjs";
+import { placeholderFor } from "../src/scripts/placeholders.mjs";
 
 const valid = { name: " Ada ", email: " ada@example.com ", password: "longpassword123", password_confirmation: "longpassword123" };
 test("creation trims identity, requires strong confirmed password and defaults to ordinary user", () => {
@@ -35,7 +36,7 @@ test("edits omit empty passwords and preserve explicit role decisions", () => {
 
 const source = (await readFile(new URL("../src/admin/accounts.js", import.meta.url), "utf8"))
   .replace(/^import .*;\r?\n/gm, "").replace("export function mountAccounts", "function mountAccounts");
-function harness(api, currentUser = { id: 1, name: "Admin", email: "admin@example.com", is_admin: true }) {
+function harness(api, currentUser = { id: 1, name: "Admin", email: "admin@example.com", is_admin: true }, confirmAccepted = true) {
   const nodes = [];
   function node(tag) {
     const el = { tag, children: [], attributes: {}, events: {}, textContent: "", disabled: false,
@@ -49,7 +50,8 @@ function harness(api, currentUser = { id: 1, name: "Admin", email: "admin@exampl
   const notifications = [];
   let confirmations = 0;
   const context = { document: { createElement: node, getElementById: () => root }, location: { hash: "" },
-    window: { confirm() { confirmations++; return true; } }, accountPayload,
+    window: { confirm() { confirmations++; return true; } }, accountPayload, placeholderFor,
+    confirmDialog: async () => confirmAccepted,
     showToast: (...args) => notifications.push(args), api, currentUser,
     onIdentity() {}, onSessionError() {},
   };
@@ -67,7 +69,7 @@ test("users screen renders plain text, disables self deletion and loads selected
   let fetched;
   const h = harness({ users: async () => page([user]), user: async (id) => { fetched = id; return { data: user }; } });
   await h.controller.activate("users");
-  assert.ok(h.find(user.name));
+  assert.ok(h.find(`#${user.id} · ${user.name}`));
   assert.equal(h.find("Supprimer").disabled, true);
   await h.find("Voir / Modifier").events.click();
   assert.equal(fetched, 1);
@@ -117,4 +119,24 @@ test("ordinary accounts can load their profile without issuing user-list calls",
   await h.controller.activate("profile");
   assert.equal(h.input("email").value, user.email);
   assert.equal(h.input("is_admin"), undefined);
+});
+
+test("inactive clients can be activated and the list is refreshed", async () => {
+  let received;
+  const user = { id: 2, name: "Ada", email: "ada@example.com", is_admin: false, is_active: false };
+  const h = harness({ users: async () => page([user]), activateUser: async (id, active) => { received = { id, active }; user.is_active = active; } });
+  await h.controller.activate("users");
+  assert.ok(h.find("En attente / Inactif"));
+  await h.find("Activer").events.click();
+  assert.deepEqual(received, { id: 2, active: true });
+  assert.ok(h.find("Désactiver"));
+});
+
+test("cancelling the activation modal makes no API call and restores the button", async () => {
+  let calls = 0;
+  const h = harness({ users: async () => page([{ id: 2, name: "Ada", email: "a@example.com", is_admin: false, is_active: false }]), activateUser: async () => { calls++; } }, undefined, false);
+  await h.controller.activate("users");
+  await h.find("Activer").events.click();
+  assert.equal(calls, 0);
+  assert.equal(h.find("Activer").disabled, false);
 });

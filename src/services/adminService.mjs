@@ -39,7 +39,11 @@ export function createAdminService({
       throw new AdminApiError("Impossible de joindre l’API. Vérifiez la connexion et les origines autorisées.");
     }
     const data = response.status === 204 ? null : await response.json().catch(() => null);
-    if (!response.ok) throw new AdminApiError(data?.message || `La requête a échoué (${response.status}).`, response.status, data?.errors || {}, response.headers?.get("Retry-After") ?? null);
+    if (!response.ok) {
+      const error = new AdminApiError(data?.message || `La requête a échoué (${response.status}).`, response.status, data?.errors || {}, response.headers?.get("Retry-After") ?? null);
+      error.code = data?.code;
+      throw error;
+    }
     return data;
   }
   function stats(path, { start_date = "", end_date = "" } = {}) {
@@ -49,6 +53,19 @@ export function createAdminService({
     return request(`${path}${query.size ? `?${query}` : ""}`);
   }
   return {
+    async registerClient(body) {
+      await request("/sanctum/csrf-cookie");
+      return request("/client/register", { method: "POST", body, csrf: true });
+    },
+    activateUser: (id, is_active) => request(`/admin/users/${userId(id)}/activation`, { method: "PATCH", body: { is_active }, csrf: true }),
+    assignClient: (id, user_id) => request(`/admin/reservations/${userId(id)}/client`, { method: "PATCH", body: { user_id: userId(user_id) }, csrf: true }),
+    clientReservations: (page = 1) => request(`/client/reservations?${new URLSearchParams({ page: String(page) })}`),
+    clientReservation: (id) => request(`/client/reservations/${userId(id)}`),
+    createClientReservation: (body) => request("/client/reservations", { method: "POST", body, csrf: true }),
+    updateClientReservation: (id, body) => request(`/client/reservations/${userId(id)}`, { method: "PATCH", body, csrf: true }),
+    cancelClientReservation: (id) => request(`/client/reservations/${userId(id)}/cancel`, { method: "POST", csrf: true }),
+    claimReservation: (registration_token) => request("/client/reservations/claim", { method: "POST", body: { registration_token }, csrf: true }),
+    clientStats: () => request("/client/stats"),
     async userLogin(email, password) {
       await request("/sanctum/csrf-cookie");
       return request("/login", { method: "POST", body: { email, password }, csrf: true });

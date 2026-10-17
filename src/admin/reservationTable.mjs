@@ -1,4 +1,4 @@
-export const statusLabels = { pending: "En attente", confirmed: "Confirmée", rejected: "Refusée" };
+export const statusLabels = { pending: "En attente", confirmed: "Confirmée", rejected: "Refusée", cancelled: "Annulée" };
 
 export function renderReservations(tbody, reservations, doc = document) {
   tbody.replaceChildren();
@@ -12,7 +12,7 @@ export function renderReservations(tbody, reservations, doc = document) {
   }
   for (const reservation of reservations) {
     const row = doc.createElement("tr");
-    for (const value of [reservation.name, `${reservation.email} · ${reservation.phone}`, `${reservation.date} à ${reservation.time}`, reservation.guests]) {
+    for (const value of [`#${reservation.id} · ${reservation.name}`, `${reservation.email} · ${reservation.phone}`, `${reservation.date} à ${reservation.time}`, reservation.guests]) {
       const cell = doc.createElement("td");
       cell.textContent = String(value ?? "—");
       row.append(cell);

@@ -43,7 +43,13 @@ L’entrée `/dashboard.html` adapte la sidebar, les cartes, le tableau et le th
 - `src/services/adminService.mjs` : requêtes Sanctum, cookies et CSRF.
 - `src/styles/admin.css` : présentation et adaptation mobile du dashboard.
 
-La connexion appelle `/api/login`, puis oriente les administrateurs vers le dashboard et les autres comptes vers `/dashboard.html#profile`. La déconnexion utilise `/api/logout`. L’inscription publique reste indisponible : les comptes se créent dans « Utilisateurs » ou via la commande Laravel `php artisan admin:create email@example.com`.
+La connexion appelle `/api/login`, puis oriente les administrateurs vers le dashboard et les clients vers `/dashboard.html#client`. La déconnexion utilise `/api/logout`. L’inscription client utilise `/api/client/register` avec l’email de réservation, un mot de passe confirmé de 12 caractères minimum et une clé confidentielle de 64 caractères. Le nom provient de la réservation. Le compte créé attend l’activation admin et n’est pas connecté automatiquement. Les comptes se créent aussi dans « Utilisateurs » ou via la commande Laravel `php artisan admin:create email@example.com`.
+
+Après une réservation publique, la clé confidentielle est affichée uniquement sur la page de confirmation, masquée par défaut, sans stockage navigateur ni inclusion dans une URL. Elle expire après 7 jours et ne peut être utilisée qu’une fois. Le client doit la conserver avant de fermer la page.
+
+L’espace client (`src/admin/client.js`) utilise les 7 opérations authentifiées de réservation et statistiques : liste paginée, détail, création, modification, annulation, rattachement par clé et statistiques personnelles. L’email, le propriétaire et le statut ne sont jamais envoyés par les formulaires client. Seules les réservations pending et futures sont modifiables/annulables ; le serveur reste l’autorité finale, notamment pour le fuseau et les changements d’heure. Les annulations conservent la réservation avec le statut cancelled.
+
+Les administrateurs disposent de `PATCH /api/admin/users/{id}/activation` dans la liste des utilisateurs et de `PATCH /api/admin/reservations/{id}/client` dans le formulaire de rattachement des réservations. Ce rattachement ne change pas le statut et n’associe pas automatiquement les autres réservations ayant le même email.
 
 « Utilisateurs » propose une liste paginée, une fiche de modification, la création et la suppression avec confirmation. Les modifications utilisent `PATCH /api/admin/users/{id}` ; `PUT` est une alternative documentée. Les droits se modifient via la case Administrateur. Le serveur reste responsable du refus de suppression de soi-même et de suppression/rétrogradation du dernier administrateur (409).
 

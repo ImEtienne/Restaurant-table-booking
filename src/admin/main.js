@@ -5,6 +5,9 @@ import { renderMetrics, validatePeriod } from "./statistics.mjs";
 import { showToast } from "../scripts/toast.js";
 import { searchReservations } from "./search.mjs";
 import { mountAccounts } from "./accounts.js";
+import { mountClient } from "./client.js";
+import { applyPlaceholders } from "../scripts/placeholders.mjs";
+applyPlaceholders();
 
 const api = createAdminService();
 const $ = (id) => document.getElementById(`admin-${id}`);
@@ -16,6 +19,26 @@ let period = {};
 let statsBusy = false;
 let currentUser = null;
 let accounts = null;
+let client = null;
+let assigning = false;
+$("assignment").addEventListener("submit", async (event) => {
+  event.preventDefault(); if (assigning) return;
+  const form = event.currentTarget;
+  const fields = Object.fromEntries(new FormData(form));
+  assigning = true;
+  const submit = form.querySelector('[type="submit"]'); submit.disabled = true;
+  $("assignment-status").textContent = "Rattachement en cours…";
+  try {
+    await api.assignClient(Number(fields.reservation_id), Number(fields.user_id));
+    $("assignment-status").textContent = "Réservation rattachée au client. Son statut est inchangé.";
+    showToast("Rattachement effectué.", "success");
+    await load();
+  } catch (error) {
+    $("assignment-status").textContent = error.status === 409 ? "Cette réservation appartient déjà à un autre client." : Object.values(error.errors || {}).flat().join(" ") || error.message;
+    showToast($("assignment-status").textContent);
+    if ([401, 419].includes(error.status)) handleError(error);
+  } finally { assigning = false; submit.disabled = false; }
+});
 let currentReservations = [];
 let searchVersion = 0;
 $("global-search").addEventListener("submit", async (event) => {
@@ -77,7 +100,7 @@ async function loadStats() {
     const failed = results.find((result) => result.status === "rejected");
     if (failed) throw failed.reason;
     const [summary, daily, hourly] = results.map((result) => result.value);
-    for (const [id, key] of Object.entries({ total: "total_reservations", pending: "pending", confirmed: "confirmed", rejected: "rejected", guests: "total_guests", "confirmed-guests": "confirmed_guests", average: "average_party_size", rate: "confirmation_rate" })) {
+    for (const [id, key] of Object.entries({ total: "total_reservations", pending: "pending", confirmed: "confirmed", rejected: "rejected", cancelled: "cancelled", guests: "total_guests", "confirmed-guests": "confirmed_guests", average: "average_party_size", rate: "confirmation_rate" })) {
       $(id).textContent = `${new Intl.NumberFormat("fr-FR").format(summary.data[key])}${id === "rate" ? " %" : ""}`;
     }
     $("period-label").textContent = `Du ${summary.meta.start_date} au ${summary.meta.end_date} inclus · ${summary.meta.timezone} · Date prévue de réservation`;
@@ -175,14 +198,19 @@ $("menu").addEventListener("click", () => {
 });
 function section() {
   let selectedSection = location.hash.slice(1) || "dashboard";
-  if (!["dashboard", "reservations", "users", "profile"].includes(selectedSection)) selectedSection = "dashboard";
-  if (currentUser && !currentUser.is_admin) selectedSection = "profile";
+  if (!["dashboard", "reservations", "users", "profile", "client"].includes(selectedSection)) selectedSection = "dashboard";
+  if (currentUser && !currentUser.is_admin && selectedSection !== "profile") selectedSection = "client";
+  if (currentUser?.is_admin && selectedSection === "client") selectedSection = "dashboard";
   const accountSection = ["users", "profile"].includes(selectedSection);
   $("statistics").hidden = selectedSection !== "dashboard";
-  $("reservation-section").hidden = accountSection;
+  $("reservation-section").hidden = accountSection || selectedSection === "client";
   $("accounts").hidden = !accountSection;
-  $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil" }[selectedSection];
+  $("client").hidden = selectedSection !== "client";
+  $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil", client: "Mes réservations" }[selectedSection];
+  document.title = `${$("title").textContent} | Restaurant XYZ`;
   accounts?.activate(selectedSection);
+  if (selectedSection === "client") client?.activate();
+  else client?.deactivate();
   document.querySelectorAll("[data-section]").forEach((link) => {
     if (link.dataset.section === selectedSection) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -210,6 +238,7 @@ async function initialize() {
     function updateIdentity(updated) {
       $("identity").textContent = updated.name;
       document.querySelectorAll('[data-section="dashboard"], [data-section="reservations"], [data-section="users"]').forEach((link) => { link.hidden = !updated.is_admin; });
+      document.querySelectorAll('[data-section="client"]').forEach((link) => { link.hidden = updated.is_admin; });
       $("global-search").hidden = !updated.is_admin;
       if (!updated.is_admin) {
         searchVersion++;
@@ -221,6 +250,7 @@ async function initialize() {
     }
     updateIdentity(user);
     accounts = mountAccounts({ api, currentUser, onIdentity: updateIdentity, onSessionError: handleError });
+    client = mountClient({ api, user: currentUser, onSessionError: handleError });
     $("logout").disabled = false;
     $("global-search").querySelectorAll("input, button").forEach((control) => { control.disabled = !user.is_admin; });
     $("private").hidden = false;

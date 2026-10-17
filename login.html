@@ -40,13 +40,13 @@
       </div>
       <div id="register-panel" role="tabpanel" aria-labelledby="register-tab" hidden>
         <h2 id="register-title">Créer un compte</h2>
-        <p class="auth-description">Renseignez vos informations pour préparer votre inscription.</p>
-        <p class="auth-description" id="register-availability">L’inscription publique n’est pas disponible. Les comptes administrateurs sont créés par le restaurant.</p>
+        <p class="auth-description">Créez votre compte depuis une réservation existante.</p>
+        <p class="auth-description" id="register-availability">Utilisez l’email et la clé confidentielle remis après votre réservation. Le restaurant devra ensuite activer votre compte.</p>
         <form id="register-form" data-auth-form aria-describedby="register-availability">
-          <div class="auth-field"><label for="register-name">Nom complet</label><input id="register-name" name="name" autocomplete="name" maxlength="100" required></div>
+          <div class="auth-field"><label for="register-token">Cl&#233; confidentielle de r&#233;servation</label><input type="password" id="register-token" name="registration_token" minlength="64" maxlength="64" autocomplete="off" required></div>
           <div class="auth-field"><label for="register-email">Adresse email</label><input type="email" id="register-email" name="email" autocomplete="email" maxlength="254" required></div>
           <div class="auth-field"><label for="register-password">Mot de passe</label>
-            <div class="auth-password"><input type="password" id="register-password" name="password" autocomplete="new-password" minlength="8" aria-describedby="register-password-hint" required><button type="button" data-toggle-password="register-password" aria-controls="register-password" aria-pressed="false">Afficher</button></div><small class="auth-hint" id="register-password-hint">Au moins 8 caractères.</small>
+            <div class="auth-password"><input type="password" id="register-password" name="password" autocomplete="new-password" minlength="12" aria-describedby="register-password-hint" required><button type="button" data-toggle-password="register-password" aria-controls="register-password" aria-pressed="false">Afficher</button></div><small class="auth-hint" id="register-password-hint">Au moins 12 caractères.</small>
           </div>
           <div class="auth-field"><label for="register-password_confirmation">Confirmer le mot de passe</label>
             <div class="auth-password"><input type="password" id="register-password_confirmation" name="password_confirmation" autocomplete="new-password" required><button type="button" data-toggle-password="register-password_confirmation" aria-controls="register-password_confirmation" aria-pressed="false">Afficher</button></div>

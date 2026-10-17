@@ -39,7 +39,19 @@
             <li>
               <a href="#contact"><i class="fa-solid fa-address-book"></i>&nbsp;&nbsp;Contact</a>
             </li>
-            <li><a href="/login.html" class="nav-login">Se connecter</a></li>
+            <li id="site-signin"><a href="/login.html" class="nav-login">Se connecter</a></li>
+            <li id="site-account" class="site-account" hidden>
+              <button type="button" id="site-account-toggle" aria-expanded="false" aria-controls="site-account-panel">
+                <span id="site-account-avatar" class="site-account-avatar" aria-hidden="true"></span>
+                <span id="site-account-name"></span>
+                <span aria-hidden="true">⌄</span>
+              </button>
+              <div id="site-account-panel" class="site-account-panel" hidden>
+                <a id="site-account-dashboard" href="/dashboard.html">Mon espace</a>
+                <a href="/dashboard.html#profile">Mon profil</a>
+                <button type="button" id="site-account-logout">Se déconnecter</button>
+              </div>
+            </li>
           </ul>
         </nav>
       </div>

@@ -29,6 +29,20 @@ body {
   font-size: 16px;
 }
 
+.site-account { position: relative; }
+.site-account[hidden], .site-account-panel[hidden], #site-signin[hidden] { display: none !important; }
+#site-account-toggle { display: inline-flex; align-items: center; gap: .6rem; padding: .3rem .5rem; border: 0; background: transparent; color: #fff; font: inherit; font-size: .9rem; cursor: pointer; }
+.site-account-avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; font-size: .8rem; font-weight: 600; }
+.site-account-panel { position: absolute; top: calc(100% + .75rem); right: 0; z-index: 110; width: 210px; padding: .5rem; border: 1px solid #dedbd3; border-radius: 8px; background: #fff; box-shadow: 0 12px 32px #0003; }
+.nav-bar .nav-links .site-account-panel a, .site-account-panel button { display: block; width: 100%; margin: 0; padding: .7rem .8rem; border: 0; border-radius: 4px; background: transparent; text-align: left; font: inherit; font-size: .85rem; color: var(--ink) !important; cursor: pointer; }
+.nav-bar .nav-links .site-account-panel a:hover, .site-account-panel button:hover { background: var(--soft); color: var(--accent) !important; }
+#site-account-toggle:focus-visible, .site-account-panel button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 1200px) {
+  .site-account-panel { position: static; width: 100%; margin-top: .5rem; }
+  .nav-bar.active:has(.site-account:not([hidden])) { height: auto; min-height: 240px; }
+  .nav-bar.active:has(.site-account-panel:not([hidden])) { height: auto; min-height: 240px; overflow: visible; }
+}
+
 a {
   text-decoration: none;
 }

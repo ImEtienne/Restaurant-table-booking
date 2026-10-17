@@ -10,7 +10,7 @@ export function renderMetrics(tbody, rows, key, doc = document) {
   tbody.replaceChildren();
   for (const item of rows) {
     const row = doc.createElement("tr");
-    for (const field of [key, "total_reservations", "pending", "confirmed", "rejected", "total_guests", "confirmed_guests"]) {
+    for (const field of [key, "total_reservations", "pending", "confirmed", "rejected", "cancelled", "total_guests", "confirmed_guests"]) {
       const cell = doc.createElement("td");
       cell.textContent = String(item[field] ?? 0);
       row.append(cell);

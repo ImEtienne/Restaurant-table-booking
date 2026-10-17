@@ -1,5 +1,7 @@
 import { accountPayload } from "./account-validation.mjs";
 import { showToast } from "../scripts/toast.js";
+import { confirmDialog } from "../scripts/confirm-dialog.js";
+import { placeholderFor } from "../scripts/placeholders.mjs";
 
 export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) {
   const root = document.getElementById("admin-accounts");
@@ -44,6 +46,7 @@ export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) 
       const caption = el("label", label, group); caption.htmlFor = id;
       const input = el("input", null, group);
       input.id = id; input.name = name; input.type = type;
+      if (type !== "checkbox") input.placeholder = name === "password" ? "Nouveau mot de passe (12 caractères minimum)" : placeholderFor(name, type);
       if (name === "name") input.maxLength = 255;
       if (name === "email") input.maxLength = 254;
       if (type === "password") input.maxLength = 1024;
@@ -109,12 +112,31 @@ export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) 
       const wrap = el("div"); wrap.className = "admin-table-wrap";
       const table = el("table", null, wrap);
       const head = el("tr", null, el("thead", null, table));
-      for (const label of ["Nom", "Email", "Rôle", "Actions"]) { const th = el("th", label, head); th.scope = "col"; }
+      for (const label of ["Nom", "Email", "Rôle", "Accès", "Actions"]) { const th = el("th", label, head); th.scope = "col"; }
       const body = el("tbody", null, table);
       for (const user of result.data) {
         const row = el("tr", null, body);
-        for (const value of [user.name, user.email, user.is_admin ? "Administrateur" : "Utilisateur"]) el("td", value, row);
+        for (const value of [`#${user.id} · ${user.name}`, user.email, user.is_admin ? "Administrateur" : "Client"]) el("td", value, row);
+        el("td", user.is_admin || user.is_active !== false ? "Actif" : "En attente / Inactif", row);
         const actions = el("td", null, row);
+        if (!user.is_admin) {
+          const active = user.is_active !== false;
+          const toggle = button(active ? "Désactiver" : "Activer", actions, async () => {
+            if (saving) return;
+            saving = true; toggle.disabled = true;
+            try {
+              const accepted = await confirmDialog({
+                title: active ? "Désactiver l’accès client" : "Activer l’accès client",
+                message: active ? `${user.name} (${user.email}) ne pourra plus accéder à son espace client. Ses réservations seront conservées.` : `${user.name} (${user.email}) pourra se connecter à son espace et gérer ses réservations.`,
+                confirmLabel: active ? "Désactiver l’accès" : "Activer le compte",
+              });
+              if (!accepted || revision !== token) return;
+              await api.activateUser(user.id, !active); showToast("Accès client mis à jour.", "success"); if (revision === token) await list();
+            }
+            catch (error) { fail(error, notice); }
+            finally { saving = false; toggle.disabled = false; }
+          });
+        }
         button("Voir / Modifier", actions, async () => {
           const version = revision;
           try { const response = await api.user(user.id); if (revision === version) editor(response.data); }

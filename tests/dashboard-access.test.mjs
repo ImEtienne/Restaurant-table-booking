@@ -28,14 +28,15 @@ for (const isAdmin of [true, false]) {
       hourlyStats: async () => { calls.push("hourly"); return { data: [] }; },
     };
     const activated = [];
-    const nav = ["dashboard", "reservations", "users", "profile"].map((section) => Object.assign(node(section), { dataset: { section } }));
+    const nav = ["dashboard", "reservations", "users", "profile", "client"].map((section) => Object.assign(node(section), { dataset: { section } }));
     const context = {
-      document: { getElementById: node, body: node("body"), querySelectorAll: (selector) => selector === "[data-section]" ? nav : nav.slice(0, 3) },
+      document: { getElementById: node, body: node("body"), querySelectorAll: (selector) => selector === "[data-section]" ? nav : selector === '[data-section="client"]' ? [nav[4]] : nav.slice(0, 3) },
       location: { hash: "", replace() { assert.fail("Unexpected redirect"); } },
       window: { addEventListener() {} }, localStorage: { getItem() {} }, sessionStorage: { getItem() {} },
-      createAdminService: () => api, showToast() {}, renderReservations() {}, renderMetrics() {},
+      createAdminService: () => api, applyPlaceholders() {}, showToast() {}, renderReservations() {}, renderMetrics() {},
       validatePeriod: () => "", searchReservations: (rows) => rows,
       mountAccounts: () => ({ activate: (section) => { activated.push(section); } }),
+      mountClient: () => ({ activate: () => { activated.push("client"); }, deactivate() {} }),
     };
     vm.runInNewContext(source, context);
     for (let i = 0; i < 12; i++) await Promise.resolve();
@@ -47,10 +48,11 @@ for (const isAdmin of [true, false]) {
       assert.ok(activated.includes("dashboard"));
     } else {
       assert.deepEqual(calls, ["profile"]);
-      assert.equal(node("admin-accounts").hidden, false);
+      assert.equal(node("admin-accounts").hidden, true);
+      assert.equal(node("admin-client").hidden, false);
       assert.equal(node("admin-reservation-section").hidden, true);
       assert.equal(node("admin-statistics").hidden, true);
-      assert.ok(activated.includes("profile"));
+      assert.ok(activated.includes("client"));
       assert.ok(nav.slice(0, 3).every((link) => link.hidden));
     }
   });

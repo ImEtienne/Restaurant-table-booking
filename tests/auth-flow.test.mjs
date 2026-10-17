@@ -44,7 +44,7 @@ test(`auth tabs switch without reload and ${isAdmin ? "admin" : "ordinary accoun
     querySelectorAll: (selector) => selector === '[role="tab"]' || selector === "[data-auth-switch]" ? [login, register] : [form],
   };
   const source = (await readFile(new URL("../src/scripts/auth.js", import.meta.url), "utf8")).replace(/^import .*;\r?\n/gm, "");
-  vm.runInNewContext(source, { validateAuth, authErrorMessage, showToast() {}, document, location, window: { addEventListener() {} }, createAdminService: () => ({
+  vm.runInNewContext(source, { applyPlaceholders() {}, validateAuth, authErrorMessage, showToast() {}, document, location, window: { addEventListener() {} }, createAdminService: () => ({
     userLogin: (sentEmail, sentPassword) => {
       calls++;
       assert.equal(sentEmail, "admin@example.com");
@@ -67,7 +67,7 @@ test(`auth tabs switch without reload and ${isAdmin ? "admin" : "ordinary accoun
   assert.equal(submit.disabled, true);
   resolveLogin({ data: { is_admin: isAdmin } });
   await first;
-  assert.equal(location.assigned, isAdmin ? "/dashboard.html" : "/dashboard.html#profile");
+  assert.equal(location.assigned, isAdmin ? "/dashboard.html" : "/dashboard.html#client");
   assert.equal(password.value, "");
   assert.equal(prevented, 4);
 });

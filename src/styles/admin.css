@@ -53,6 +53,16 @@
 .admin-filters label { display: grid; gap: .3rem; }
 .admin-filters input, .admin-filters select { padding: .6rem; border: 1px solid var(--admin-line); border-radius: 7px; background: var(--admin-panel); color: var(--admin-text); }
 .admin-filters [type="submit"] { background: var(--admin-accent); color: white; }
+.admin-page .admin-filters [type="submit"]:hover:not(:disabled) { background: #853a27; border-color: #853a27; color: #fff; }
+.admin-dark .admin-filters [type="submit"] { color: #201e1b; }
+.admin-dark .admin-filters [type="submit"]:hover:not(:disabled) { background: #f1c7a9; border-color: #f1c7a9; color: #201e1b; }
+.site-confirm-dialog { width: min(460px, calc(100vw - 2rem)); padding: 2rem; border: 1px solid var(--admin-line); border-radius: 12px; color: var(--admin-text); background: var(--admin-panel); box-shadow: 0 24px 80px #0004; }
+.site-confirm-dialog::backdrop { background: #19171499; backdrop-filter: blur(3px); }
+.site-confirm-dialog h2 { margin: 0 0 1rem; font-size: 1.25rem; }
+.site-confirm-dialog p { color: var(--admin-muted); }
+.site-confirm-dialog form { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem; margin-top: 1.5rem; }
+.admin-page .site-confirm-dialog .dialog-confirm { background: var(--admin-accent); color: var(--admin-panel); }
+.admin-page .site-confirm-dialog .dialog-confirm:hover { background: #853a27; color: #fff; }
 .admin-table-wrap { overflow-x: auto; }
 .admin-search { max-width: 560px; margin: 1rem 0; }
 .admin-search label { display: block; font-weight: 500; margin-bottom: .4rem; }
@@ -68,6 +78,7 @@
 .admin-badge.pending { background: #fff0c2; color: #755000; }
 .admin-badge.confirmed { background: #d9f3df; color: #215b30; }
 .admin-badge.rejected { background: #fce0da; color: #8c2b20; }
+.admin-badge.cancelled { background: #ece9e1; color: #625f57; }
 .admin-reservations > p { color: var(--admin-muted); font-size: .8rem; }
 .admin-pagination { display: flex; align-items: center; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
 .admin-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
