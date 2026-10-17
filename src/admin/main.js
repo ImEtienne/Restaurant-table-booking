@@ -7,6 +7,7 @@ import { searchReservations } from "./search.mjs";
 import { mountAccounts } from "./accounts.js";
 import { mountClient } from "./client.js";
 import { applyPlaceholders } from "../scripts/placeholders.mjs";
+import { renderSidebarProfile, mountProfileMenu } from "./sidebarProfile.mjs";
 applyPlaceholders();
 
 const api = createAdminService();
@@ -187,6 +188,7 @@ $("rows").addEventListener("click", async (event) => {
   if (failure) handleError(failure);
   else $("notice").textContent = "Statut mis à jour. Aucun email n’a été envoyé.";
 });
+mountProfileMenu();
 $("logout").addEventListener("click", async () => {
   $("logout").disabled = true;
   try { await api.userLogout(); location.replace("/login.html"); }
@@ -223,7 +225,10 @@ section();
 function theme(dark) {
   document.body.classList.toggle("admin-dark", dark);
   $("theme").setAttribute("aria-pressed", String(dark));
-  $("theme").textContent = dark ? "Mode clair" : "Mode sombre";
+  $("theme").setAttribute("aria-label", dark ? "Activer le mode clair" : "Activer le mode sombre");
+  $("theme").title = dark ? "Mode clair" : "Mode sombre";
+  $("theme-moon").hidden = dark;
+  $("theme-sun").hidden = !dark;
 }
 try { theme(localStorage.getItem("restaurant-admin-theme") === "dark"); } catch { theme(false); }
 $("theme").addEventListener("click", () => {
@@ -237,6 +242,7 @@ async function initialize() {
     currentUser = user;
     function updateIdentity(updated) {
       $("identity").textContent = updated.name;
+      renderSidebarProfile(updated);
       document.querySelectorAll('[data-section="dashboard"], [data-section="reservations"], [data-section="users"]').forEach((link) => { link.hidden = !updated.is_admin; });
       document.querySelectorAll('[data-section="client"]').forEach((link) => { link.hidden = updated.is_admin; });
       $("global-search").hidden = !updated.is_admin;

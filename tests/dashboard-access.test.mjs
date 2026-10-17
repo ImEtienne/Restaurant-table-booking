@@ -33,7 +33,7 @@ for (const isAdmin of [true, false]) {
       document: { getElementById: node, body: node("body"), querySelectorAll: (selector) => selector === "[data-section]" ? nav : selector === '[data-section="client"]' ? [nav[4]] : nav.slice(0, 3) },
       location: { hash: "", replace() { assert.fail("Unexpected redirect"); } },
       window: { addEventListener() {} }, localStorage: { getItem() {} }, sessionStorage: { getItem() {} },
-      createAdminService: () => api, applyPlaceholders() {}, showToast() {}, renderReservations() {}, renderMetrics() {},
+      createAdminService: () => api, applyPlaceholders() {}, renderSidebarProfile() {}, mountProfileMenu() {}, showToast() {}, renderReservations() {}, renderMetrics() {},
       validatePeriod: () => "", searchReservations: (rows) => rows,
       mountAccounts: () => ({ activate: (section) => { activated.push(section); } }),
       mountClient: () => ({ activate: () => { activated.push("client"); }, deactivate() {} }),
