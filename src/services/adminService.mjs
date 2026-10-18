@@ -39,7 +39,11 @@ export function createAdminService({
       throw new AdminApiError("Impossible de joindre l’API. Vérifiez la connexion et les origines autorisées.");
     }
     const data = response.status === 204 ? null : await response.json().catch(() => null);
-    if (!response.ok) throw new AdminApiError(data?.message || `La requête a échoué (${response.status}).`, response.status, data?.errors || {}, response.headers?.get("Retry-After") ?? null);
+    if (!response.ok) {
+      const error = new AdminApiError(data?.message || `La requête a échoué (${response.status}).`, response.status, data?.errors || {}, response.headers?.get("Retry-After") ?? null);
+      error.code = data?.code;
+      throw error;
+    }
     return data;
   }
   function stats(path, { start_date = "", end_date = "" } = {}) {
@@ -49,6 +53,31 @@ export function createAdminService({
     return request(`${path}${query.size ? `?${query}` : ""}`);
   }
   return {
+    async registerClient(body) {
+      await request("/sanctum/csrf-cookie");
+      return request("/client/register", { method: "POST", body, csrf: true });
+    },
+    activateUser: (id, is_active) => request(`/admin/users/${userId(id)}/activation`, { method: "PATCH", body: { is_active }, csrf: true }),
+    assignClient: (id, user_id) => request(`/admin/reservations/${userId(id)}/client`, { method: "PATCH", body: { user_id: userId(user_id) }, csrf: true }),
+    clientReservations: (page = 1) => request(`/client/reservations?${new URLSearchParams({ page: String(page) })}`),
+    clientReservation: (id) => request(`/client/reservations/${userId(id)}`),
+    createClientReservation: (body) => request("/client/reservations", { method: "POST", body, csrf: true }),
+    updateClientReservation: (id, body) => request(`/client/reservations/${userId(id)}`, { method: "PATCH", body, csrf: true }),
+    cancelClientReservation: (id) => request(`/client/reservations/${userId(id)}/cancel`, { method: "POST", csrf: true }),
+    claimReservation: (registration_token) => request("/client/reservations/claim", { method: "POST", body: { registration_token }, csrf: true }),
+    clientStats: () => request("/client/stats"),
+    async userLogin(email, password) {
+      await request("/sanctum/csrf-cookie");
+      return request("/login", { method: "POST", body: { email, password }, csrf: true });
+    },
+    userLogout: () => request("/logout", { method: "POST", csrf: true }),
+    profile: () => request("/profile"),
+    updateProfile: (body) => request("/profile", { method: "PATCH", body, csrf: true }),
+    users: (page = 1) => request(`/admin/users?${new URLSearchParams({ page: String(page) })}`),
+    user: (id) => request(`/admin/users/${userId(id)}`),
+    createUser: (body) => request("/admin/users", { method: "POST", body, csrf: true }),
+    updateUser: (id, body) => request(`/admin/users/${userId(id)}`, { method: "PATCH", body, csrf: true }),
+    deleteUser: (id) => request(`/admin/users/${userId(id)}`, { method: "DELETE", csrf: true }),
     async login(email, password) {
       await request("/sanctum/csrf-cookie");
       return request("/admin/login", { method: "POST", body: { email, password }, csrf: true });
@@ -58,6 +87,13 @@ export function createAdminService({
     stats: (period) => stats("/admin/stats", period),
     dailyStats: (period) => stats("/admin/stats/daily", period),
     hourlyStats: (period) => stats("/admin/stats/hourly", period),
+    search(text, limit = 5) {
+      const q = text.trim();
+      if (q.length < 2 || q.length > 100 || !Number.isInteger(limit) || limit < 1 || limit > 20) {
+        throw new AdminApiError("La recherche doit contenir entre 2 et 100 caractères (limite : 1 à 20 résultats par type).", 422);
+      }
+      return request(`/admin/search?${new URLSearchParams({ q, limit: String(limit) })}`);
+    },
     reservations({ date = "", status = "", page = 1 } = {}) {
       const query = new URLSearchParams({ page: String(page) });
       if (date) query.set("date", date);
@@ -71,4 +107,9 @@ export function createAdminService({
       return request(`/admin/reservations/${id}`, { method: "PATCH", body: { status }, csrf: true });
     },
   };
+}
+
+function userId(id) {
+  if (!Number.isSafeInteger(id) || id < 1) throw new AdminApiError("Identifiant utilisateur invalide.", 422);
+  return id;
 }

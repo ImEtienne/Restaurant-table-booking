@@ -17,7 +17,7 @@ test("reservation data is rendered as text and only pending requests get decisio
   renderReservations(tbody, ["pending", "confirmed", "rejected"].map((status, id) => ({
     id: id + 1, name: "<img src=x onerror=alert(1)>", email: "a@example.com", phone: "0123456789", date: "2027-10-15", time: "19:30", guests: 2, status,
   })), doc);
-  assert.equal(tbody.children[0].children[0].textContent, "<img src=x onerror=alert(1)>");
+  assert.equal(tbody.children[0].children[0].textContent, "#1 · <img src=x onerror=alert(1)>");
   assert.deepEqual(tbody.children[0].children[5].children.map((button) => button.dataset.status), ["confirmed", "rejected"]);
   assert.equal(tbody.children[1].children[5].children.length, 0);
   assert.equal(tbody.children[2].children[5].children.length, 0);

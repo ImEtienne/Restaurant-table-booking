@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Administration | Restaurant XYZ</title>
   <link rel="icon" href="/img/fav.jpeg">
 </head>
+
 <body class="admin-page">
   <div class="admin-shell">
     <aside class="admin-sidebar" id="admin-sidebar">
@@ -14,17 +16,52 @@
       <nav aria-label="Administration">
         <a href="#dashboard" class="admin-nav-dashboard" data-section="dashboard" aria-current="page">Tableau de bord</a>
         <a href="#reservations" class="admin-nav-reservations" data-section="reservations">Réservations</a>
+        <a href="#users" class="admin-nav-users" data-section="users">Utilisateurs</a>
+        <a href="#client" class="admin-nav-reservations" data-section="client" hidden>Mes réservations</a>
         <a href="/" class="admin-nav-external">Voir le restaurant ↗</a>
       </nav>
-      <div class="admin-sidebar-footer"><span class="admin-caption">Espace de gestion</span><p>Restaurant XYZ</p></div>
+      <div class="admin-sidebar-footer">
+        <div class="admin-profile">
+          <a class="admin-avatar" id="admin-avatar" href="#profile" aria-label="Mon profil"><img id="admin-avatar-img" alt="" hidden><span id="admin-avatar-initials">?</span></a>
+          <span class="admin-profile-text"><strong id="admin-profile-name">…</strong><small id="admin-profile-firstname" hidden></small></span>
+          <button type="button" class="admin-profile-toggle" id="admin-profile-toggle" aria-haspopup="menu" aria-expanded="false" aria-controls="admin-profile-menu" aria-label="Menu du profil"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="12" cy="5" r="1.8" />
+              <circle cx="12" cy="12" r="1.8" />
+              <circle cx="12" cy="19" r="1.8" />
+            </svg></button>
+          <div class="admin-profile-menu" id="admin-profile-menu" role="menu" aria-label="Profil" hidden>
+            <a href="#profile" role="menuitem">Profil</a>
+            <button type="button" role="menuitem" id="admin-logout" disabled>Déconnexion</button>
+          </div>
+        </div>
+      </div>
     </aside>
     <main class="admin-main">
       <header class="admin-header">
         <button type="button" id="admin-menu" aria-controls="admin-sidebar" aria-expanded="false">Menu</button>
         <div class="admin-user"><span class="admin-user-symbol" aria-hidden="true"></span><span id="admin-identity">Vérification de la session…</span><small>Administration du restaurant</small></div>
+        <form id="admin-global-search" class="admin-global-search" role="search">
+          <label class="admin-sr-only" for="admin-global-query">Rechercher dans les utilisateurs et réservations</label>
+          <input type="search" id="admin-global-query" name="q" placeholder="Retrouvez un client ou une réservation…" minlength="2" maxlength="100" required disabled>
+          <button type="submit" aria-label="Lancer la recherche" title="Lancer la recherche" disabled><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m16 16 4.5 4.5" />
+            </svg></button>
+        </form>
         <div class="admin-header-actions">
-          <button type="button" id="admin-theme" aria-pressed="false">Mode sombre</button>
-          <button type="button" id="admin-logout" disabled>Déconnexion</button>
+          <button type="button" class="admin-icon-button" id="admin-notifications" aria-label="Notifications" title="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+              <path d="M10.3 21a1.9 1.9 0 0 0 3.4 0" />
+            </svg></button>
+          <button type="button" class="admin-icon-button" id="admin-theme" aria-pressed="false" aria-label="Activer le mode sombre" title="Mode sombre">
+            <svg id="admin-theme-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 13a9 9 0 0 1-10-10A9 9 0 1 0 21 13Z" />
+            </svg>
+            <svg id="admin-theme-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+          </button>
         </div>
       </header>
       <div class="admin-content">
@@ -32,29 +69,128 @@
         <h1 id="admin-title">Tableau de bord</h1>
         <p id="admin-notice" role="status" aria-live="polite">Chargement de votre espace…</p>
         <div id="admin-private" hidden>
-          <section id="admin-statistics" aria-label="Statistiques des réservations">
-          <form id="admin-period" class="admin-filters">
-            <label>Début<input type="date" name="start_date"></label>
-            <label>Fin<input type="date" name="end_date"></label>
-            <button type="submit">Afficher les statistiques</button><button type="reset">Période par défaut</button>
-          </form>
-          <p id="admin-period-label">Par défaut : les 30 derniers jours, selon la date prévue de réservation.</p>
-          <p id="admin-stats-notice" role="status" aria-live="polite"></p>
-          <div class="admin-stats" id="admin-stats" aria-label="Résumé de la période">
-            <article class="admin-card"><span class="admin-metric-icon icon-calendar" aria-hidden="true"></span><h2>Réservations</h2><strong id="admin-total">—</strong><p>Sur la période sélectionnée</p></article>
-            <article class="admin-card"><span class="admin-metric-icon icon-clock" aria-hidden="true"></span><h2>En attente</h2><strong id="admin-pending">—</strong></article>
-            <article class="admin-card"><span class="admin-metric-icon icon-check" aria-hidden="true"></span><h2>Confirmées</h2><strong id="admin-confirmed">—</strong></article>
-            <article class="admin-card"><span class="admin-metric-icon icon-close" aria-hidden="true"></span><h2>Refusées</h2><strong id="admin-rejected">—</strong></article>
-            <article class="admin-card"><span class="admin-metric-icon icon-users" aria-hidden="true"></span><h2>Personnes demandées</h2><strong id="admin-guests">—</strong><p>Tous statuts, refus compris</p></article>
-            <article class="admin-card"><span class="admin-metric-icon icon-usercheck" aria-hidden="true"></span><h2>Personnes confirmées</h2><strong id="admin-confirmed-guests">—</strong><p>Ne mesure pas la présence effective</p></article>
-            <article class="admin-card"><span class="admin-metric-icon icon-chart" aria-hidden="true"></span><h2>Taille moyenne des groupes</h2><strong id="admin-average">—</strong></article>
-            <article class="admin-card"><span class="admin-metric-icon icon-percent" aria-hidden="true"></span><h2>Taux de confirmation</h2><strong id="admin-rate">—</strong></article>
-          </div>
-          <details class="admin-reservations"><summary>Évolution quotidienne</summary><div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques quotidiennes"><table><thead><tr><th>Date</th><th>Total</th><th>En attente</th><th>Confirmées</th><th>Refusées</th><th>Personnes demandées</th><th>Personnes confirmées</th></tr></thead><tbody id="admin-daily"></tbody></table></div></details>
-          <details class="admin-reservations"><summary>Répartition par heure</summary><div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques horaires"><table><thead><tr><th>Heure</th><th>Total</th><th>En attente</th><th>Confirmées</th><th>Refusées</th><th>Personnes demandées</th><th>Personnes confirmées</th></tr></thead><tbody id="admin-hourly"></tbody></table></div></details>
+          <section id="admin-client" class="admin-reservations" hidden aria-label="Espace client"></section>
+          <section id="admin-accounts" class="admin-reservations" hidden aria-label="Gestion du compte"></section>
+          <section id="admin-global-results" class="admin-reservations" aria-labelledby="admin-global-title" hidden>
+            <div class="admin-section-heading">
+              <h2 id="admin-global-title">Recherche globale</h2><button type="button" id="admin-close-search">Fermer</button>
+            </div>
+            <p id="admin-global-status" role="status" aria-live="polite"></p>
+            <h3>Utilisateurs</h3>
+            <ul id="admin-global-users"></ul>
+            <h3>Réservations</h3>
+            <div class="admin-table-wrap" role="region" aria-label="Réservations trouvées" tabindex="0">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Client</th>
+                    <th>Contact</th>
+                    <th>Date / heure</th>
+                    <th>Personnes</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-global-reservations"></tbody>
+              </table>
+            </div>
+            <p>Recherche indépendante des filtres du tableau. Jusqu’à 5 résultats par type ; précisez le texte si nécessaire.</p>
           </section>
-          <section class="admin-reservations" aria-labelledby="reservation-title">
-            <div class="admin-section-heading"><h2 id="reservation-title">Gestion des réservations</h2><button type="button" id="admin-refresh">Actualiser</button></div>
+          <section id="admin-statistics" aria-label="Statistiques des réservations">
+            <form id="admin-period" class="admin-filters">
+              <label>Début<input type="date" name="start_date"></label>
+              <label>Fin<input type="date" name="end_date"></label>
+              <button type="submit">Afficher les statistiques</button><button type="reset">Période par défaut</button>
+            </form>
+            <p id="admin-period-label">Par défaut : les 30 derniers jours, selon la date prévue de réservation.</p>
+            <p id="admin-stats-notice" role="status" aria-live="polite"></p>
+            <div class="admin-stats" id="admin-stats" aria-label="Résumé de la période">
+              <article class="admin-card"><span class="admin-metric-icon icon-calendar" aria-hidden="true"></span>
+                <h2>Réservations</h2><strong id="admin-total">—</strong>
+                <p>Sur la période sélectionnée</p>
+              </article>
+              <article class="admin-card"><span class="admin-metric-icon icon-clock" aria-hidden="true"></span>
+                <h2>En attente</h2><strong id="admin-pending">—</strong>
+              </article>
+              <article class="admin-card"><span class="admin-metric-icon icon-check" aria-hidden="true"></span>
+                <h2>Confirmées</h2><strong id="admin-confirmed">—</strong>
+              </article>
+              <article class="admin-card"><span class="admin-metric-icon icon-close" aria-hidden="true"></span>
+                <h2>Refusées</h2><strong id="admin-rejected">—</strong>
+              </article>
+              <article class="admin-card"><span class="admin-metric-icon icon-close" aria-hidden="true"></span>
+                <h2>Annul&#233;es</h2><strong id="admin-cancelled">—</strong>
+              </article>
+              <article class="admin-card"><span class="admin-metric-icon icon-users" aria-hidden="true"></span>
+                <h2>Personnes demandées</h2><strong id="admin-guests">—</strong>
+                <p>Tous statuts, refus compris</p>
+              </article>
+              <article class="admin-card"><span class="admin-metric-icon icon-usercheck" aria-hidden="true"></span>
+                <h2>Personnes confirmées</h2><strong id="admin-confirmed-guests">—</strong>
+                <p>Ne mesure pas la présence effective</p>
+              </article>
+              <article class="admin-card"><span class="admin-metric-icon icon-chart" aria-hidden="true"></span>
+                <h2>Taille moyenne des groupes</h2><strong id="admin-average">—</strong>
+              </article>
+              <article class="admin-card"><span class="admin-metric-icon icon-percent" aria-hidden="true"></span>
+                <h2>Taux de confirmation</h2><strong id="admin-rate">—</strong>
+              </article>
+            </div>
+            <details class="admin-reservations">
+              <summary>Évolution quotidienne</summary>
+              <div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques quotidiennes">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Total</th>
+                      <th>En attente</th>
+                      <th>Confirmées</th>
+                      <th>Refusées</th>
+                      <th>Annulées</th>
+                      <th>Personnes demandées</th>
+                      <th>Personnes confirmées</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-daily"></tbody>
+                </table>
+              </div>
+            </details>
+            <details class="admin-reservations">
+              <summary>Répartition par heure</summary>
+              <div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques horaires">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Heure</th>
+                      <th>Total</th>
+                      <th>En attente</th>
+                      <th>Confirmées</th>
+                      <th>Refusées</th>
+                      <th>Annulées</th>
+                      <th>Personnes demandées</th>
+                      <th>Personnes confirmées</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-hourly"></tbody>
+                </table>
+              </div>
+            </details>
+          </section>
+          <section id="admin-reservation-section" class="admin-reservations" aria-labelledby="reservation-title">
+            <details>
+              <summary>Rattacher une réservation à un client</summary>
+              <form id="admin-assignment" class="admin-account-form">
+                <label>Identifiant de la réservation<input type="number" name="reservation_id" min="1" step="1" required></label>
+                <label>Identifiant du client<input type="number" name="user_id" min="1" step="1" required></label>
+                <p>Consultez les identifiants dans les réservations et la liste des utilisateurs. Le client peut être inactif ; un administrateur ne peut pas être propriétaire client.</p>
+                <button type="submit">Rattacher au client</button>
+                <p id="admin-assignment-status" role="status" aria-live="polite"></p>
+              </form>
+            </details>
+            <div class="admin-section-heading">
+              <h2 id="reservation-title">Gestion des réservations</h2><button type="button" id="admin-refresh">Actualiser</button>
+            </div>
             <div class="admin-search">
               <label for="admin-search">Rechercher une réservation</label>
               <input type="search" id="admin-search" placeholder="Nom, email, téléphone ou identifiant…" aria-describedby="admin-search-help" disabled>
@@ -63,11 +199,30 @@
             </div>
             <form id="admin-filters" class="admin-filters">
               <label>Date<input type="date" name="date"></label>
-              <label>Statut<select name="status"><option value="">Tous les statuts</option><option value="pending">En attente</option><option value="confirmed">Confirmée</option><option value="rejected">Refusée</option></select></label>
+              <label>Statut<select name="status">
+                  <option value="">Tous les statuts</option>
+                  <option value="pending">En attente</option>
+                  <option value="confirmed">Confirmée</option>
+                  <option value="rejected">Refusée</option>
+                  <option value="cancelled">Annul&#233;e</option>
+                </select></label>
               <button type="submit">Filtrer</button><button type="reset">Réinitialiser</button>
             </form>
             <div class="admin-table-wrap" tabindex="0" role="region" aria-label="Tableau des réservations">
-              <table><caption class="admin-sr-only">Demandes de réservation du restaurant</caption><thead><tr><th scope="col">Client</th><th scope="col">Contact</th><th scope="col">Date / heure</th><th scope="col">Personnes</th><th scope="col">Statut</th><th scope="col">Actions</th></tr></thead><tbody id="admin-rows"></tbody></table>
+              <table>
+                <caption class="admin-sr-only">Demandes de réservation du restaurant</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Client</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Date / heure</th>
+                    <th scope="col">Personnes</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-rows"></tbody>
+              </table>
             </div>
             <p>La confirmation modifie le statut. Aucun email n’est envoyé automatiquement.</p>
             <nav class="admin-pagination" aria-label="Pages des réservations"><button type="button" id="admin-prev" disabled>Précédent</button><span id="admin-page-number"></span><button type="button" id="admin-next" disabled>Suivant</button></nav>
@@ -78,4 +233,5 @@
   </div>
   <script type="module" src="/src/admin/main.js"></script>
 </body>
+
 </html>

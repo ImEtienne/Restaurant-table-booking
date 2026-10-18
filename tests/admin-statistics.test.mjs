@@ -36,6 +36,6 @@ test("statistics preserve empty days and distinguish requested from confirmed gu
   ], "date", { createElement: node });
   assert.equal(tbody.children.length, 2);
   assert.equal(tbody.children[0].children[1].textContent, "0");
-  assert.equal(tbody.children[1].children[5].textContent, "8");
-  assert.equal(tbody.children[1].children[6].textContent, "3");
+  assert.equal(tbody.children[1].children[6].textContent, "8");
+  assert.equal(tbody.children[1].children[7].textContent, "3");
 });

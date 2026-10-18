@@ -4,6 +4,11 @@ import { renderReservations } from "./reservationTable.mjs";
 import { renderMetrics, validatePeriod } from "./statistics.mjs";
 import { showToast } from "../scripts/toast.js";
 import { searchReservations } from "./search.mjs";
+import { mountAccounts } from "./accounts.js";
+import { mountClient } from "./client.js";
+import { applyPlaceholders } from "../scripts/placeholders.mjs";
+import { renderSidebarProfile, mountProfileMenu } from "./sidebarProfile.mjs";
+applyPlaceholders();
 
 const api = createAdminService();
 const $ = (id) => document.getElementById(`admin-${id}`);
@@ -13,7 +18,68 @@ let busy = false;
 let filters = {};
 let period = {};
 let statsBusy = false;
+let currentUser = null;
+let accounts = null;
+let client = null;
+let assigning = false;
+$("assignment").addEventListener("submit", async (event) => {
+  event.preventDefault(); if (assigning) return;
+  const form = event.currentTarget;
+  const fields = Object.fromEntries(new FormData(form));
+  assigning = true;
+  const submit = form.querySelector('[type="submit"]'); submit.disabled = true;
+  $("assignment-status").textContent = "Rattachement en cours…";
+  try {
+    await api.assignClient(Number(fields.reservation_id), Number(fields.user_id));
+    $("assignment-status").textContent = "Réservation rattachée au client. Son statut est inchangé.";
+    showToast("Rattachement effectué.", "success");
+    await load();
+  } catch (error) {
+    $("assignment-status").textContent = error.status === 409 ? "Cette réservation appartient déjà à un autre client." : Object.values(error.errors || {}).flat().join(" ") || error.message;
+    showToast($("assignment-status").textContent);
+    if ([401, 419].includes(error.status)) handleError(error);
+  } finally { assigning = false; submit.disabled = false; }
+});
 let currentReservations = [];
+let searchVersion = 0;
+$("global-search").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const query = $("global-query").value.trim();
+  const version = ++searchVersion;
+  $("global-results").hidden = false;
+  $("global-status").textContent = "Recherche en cours…";
+  $("global-users").replaceChildren();
+  $("global-reservations").replaceChildren();
+  $("global-results").setAttribute("aria-busy", "true");
+  try {
+    const result = await api.search(query);
+    if (version !== searchVersion) return;
+    const { users, reservations } = result.data;
+    for (const user of users) {
+      const item = document.createElement("li");
+      item.textContent = `${user.name} · ${user.email} · ${user.is_admin ? "Administrateur" : "Utilisateur"}`;
+      $("global-users").append(item);
+    }
+    if (!users.length) $("global-users").textContent = "Aucun utilisateur trouvé.";
+    renderReservations($("global-reservations"), reservations);
+    // Les décisions restent dans le tableau principal pour conserver un seul parcours de traitement.
+    $("global-reservations").querySelectorAll("button[data-id]").forEach((button) => { button.disabled = true; button.title = "Traitez cette demande depuis le tableau des réservations."; });
+    const more = result.meta.has_more.users || result.meta.has_more.reservations;
+    $("global-status").textContent = `${users.length} utilisateur(s) et ${reservations.length} réservation(s) pour « ${query} ».${more ? " D’autres résultats existent : précisez votre recherche." : ""}`;
+  } catch (error) {
+    if (version !== searchVersion) return;
+    $("global-status").textContent = error.status === 429 ? "Trop de recherches. Patientez une minute avant de réessayer." : error.message;
+    if ([401, 403, 419].includes(error.status)) handleError(error);
+  } finally {
+    if (version === searchVersion) $("global-results").setAttribute("aria-busy", "false");
+  }
+});
+$("close-search").addEventListener("click", () => {
+  searchVersion++;
+  $("global-results").hidden = true;
+  $("global-results").setAttribute("aria-busy", "false");
+  $("global-query").focus();
+});
 function renderSearch() {
   const matches = searchReservations(currentReservations, $("search").value);
   renderReservations($("rows"), matches);
@@ -35,7 +101,7 @@ async function loadStats() {
     const failed = results.find((result) => result.status === "rejected");
     if (failed) throw failed.reason;
     const [summary, daily, hourly] = results.map((result) => result.value);
-    for (const [id, key] of Object.entries({ total: "total_reservations", pending: "pending", confirmed: "confirmed", rejected: "rejected", guests: "total_guests", "confirmed-guests": "confirmed_guests", average: "average_party_size", rate: "confirmation_rate" })) {
+    for (const [id, key] of Object.entries({ total: "total_reservations", pending: "pending", confirmed: "confirmed", rejected: "rejected", cancelled: "cancelled", guests: "total_guests", "confirmed-guests": "confirmed_guests", average: "average_party_size", rate: "confirmation_rate" })) {
       $(id).textContent = `${new Intl.NumberFormat("fr-FR").format(summary.data[key])}${id === "rate" ? " %" : ""}`;
     }
     $("period-label").textContent = `Du ${summary.meta.start_date} au ${summary.meta.end_date} inclus · ${summary.meta.timezone} · Date prévue de réservation`;
@@ -122,9 +188,10 @@ $("rows").addEventListener("click", async (event) => {
   if (failure) handleError(failure);
   else $("notice").textContent = "Statut mis à jour. Aucun email n’a été envoyé.";
 });
+mountProfileMenu();
 $("logout").addEventListener("click", async () => {
   $("logout").disabled = true;
-  try { await api.logout(); location.replace("/login.html"); }
+  try { await api.userLogout(); location.replace("/login.html"); }
   catch (error) { handleError(error); $("logout").disabled = false; }
 });
 $("menu").addEventListener("click", () => {
@@ -132,11 +199,22 @@ $("menu").addEventListener("click", () => {
   $("menu").setAttribute("aria-expanded", String(open));
 });
 function section() {
-  const reservations = location.hash === "#reservations";
-  $("statistics").hidden = reservations;
-  $("title").textContent = reservations ? "Réservations" : "Tableau de bord";
+  let selectedSection = location.hash.slice(1) || "dashboard";
+  if (!["dashboard", "reservations", "users", "profile", "client"].includes(selectedSection)) selectedSection = "dashboard";
+  if (currentUser && !currentUser.is_admin && selectedSection !== "profile") selectedSection = "client";
+  if (currentUser?.is_admin && selectedSection === "client") selectedSection = "dashboard";
+  const accountSection = ["users", "profile"].includes(selectedSection);
+  $("statistics").hidden = selectedSection !== "dashboard";
+  $("reservation-section").hidden = accountSection || selectedSection === "client";
+  $("accounts").hidden = !accountSection;
+  $("client").hidden = selectedSection !== "client";
+  $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil", client: "Mes réservations" }[selectedSection];
+  document.title = `${$("title").textContent} | Restaurant XYZ`;
+  accounts?.activate(selectedSection);
+  if (selectedSection === "client") client?.activate();
+  else client?.deactivate();
   document.querySelectorAll("[data-section]").forEach((link) => {
-    if (link.dataset.section === (reservations ? "reservations" : "dashboard")) link.setAttribute("aria-current", "page");
+    if (link.dataset.section === selectedSection) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
   document.body.classList.remove("admin-menu-open");
@@ -147,7 +225,10 @@ section();
 function theme(dark) {
   document.body.classList.toggle("admin-dark", dark);
   $("theme").setAttribute("aria-pressed", String(dark));
-  $("theme").textContent = dark ? "Mode clair" : "Mode sombre";
+  $("theme").setAttribute("aria-label", dark ? "Activer le mode clair" : "Activer le mode sombre");
+  $("theme").title = dark ? "Mode clair" : "Mode sombre";
+  $("theme-moon").hidden = dark;
+  $("theme-sun").hidden = !dark;
 }
 try { theme(localStorage.getItem("restaurant-admin-theme") === "dark"); } catch { theme(false); }
 $("theme").addEventListener("click", () => {
@@ -157,18 +238,39 @@ $("theme").addEventListener("click", () => {
 });
 async function initialize() {
   try {
-    const { data: user } = await api.me();
-    if (!user.is_admin) { location.replace("/login.html"); return; }
-    $("identity").textContent = user.name;
+    const { data: user } = await api.profile();
+    currentUser = user;
+    function updateIdentity(updated) {
+      $("identity").textContent = updated.name;
+      renderSidebarProfile(updated);
+      document.querySelectorAll('[data-section="dashboard"], [data-section="reservations"], [data-section="users"]').forEach((link) => { link.hidden = !updated.is_admin; });
+      document.querySelectorAll('[data-section="client"]').forEach((link) => { link.hidden = updated.is_admin; });
+      $("global-search").hidden = !updated.is_admin;
+      if (!updated.is_admin) {
+        searchVersion++;
+        $("global-results").hidden = true;
+        $("global-users").replaceChildren();
+        $("global-reservations").replaceChildren();
+        section();
+      }
+    }
+    updateIdentity(user);
+    accounts = mountAccounts({ api, currentUser, onIdentity: updateIdentity, onSessionError: handleError });
+    client = mountClient({ api, user: currentUser, onSessionError: handleError });
     $("logout").disabled = false;
+    $("global-search").querySelectorAll("input, button").forEach((control) => { control.disabled = !user.is_admin; });
     $("private").hidden = false;
     try {
       if (sessionStorage.getItem("auth-success")) {
         sessionStorage.removeItem("auth-success");
-        showToast("Connexion réussie. Bienvenue dans votre espace administrateur.", "success");
+        showToast(user.is_admin ? "Connexion réussie. Bienvenue dans votre espace administrateur." : "Connexion réussie. Bienvenue dans votre espace personnel.", "success");
       }
     } catch { /* Notification facultative. */ }
-    await Promise.allSettled([load(), loadStats()]);
+    section();
+    if (user.is_admin) {
+      await api.me();
+      await Promise.allSettled([load(), loadStats()]);
+    }
   } catch (error) { handleError(error); }
 }
 initialize();

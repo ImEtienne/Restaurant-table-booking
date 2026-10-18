@@ -4,6 +4,8 @@ import { createAdminService } from "../services/adminService.mjs";
 
 import { validateAuth, authErrorMessage } from "./auth-validation.mjs";
 import { showToast } from "./toast.js";
+import { applyPlaceholders } from "./placeholders.mjs";
+applyPlaceholders();
 
 const adminApi = createAdminService();
 
@@ -100,20 +102,24 @@ form.addEventListener("submit", async (event) => {
     inputs.find((input) => errors[input.name])?.focus();
     return;
   }
-  if (form.id !== "login-form") {
-    showToast("L’inscription publique n’est pas disponible. Contactez le restaurant pour obtenir un accès administrateur.");
-    return;
-  }
   const label = submit.textContent;
   submit.disabled = true;
   submit.classList.add("is-loading");
-  submit.textContent = "Connexion en cours…";
+  submit.textContent = form.id === "register-form" ? "Création du compte…" : "Connexion en cours…";
   form.setAttribute("aria-busy", "true");
   try {
-    await adminApi.login(form.elements.namedItem("email").value.trim(), password.value);
+    if (form.id === "register-form") {
+      const fields = values();
+      const response = await adminApi.registerClient({ email: fields.email.trim(), password: fields.password, password_confirmation: fields.password_confirmation, registration_token: fields.registration_token.trim() });
+      form.reset();
+      showToast(response.message || "Compte créé. Il reste en attente d’activation par le restaurant.", "success");
+      status.textContent = response.message || "Votre compte est créé et attend l’approbation du restaurant. Vous n’êtes pas encore connecté.";
+      return;
+    }
+    const { data: user } = await adminApi.userLogin(form.elements.namedItem("email").value.trim(), password.value);
     password.value = "";
     try { sessionStorage.setItem("auth-success", "1"); } catch { /* Optional flash. */ }
-    location.assign("/dashboard.html");
+    location.assign(user.is_admin ? "/dashboard.html" : "/dashboard.html#client");
   } catch (error) {
     const apiErrors = {};
     for (const [field, messages] of Object.entries(error.errors || {})) {
@@ -121,7 +127,7 @@ form.addEventListener("submit", async (event) => {
     }
     showErrors(apiErrors);
     inputs.find((input) => apiErrors[input.name])?.focus();
-    showToast(authErrorMessage(error));
+    showToast(form.id === "register-form" && error.status === 422 ? "Inscription refusée : vérifiez les indications sous les champs, l’email de la réservation et la validité de la clé (7 jours, un seul usage)." : authErrorMessage(error));
   } finally {
     submit.disabled = false;
     submit.classList.remove("is-loading");

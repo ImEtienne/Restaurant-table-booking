@@ -8,12 +8,13 @@ test("login errors distinguish missing email, malformed email and missing passwo
   assert.match(validateAuth({}).password, /mot de passe/);
   assert.deepEqual(validateAuth({ email: " a@example.com ", password: "short" }), {});
 });
-test("registration explains missing name, short password and nonmatching confirmation", () => {
+test("registration requires reservation key, strong password and matching confirmation", () => {
   const errors = validateAuth({ email: "a@example.com", password: "short", password_confirmation: "other" }, true);
-  assert.match(errors.name, /nom complet/);
-  assert.match(errors.password, /8 caractères/);
+  assert.match(errors.registration_token, /64 caractères/);
+  assert.match(errors.password, /12 caractères/);
   assert.match(errors.password_confirmation, /identiques/);
-  assert.deepEqual(validateAuth({ name: "Ada", email: "a@example.com", password: "longpassword", password_confirmation: "longpassword" }, true), {});
+  assert.deepEqual(validateAuth({ registration_token: "a".repeat(64), email: "a@example.com", password: "longpassword", password_confirmation: "longpassword" }, true), {});
+  assert.match(authErrorMessage({ code: "ACCOUNT_PENDING_APPROVAL", status: 403 }), /activation/);
 });
 test("toast messages distinguish refused credentials, security, throttling and server errors", () => {
   assert.match(authErrorMessage({ status: 422 }), /email et votre mot de passe/);
