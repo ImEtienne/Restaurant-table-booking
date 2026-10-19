@@ -133,15 +133,60 @@
 .admin-page td button[data-status="rejected"]::before { mask-image: url('/img/admin-icons/close.svg'); }
 .admin-dark { color-scheme: dark; --admin-bg: #201e1b; --admin-panel: #2b2925; --admin-sidebar-bg: #25231f; --admin-text: #f4f2ed; --admin-muted: #bcb7ab; --admin-line: #454139; --admin-accent: #e6ab8c; }
 @media (max-width: 1100px) { .admin-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .admin-shell { grid-template-columns: 235px minmax(0, 1fr); } }
+.admin-backdrop, .admin-drawer-close, .admin-stats-nav, .admin-toolbar, .admin-page .admin-search-toggle { display: none; }
+.admin-count { display: inline-grid; place-items: center; min-width: 1.4rem; height: 1.4rem; margin-left: .5rem; padding: 0 .35rem; border-radius: 999px; background: var(--admin-accent); color: var(--admin-panel); font-size: .75rem; font-weight: 600; }
+.admin-stats-wrap { position: relative; margin-bottom: 2rem; }
+.admin-stats-wrap .admin-stats { margin-bottom: 0; }
 @media (max-width: 760px) {
+  .admin-page { font-size: 15px; }
+  .admin-page input:not([type="checkbox"]):not([type="radio"]), .admin-page select { min-height: 44px; font-size: 16px; }
+  .admin-page button { min-height: 44px; }
   .admin-shell { grid-template-columns: 1fr; }
-  .admin-sidebar { display: none; position: static; height: auto; }
-  .admin-menu-open .admin-sidebar { display: block; }
-  #admin-menu { display: block; }
+  .admin-sidebar { position: fixed; top: 0; bottom: 0; left: 0; z-index: 60; width: min(300px, 86vw); height: auto; padding-top: 3.5rem; transform: translateX(-100%); visibility: hidden; box-shadow: 0 0 40px #0004; transition: transform .25s ease, visibility 0s linear .25s; }
+  .admin-menu-open .admin-sidebar { transform: none; visibility: visible; transition-delay: 0s; }
+  .admin-menu-open { overflow: hidden; }
+  .admin-backdrop { display: block; position: fixed; inset: 0; z-index: 50; background: #19171499; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+  .admin-menu-open .admin-backdrop { opacity: 1; pointer-events: auto; }
+  .admin-page .admin-drawer-close { display: grid; place-items: center; position: absolute; top: .75rem; right: .75rem; width: 44px; padding: 0; font-size: 1.6rem; line-height: 1; }
+  #admin-menu { display: inline-flex; justify-content: center; width: 44px; padding: 0; }
+  .admin-user { display: none; }
   .admin-header { flex-wrap: wrap; padding: 1rem; }
-  .admin-global-search { order: 4; flex-basis: 100%; max-width: none; }
+  .admin-header-actions { margin-left: auto; flex-wrap: nowrap; }
+  .admin-page .admin-search-toggle { display: inline-flex; }
+  .admin-global-search { display: none; order: 4; flex-basis: 100%; max-width: none; }
+  .admin-search-open .admin-global-search { display: flex; }
+  .admin-page .admin-global-search button { top: 2px; right: 2px; width: 44px; height: 44px; }
+  .admin-page .admin-icon-button, .admin-page .admin-profile-toggle { width: 44px; height: 44px; }
+  .admin-profile-menu a, .admin-page .admin-profile-menu button { display: flex; align-items: center; min-height: 44px; }
   .admin-content { padding: 1rem; }
   .admin-reservations { padding: 1rem; }
   .admin-pagination { flex-wrap: wrap; justify-content: center; }
+  .admin-page th, .admin-caption, .admin-user small, .admin-card p, .admin-reservations > p { font-size: .8rem; }
+  .admin-badge { font-size: .85rem; }
+  .admin-stats { display: flex; gap: .75rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .admin-stats::-webkit-scrollbar { display: none; }
+  .admin-stats .admin-card { flex: 0 0 min(72%, 15rem); scroll-snap-align: start; }
+  .admin-page .admin-stats-nav { display: grid; place-items: center; position: absolute; top: 50%; z-index: 2; width: 44px; padding: 0; border-radius: 50%; font-size: 1.5rem; line-height: 1; box-shadow: 0 6px 16px #292b2726; transform: translateY(-50%); }
+  .admin-stats-nav.is-prev { left: -.4rem; }
+  .admin-stats-nav.is-next { right: -.4rem; }
+  .admin-table-wrap:not(.is-scroll) { overflow: visible; }
+  .admin-table-wrap:not(.is-scroll) table, .admin-table-wrap:not(.is-scroll) tbody { display: block; width: 100%; }
+  .admin-table-wrap:not(.is-scroll) thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .admin-table-wrap:not(.is-scroll) tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: .75rem; width: 100%; margin-bottom: .75rem; padding: .75rem 1rem; border: 1px solid var(--admin-line); border-radius: 10px; background: var(--admin-panel); }
+  .admin-page .admin-table-wrap:not(.is-scroll) td { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; grid-column: 1 / -1; min-width: 0; padding: .15rem 0; border-bottom: 0; color: var(--admin-muted); font-size: .85rem; }
+  .admin-page .admin-table-wrap:not(.is-scroll) td:first-child { grid-column: 1; grid-row: 1; color: var(--admin-text); font-size: 1rem; font-weight: 600; }
+  .admin-page .admin-table-wrap:not(.is-scroll) td[data-label="Statut"], .admin-page .admin-table-wrap:not(.is-scroll) td[data-label="Accès"] { grid-column: 2; grid-row: 1; justify-self: end; color: var(--admin-text); }
+  .admin-page .admin-table-wrap:not(.is-scroll) td:last-child { margin-top: .5rem; padding-top: .65rem; border-top: 1px solid var(--admin-line); gap: .5rem; }
+  .admin-table-wrap:not(.is-scroll) td[data-label]::before { content: attr(data-label) " :"; flex: none; }
+  .admin-table-wrap:not(.is-scroll) td:first-child::before, .admin-table-wrap:not(.is-scroll) td:last-child::before, .admin-table-wrap:not(.is-scroll) td[data-label="Statut"]::before, .admin-table-wrap:not(.is-scroll) td[data-label="Accès"]::before { content: none; }
+  .admin-page .admin-table-wrap:not(.is-scroll) td button { flex: 1 1 auto; margin: 0; font-size: .85rem; }
+  .admin-toolbar { display: flex; gap: .6rem; margin: 1rem 0 .75rem; }
+  .admin-toolbar > button { flex: 1 1 0; min-width: 0; }
+  .admin-sort { flex: 0 0 8.5rem; min-width: 0; }
+  .admin-sort select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
+  #admin-filters { display: none; }
+  #admin-filters.is-open { display: flex; }
+  #admin-filters label { flex: 1 1 100%; }
+  #admin-filters button { flex: 1 1 0; }
 }
 @media (max-width: 420px) { .admin-stats { grid-template-columns: 1fr; } }

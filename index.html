@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
   <meta charset="utf-8" />
@@ -34,6 +34,9 @@
               <a href="#menu"><i class="fa-solid fa-list-ul"></i>&nbsp;&nbsp;Menu</a>
             </li>
             <li>
+              <a href="#services"><i class="fa-solid fa-bell-concierge"></i>&nbsp;&nbsp;Services</a>
+            </li>
+            <li>
               <a href="#reservation"><i class="fa-solid fa-check-to-slot"></i>&nbsp;&nbsp;Réservation</a>
             </li>
             <li>
@@ -63,41 +66,176 @@
       <p>Notre restaurant est fier de servir des plats frais et délicieux, préparés avec des ingrédients de qualité.</p>
       <a href="#reservation" class="button">Réservez une table</a>
     </section>
-    <section id="menu">
-      <h2>Menu</h2>
-      <p class="p-menu">Entrées, plats et desserts : découvrez la carte du Restaurant XYZ.</p>
-      <div class="block-center">
-        <div class="item-1">
-          <h3>Entrées</h3>
-          <div>
-            <i class="fa-solid fa-check"></i>&nbsp; Salade de chèvre chaud
-          </div>
-          <div>
-            <i class="fa-solid fa-check"></i>&nbsp; Terrine de foie gras
-          </div>
-          <div>
-            <i class="fa-solid fa-check"></i>&nbsp; Carpaccio de boeuf
-          </div>
-        </div>
-
-        <div class="item-2">
-          <h3>Plats principaux</h3>
-          <div><i class="fa-solid fa-check"></i>&nbsp;Steak grillé</div>
-          <div><i class="fa-solid fa-check"></i>&nbsp;Filet de saumon</div>
-          <div>
-            <i class="fa-solid fa-check"></i>&nbsp;Risotto aux champignons
-          </div>
-        </div>
-
-        <div class="item-3">
-          <h3>Desserts</h3>
-          <div>
-            <i class="fa-solid fa-check"></i>&nbsp;Cheesecake aux fraises
-          </div>
-          <div><i class="fa-solid fa-check"></i>&nbsp;Tarte Tatin</div>
-          <div><i class="fa-solid fa-check"></i>&nbsp;Crème brûlée</div>
+    <section id="popular" aria-labelledby="popular-title">
+      <div class="popular-header">
+        <h2 id="popular-title">Plats populaires</h2>
+        <div class="popular-controls">
+          <button type="button" id="popular-prev" aria-label="Plats précédents" aria-controls="popular-track"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button>
+          <button type="button" id="popular-next" class="is-filled" aria-label="Plats suivants" aria-controls="popular-track"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
         </div>
       </div>
+      <ul class="popular-track" id="popular-track" tabindex="0" aria-label="Plats populaires">
+        <li class="dish-card">
+          <img src="img/steak_grill%C3%A9_photos.jpeg" alt="Steak grillé" loading="lazy" />
+          <h3>Steak grillé</h3>
+          <div class="dish-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>Pièce de boeuf grillée à la perfection, servie avec sa garniture du moment.</p>
+          <div class="dish-footer"><span class="dish-price">28 €</span><a href="#reservation" class="dish-button">Réserver</a></div>
+        </li>
+        <li class="dish-card">
+          <img src="img/Filet%20de%20saumon.jpeg" alt="Filet de saumon" loading="lazy" />
+          <h3>Filet de saumon</h3>
+          <div class="dish-stars" role="img" aria-label="4 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fa-regular fa-star"></i></div>
+          <p>Saumon fondant, cuit doucement et accompagné de légumes de saison.</p>
+          <div class="dish-footer"><span class="dish-price">26 €</span><a href="#reservation" class="dish-button">Réserver</a></div>
+        </li>
+        <li class="dish-card">
+          <img src="img/Risotto%20aux%20champignons.jpeg" alt="Risotto aux champignons" loading="lazy" />
+          <h3>Risotto aux champignons</h3>
+          <div class="dish-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>Riz crémeux monté au parmesan et champignons sauvages poêlés.</p>
+          <div class="dish-footer"><span class="dish-price">22 €</span><a href="#reservation" class="dish-button">Réserver</a></div>
+        </li>
+        <li class="dish-card">
+          <img src="img/Terrine%20de%20foie%20gras.webp" alt="Terrine de foie gras" loading="lazy" />
+          <h3>Terrine de foie gras</h3>
+          <div class="dish-stars" role="img" aria-label="4 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fa-regular fa-star"></i></div>
+          <p>Terrine maison servie avec son pain toasté et sa confiture de saison.</p>
+          <div class="dish-footer"><span class="dish-price">19 €</span><a href="#reservation" class="dish-button">Réserver</a></div>
+        </li>
+        <li class="dish-card">
+          <img src="img/Cr%C3%A8me%20br%C3%BBl%C3%A9e.jpeg" alt="Crème brûlée" loading="lazy" />
+          <h3>Crème brûlée</h3>
+          <div class="dish-stars" role="img" aria-label="5 étoiles sur 5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>Crème à la vanille de Madagascar, caramélisée à la commande.</p>
+          <div class="dish-footer"><span class="dish-price">9 €</span><a href="#reservation" class="dish-button">Réserver</a></div>
+        </li>
+      </ul>
+    </section>
+    <section id="menu" aria-labelledby="menu-title">
+      <div class="menu-header">
+        <span class="menu-eyebrow">La carte</span>
+        <h2 id="menu-title">Menu</h2>
+        <p class="p-menu">Entrées, plats et desserts : une cuisine raffinée, préparée chaque jour avec des produits frais.</p>
+      </div>
+      <div class="menu-grid">
+        <article class="menu-category">
+          <span class="menu-icon" aria-hidden="true"><i class="fa-solid fa-leaf"></i></span>
+          <h3>Entrées</h3>
+          <ul>
+            <li>
+              <div class="menu-line"><span class="menu-name">Salade de chèvre chaud</span><span class="menu-price">12 €</span></div>
+              <p>Toasts gratinés, mesclun et vinaigrette au miel.</p>
+            </li>
+            <li>
+              <div class="menu-line"><span class="menu-name">Terrine de foie gras</span><span class="menu-price">19 €</span></div>
+              <p>Pain toasté et confiture de saison.</p>
+            </li>
+            <li>
+              <div class="menu-line"><span class="menu-name">Carpaccio de boeuf</span><span class="menu-price">14 €</span></div>
+              <p>Copeaux de parmesan, roquette et huile d’olive.</p>
+            </li>
+          </ul>
+        </article>
+        <article class="menu-category is-featured">
+          <span class="menu-icon" aria-hidden="true"><i class="fa-solid fa-utensils"></i></span>
+          <h3>Plats principaux</h3>
+          <ul>
+            <li>
+              <div class="menu-line"><span class="menu-name">Steak grillé</span><span class="menu-price">28 €</span></div>
+              <p>Pièce de boeuf grillée, garniture du moment.</p>
+            </li>
+            <li>
+              <div class="menu-line"><span class="menu-name">Filet de saumon</span><span class="menu-price">26 €</span></div>
+              <p>Cuisson douce et légumes de saison.</p>
+            </li>
+            <li>
+              <div class="menu-line"><span class="menu-name">Risotto aux champignons</span><span class="menu-price">22 €</span></div>
+              <p>Riz crémeux, parmesan et champignons sauvages.</p>
+            </li>
+          </ul>
+        </article>
+        <article class="menu-category">
+          <span class="menu-icon" aria-hidden="true"><i class="fa-solid fa-cake-candles"></i></span>
+          <h3>Desserts</h3>
+          <ul>
+            <li>
+              <div class="menu-line"><span class="menu-name">Cheesecake aux fraises</span><span class="menu-price">8 €</span></div>
+              <p>Biscuit sablé et coulis de fraises fraîches.</p>
+            </li>
+            <li>
+              <div class="menu-line"><span class="menu-name">Tarte Tatin</span><span class="menu-price">9 €</span></div>
+              <p>Pommes caramélisées, servie tiède.</p>
+            </li>
+            <li>
+              <div class="menu-line"><span class="menu-name">Crème brûlée</span><span class="menu-price">9 €</span></div>
+              <p>Vanille de Madagascar, caramélisée à la commande.</p>
+            </li>
+          </ul>
+        </article>
+      </div>
+      <div class="menu-cta"><a href="#reservation" class="menu-button">Réserver une table</a></div>
+    </section>
+    <section id="dinner" aria-labelledby="dinner-title">
+      <div class="dinner-text">
+        <h2 id="dinner-title">Un dîner prévu ce soir ? Réservez votre table</h2>
+        <p>Choisissez votre date, votre horaire et le nombre de convives. Notre équipe confirme votre demande et prépare votre table avec soin.</p>
+        <a href="#reservation" class="dinner-button">Faire une réservation</a>
+      </div>
+      <div class="dinner-visual">
+        <img src="img/section.jpg" alt="Plat signature du Restaurant XYZ" loading="lazy" />
+      </div>
+    </section>
+    <section id="services" aria-labelledby="services-title">
+      <div class="services-header">
+        <span class="services-eyebrow">L’excellence à chaque instant</span>
+        <h2 id="services-title">Services</h2>
+        <p>Au-delà de la table, nous soignons chaque détail de votre expérience : de la réservation à la dernière bouchée.</p>
+      </div>
+      <div class="services-layout">
+        <figure class="services-photo">
+          <img src="img/section.jpg" alt="Plateau de spécialités préparées par notre chef" loading="lazy" />
+          <figcaption><strong>Cuisine d’auteur</strong><span>Préparée chaque jour par notre brigade</span></figcaption>
+        </figure>
+        <ul class="services-list">
+          <li>
+            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-champagne-glasses"></i></span>
+            <div>
+              <h3>Foodie Place Organisation</h3>
+              <p>Réceptions, anniversaires et événements privés organisés sur mesure, avec une ambiance et un menu pensés pour vous.</p>
+            </div>
+          </li>
+          <li>
+            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-clock"></i></span>
+            <div>
+              <h3>Service 24/7</h3>
+              <p>Une équipe à votre écoute en continu pour répondre à vos demandes, à toute heure.</p>
+            </div>
+          </li>
+          <li>
+            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-bag-shopping"></i></span>
+            <div>
+              <h3>Online Order</h3>
+              <p>Commandez nos plats en ligne et profitez de la qualité du restaurant où que vous soyez.</p>
+            </div>
+          </li>
+          <li>
+            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-calendar-check"></i></span>
+            <div>
+              <h3>Pré-réservation</h3>
+              <p>Assurez votre table à l’avance pour un accueil serein, à la date et à l’heure de votre choix.</p>
+            </div>
+          </li>
+          <li>
+            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-spray-can-sparkles"></i></span>
+            <div>
+              <h3>Clean Kitchen</h3>
+              <p>Une cuisine irréprochable, entretenue selon des standards d’hygiène rigoureux.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="services-cta"><a href="#a-propos" class="services-button">About us</a></div>
     </section>
     <section id="reservation">
       <h2>Réservation</h2>
@@ -262,7 +400,7 @@
   <footer>
     <div class="footer_section">
       <div class="block-footer">
-        <div class="A-propos-footer">
+        <div class="A-propos-footer" id="a-propos">
           <h3>A propos</h3>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam tenetur consequatur sequi illo, odit cumque quae aspernatur provident consequuntur, eaque nesciunt? Inventore minus ut, ipsum odit mollitia quos sit necessitatibus?</p>
           <div class="social_links">

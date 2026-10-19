@@ -11,6 +11,7 @@
 <body class="admin-page">
   <div class="admin-shell">
     <aside class="admin-sidebar" id="admin-sidebar">
+      <button type="button" class="admin-drawer-close" id="admin-menu-close" aria-label="Fermer le menu">×</button>
       <a class="admin-brand" href="/">Restaurant XYZ</a>
       <span class="admin-caption">Administration</span>
       <nav aria-label="Administration">
@@ -38,7 +39,7 @@
     </aside>
     <main class="admin-main">
       <header class="admin-header">
-        <button type="button" id="admin-menu" aria-controls="admin-sidebar" aria-expanded="false">Menu</button>
+        <button type="button" id="admin-menu" aria-controls="admin-sidebar" aria-expanded="false"><span class="admin-sr-only">Menu</span></button>
         <div class="admin-user"><span class="admin-user-symbol" aria-hidden="true"></span><span id="admin-identity">Vérification de la session…</span><small>Administration du restaurant</small></div>
         <form id="admin-global-search" class="admin-global-search" role="search">
           <label class="admin-sr-only" for="admin-global-query">Rechercher dans les utilisateurs et réservations</label>
@@ -49,6 +50,10 @@
             </svg></button>
         </form>
         <div class="admin-header-actions">
+          <button type="button" class="admin-icon-button admin-search-toggle" id="admin-search-toggle" aria-label="Rechercher" title="Rechercher" aria-expanded="false" aria-controls="admin-global-search" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m16 16 4.5 4.5" />
+            </svg></button>
           <button type="button" class="admin-icon-button" id="admin-notifications" aria-label="Notifications" title="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
               <path d="M10.3 21a1.9 1.9 0 0 0 3.4 0" />
@@ -104,7 +109,9 @@
             </form>
             <p id="admin-period-label">Par défaut : les 30 derniers jours, selon la date prévue de réservation.</p>
             <p id="admin-stats-notice" role="status" aria-live="polite"></p>
-            <div class="admin-stats" id="admin-stats" aria-label="Résumé de la période">
+            <div class="admin-stats-wrap">
+              <button type="button" class="admin-stats-nav is-prev" id="admin-stats-prev" aria-label="Voir les cartes précédentes" aria-controls="admin-stats" hidden>‹</button>
+              <div class="admin-stats" id="admin-stats" aria-label="Résumé de la période">
               <article class="admin-card"><span class="admin-metric-icon icon-calendar" aria-hidden="true"></span>
                 <h2>Réservations</h2><strong id="admin-total">—</strong>
                 <p>Sur la période sélectionnée</p>
@@ -135,10 +142,12 @@
               <article class="admin-card"><span class="admin-metric-icon icon-percent" aria-hidden="true"></span>
                 <h2>Taux de confirmation</h2><strong id="admin-rate">—</strong>
               </article>
+              </div>
+              <button type="button" class="admin-stats-nav is-next" id="admin-stats-next" aria-label="Voir les cartes suivantes" aria-controls="admin-stats" hidden>›</button>
             </div>
             <details class="admin-reservations">
               <summary>Évolution quotidienne</summary>
-              <div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques quotidiennes">
+              <div class="admin-table-wrap is-scroll" tabindex="0" role="region" aria-label="Statistiques quotidiennes">
                 <table>
                   <thead>
                     <tr>
@@ -158,7 +167,7 @@
             </details>
             <details class="admin-reservations">
               <summary>Répartition par heure</summary>
-              <div class="admin-table-wrap" tabindex="0" role="region" aria-label="Statistiques horaires">
+              <div class="admin-table-wrap is-scroll" tabindex="0" role="region" aria-label="Statistiques horaires">
                 <table>
                   <thead>
                     <tr>
@@ -197,6 +206,17 @@
               <small id="admin-search-help">Recherche sur la page affichée uniquement. Les filtres date et statut s’appliquent à toutes les réservations.</small>
               <p id="admin-search-count" role="status" aria-live="polite"></p>
             </div>
+            <div class="admin-toolbar">
+              <button type="button" id="admin-filters-toggle" aria-expanded="false" aria-controls="admin-filters">Filtres<span class="admin-count" id="admin-filters-count" hidden>0</span></button>
+              <label class="admin-sort"><span class="admin-sr-only">Trier les réservations</span>
+                <select id="admin-sort">
+                  <option value="">Trier</option>
+                  <option value="date-asc">Date proche</option>
+                  <option value="date-desc">Date lointaine</option>
+                  <option value="name">Nom A à Z</option>
+                  <option value="status">Statut</option>
+                </select></label>
+            </div>
             <form id="admin-filters" class="admin-filters">
               <label>Date<input type="date" name="date"></label>
               <label>Statut<select name="status">
@@ -231,6 +251,7 @@
       </div>
     </main>
   </div>
+  <div class="admin-backdrop" id="admin-backdrop"></div>
   <script type="module" src="/src/admin/main.js"></script>
 </body>
 

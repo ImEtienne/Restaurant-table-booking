@@ -33,33 +33,16 @@ if (hamburger && navBar) {
 }
 
 const header = document.querySelector(".entete");
-const hamburgerLines = document.querySelectorAll(".hamburger .line");
 const logo = document.querySelector("#logo a");
-const navLinks = document.querySelectorAll(".nav-bar .nav-links a");
-
-function setNavColor(color) {
-  navLinks.forEach((link) => {
-    link.style.color = color;
-  });
-  hamburgerLines.forEach((line) => {
-    line.style.backgroundColor = color;
-  });
-}
 
 function handleScroll() {
-  if (!header) return;
-
-  if (window.scrollY > 0) {
-    header.classList.add("fixed-header");
-    const color = "#fff";
-    setNavColor(color);
-    if (logo) logo.style.color = color;
-  } else {
-    header.classList.remove("fixed-header");
-  }
+  header.classList.toggle("fixed-header", window.scrollY > 0);
 }
 
-if (header) window.addEventListener("scroll", handleScroll);
+if (header) {
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  handleScroll();
+}
 if (logo) {
   logo.addEventListener("click", () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
