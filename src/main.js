@@ -2,5 +2,7 @@ import "./styles/style.css";
 import "./scripts/app.js";
 import "./scripts/reservation.js";
 import "./scripts/site-account.js";
+import { mountDishesCarousel } from "./scripts/dishes-carousel.mjs";
 import { applyPlaceholders } from "./scripts/placeholders.mjs";
 applyPlaceholders();
+mountDishesCarousel();

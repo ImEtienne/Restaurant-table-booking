@@ -4,10 +4,16 @@ import { renderReservations } from "./reservationTable.mjs";
 import { renderMetrics, validatePeriod } from "./statistics.mjs";
 import { showToast } from "../scripts/toast.js";
 import { searchReservations } from "./search.mjs";
+import { sortReservations } from "./sort.mjs";
+import { mountFiltersToggle } from "./mobileFilters.mjs";
 import { mountAccounts } from "./accounts.js";
 import { mountClient } from "./client.js";
 import { applyPlaceholders } from "../scripts/placeholders.mjs";
 import { renderSidebarProfile, mountProfileMenu } from "./sidebarProfile.mjs";
+import { mountMobileMenu } from "./mobileMenu.mjs";
+import { mountTableLabels } from "./tableLabels.mjs";
+import { mountStatsScroller } from "./statsScroller.mjs";
+import { mountSearchToggle } from "./searchToggle.mjs";
 applyPlaceholders();
 
 const api = createAdminService();
@@ -81,12 +87,14 @@ $("close-search").addEventListener("click", () => {
   $("global-query").focus();
 });
 function renderSearch() {
-  const matches = searchReservations(currentReservations, $("search").value);
+  const matches = sortReservations(searchReservations(currentReservations, $("search").value), $("sort").value);
   renderReservations($("rows"), matches);
   $("search-count").textContent = $("search").value.trim()
     ? `${matches.length} résultat(s) sur ${currentReservations.length} réservation(s) de cette page.` : "";
 }
 $("search").addEventListener("input", renderSearch);
+$("sort").addEventListener("change", renderSearch);
+mountFiltersToggle();
 
 async function loadStats() {
   if (statsBusy) return;
@@ -189,14 +197,14 @@ $("rows").addEventListener("click", async (event) => {
   else $("notice").textContent = "Statut mis à jour. Aucun email n’a été envoyé.";
 });
 mountProfileMenu();
+mountMobileMenu();
+mountTableLabels();
+mountStatsScroller();
+mountSearchToggle();
 $("logout").addEventListener("click", async () => {
   $("logout").disabled = true;
   try { await api.userLogout(); location.replace("/login.html"); }
   catch (error) { handleError(error); $("logout").disabled = false; }
-});
-$("menu").addEventListener("click", () => {
-  const open = document.body.classList.toggle("admin-menu-open");
-  $("menu").setAttribute("aria-expanded", String(open));
 });
 function section() {
   let selectedSection = location.hash.slice(1) || "dashboard";
@@ -217,8 +225,6 @@ function section() {
     if (link.dataset.section === selectedSection) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
-  document.body.classList.remove("admin-menu-open");
-  $("menu").setAttribute("aria-expanded", "false");
 }
 window.addEventListener("hashchange", section);
 section();
@@ -246,6 +252,7 @@ async function initialize() {
       document.querySelectorAll('[data-section="dashboard"], [data-section="reservations"], [data-section="users"]').forEach((link) => { link.hidden = !updated.is_admin; });
       document.querySelectorAll('[data-section="client"]').forEach((link) => { link.hidden = updated.is_admin; });
       $("global-search").hidden = !updated.is_admin;
+      $("search-toggle").hidden = !updated.is_admin;
       if (!updated.is_admin) {
         searchVersion++;
         $("global-results").hidden = true;
