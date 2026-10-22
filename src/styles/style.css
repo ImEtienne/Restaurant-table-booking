@@ -265,7 +265,6 @@ header .hamburger:focus-visible {
 
 #menu,
 #reservation,
-#contact,
 #avis {
   position: relative;
   height: auto;
@@ -276,7 +275,6 @@ header .hamburger:focus-visible {
 
 #menu > h2,
 #reservation > h2,
-#contact > h2,
 #avis > h2 {
   margin: 0 0 1rem;
   color: var(--ink);
@@ -350,38 +348,158 @@ header .hamburger:focus-visible {
 }
 
 #contact {
-  display: flex;
-  flex-direction: column;
+  padding: 5rem 10%;
+  background: #fff;
 }
 
-.p-contact {
-  max-width: 52rem;
-  margin: 0 auto 1.5rem;
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.7;
+.contact-header {
+  max-width: 42rem;
+  margin: 0 auto 3rem;
   text-align: center;
 }
 
-.block-carte {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 2rem;
+.contact-eyebrow,
+.contact-card-eyebrow {
+  display: block;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.block-carte iframe {
+.contact-eyebrow {
+  margin-bottom: 0.8rem;
+}
+
+.contact-header h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-weight: 700;
+}
+
+.contact-header h2::after {
   display: block;
-  width: 600px;
-  max-width: 100%;
-  height: 450px;
-  aspect-ratio: 4 / 3;
+  width: 3rem;
+  height: 2px;
+  margin: 1rem auto;
+  background: #d9a441;
+  content: "";
+}
+
+.p-contact {
+  max-width: 38rem;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+  max-width: 70rem;
+  min-height: 27rem;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #e2ddd2;
+  border-radius: 12px;
+  background: var(--paper);
+}
+
+.contact-map {
+  min-height: 27rem;
+  background: #e6e1d6;
+}
+
+.contact-map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 27rem;
   border: 0;
 }
 
-.nousContacter p {
-  margin: 0.75rem 0;
-  line-height: 1.6;
+.contact-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 4vw, 3.5rem);
+}
+
+.contact-card-eyebrow {
+  margin-bottom: 0.65rem;
+}
+
+.contact-card h3 {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+}
+
+.contact-card-intro {
+  margin: 0.75rem 0 1.75rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.contact-details {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.contact-detail {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.contact-icon {
+  display: grid;
+  flex: 0 0 2.75rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid #e9dfd2;
+  border-radius: 50%;
+  background: #fbf7f1;
+  color: var(--accent);
+}
+
+.contact-detail > div {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.contact-label {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contact-detail a {
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.contact-detail a:hover {
+  color: var(--accent);
+}
+
+.contact-detail a:focus-visible {
+  outline-color: var(--accent);
 }
 
 .card-avis {
@@ -721,11 +839,6 @@ header .hamburger:focus-visible {
   .nav-bar .nav-links .nav-login:hover {
     background: var(--accent-hover);
   }
-
-  .block-carte {
-    flex-direction: column;
-    align-items: stretch;
-  }
 }
 
 @media (max-width: 900px) {
@@ -736,12 +849,24 @@ header .hamburger:focus-visible {
   .block-footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-map,
+  .contact-map iframe {
+    min-height: 22rem;
+  }
+
+  .contact-card {
+    padding: 2.25rem;
+  }
 }
 
 @media (max-width: 786px) {
   #menu,
   #reservation,
-  #contact,
   #avis {
     padding-right: 7%;
     padding-left: 7%;
@@ -759,10 +884,6 @@ header .hamburger:focus-visible {
     margin-right: 0;
   }
 
-  .block-carte iframe {
-    width: 100%;
-    height: auto;
-  }
 }
 
 @media (max-width: 600px) {
@@ -790,14 +911,12 @@ header .hamburger:focus-visible {
 
   #menu,
   #reservation,
-  #contact,
   #avis {
     padding: 3rem 6%;
   }
 
   #menu > h2,
   #reservation > h2,
-  #contact > h2,
   #avis > h2 {
     font-size: 1.5rem;
   }
@@ -805,6 +924,23 @@ header .hamburger:focus-visible {
   .block-footer {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  #contact {
+    padding: 3rem 6%;
+  }
+
+  .contact-header {
+    margin-bottom: 2rem;
+  }
+
+  .contact-map,
+  .contact-map iframe {
+    min-height: 17rem;
+  }
+
+  .contact-card {
+    padding: 1.5rem;
   }
 
   .footer_section {
