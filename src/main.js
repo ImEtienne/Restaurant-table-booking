@@ -4,5 +4,8 @@ import "./scripts/reservation.js";
 import "./scripts/site-account.js";
 import { mountDishesCarousel } from "./scripts/dishes-carousel.mjs";
 import { applyPlaceholders } from "./scripts/placeholders.mjs";
+import { mountCookieBanner } from "./scripts/cookie-consent.mjs";
+import "./styles/cookie.css";
 applyPlaceholders();
+mountCookieBanner();
 mountDishesCarousel();
