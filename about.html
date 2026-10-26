@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Découvrez l’esprit du Restaurant XYZ : une cuisine généreuse, des produits de saison et le plaisir de partager." />
+  <title>À propos | Restaurant XYZ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="shortcut icon" type="image/png" href="/img/fav.jpeg" />
+</head>
+
+<body class="about-page">
+  <header>
+    <div class="entete">
+      <div class="page-item">
+        <h1 id="logo"><a href="/#presentation">Restaurant XYZ</a></h1>
+      </div>
+      <div class="page-item2">
+        <button class="hamburger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="site-navigation">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </button>
+        <nav class="nav-bar" id="site-navigation">
+          <ul class="nav-links">
+            <li><a href="/#presentation"><i class="fa-solid fa-house"></i>&nbsp;&nbsp;Accueil</a></li>
+            <li><a href="/#menu"><i class="fa-solid fa-list-ul"></i>&nbsp;&nbsp;Menu</a></li>
+            <li><a href="/#services"><i class="fa-solid fa-bell-concierge"></i>&nbsp;&nbsp;Services</a></li>
+            <li><a href="/about.html" aria-current="page"><i class="fa-solid fa-book-open"></i>&nbsp;&nbsp;À propos</a></li>
+            <li><a href="/#reservation"><i class="fa-solid fa-check-to-slot"></i>&nbsp;&nbsp;Réservation</a></li>
+            <li><a href="/#contact"><i class="fa-solid fa-address-book"></i>&nbsp;&nbsp;Contact</a></li>
+            <li>
+              <button type="button" class="theme-toggle" id="home-theme-toggle" aria-pressed="false" aria-label="Activer le mode sombre" title="Mode sombre">
+                <i class="fa-solid fa-moon" id="home-theme-moon" aria-hidden="true"></i>
+                <i class="fa-solid fa-sun" id="home-theme-sun" aria-hidden="true" hidden></i>
+                <span id="home-theme-label">Mode sombre</span>
+              </button>
+            </li>
+            <li id="site-signin"><a href="/login.html" class="nav-login">Se connecter</a></li>
+            <li id="site-account" class="site-account" hidden>
+              <button type="button" id="site-account-toggle" aria-expanded="false" aria-controls="site-account-panel">
+                <span id="site-account-avatar" class="site-account-avatar" aria-hidden="true"></span>
+                <span id="site-account-name"></span>
+                <span aria-hidden="true">⌄</span>
+              </button>
+              <div id="site-account-panel" class="site-account-panel" hidden>
+                <a id="site-account-dashboard" href="/dashboard.html">Mon espace</a>
+                <a href="/dashboard.html#profile">Mon profil</a>
+                <button type="button" id="site-account-logout">Se déconnecter</button>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="about-hero" aria-labelledby="about-title">
+      <div class="about-hero-content">
+        <span class="about-eyebrow">L’esprit de la maison</span>
+        <h2 id="about-title">Le goût des choses simples,<br />le plaisir d’être ensemble.</h2>
+        <p>Une table accueillante, une cuisine généreuse et de bons moments à partager.</p>
+        <a class="about-hero-link" href="/#reservation">Venez nous rendre visite <span aria-hidden="true">↓</span></a>
+      </div>
+      <span class="about-hero-note" aria-hidden="true">Restaurant XYZ · Paris</span>
+    </section>
+
+    <section class="about-story" aria-labelledby="about-story-title">
+      <div class="about-story-copy">
+        <span class="about-section-eyebrow">Bienvenue chez nous</span>
+        <h2 id="about-story-title">Une bonne assiette,<br />ça rassemble.</h2>
+        <p>Au Restaurant XYZ, nous aimons les repas qui prennent leur temps et les tables où chacun trouve sa place. Notre envie : vous faire passer un beau moment, autour d'une cuisine soignée et sans façon.</p>
+        <p>La carte fait la part belle aux produits de saison et aux recettes préparées avec attention. Du premier accueil au dessert, chaque détail compte, surtout celui de vous voir repartir avec le sourire.</p>
+        <a class="about-text-link" href="/#menu">Découvrir la carte <span aria-hidden="true">↗</span></a>
+      </div>
+      <figure class="about-story-photo">
+        <img src="/img/photo_cuisto.jpeg" alt="La brigade prépare les plats du Restaurant XYZ" loading="lazy" />
+        <figcaption><span>Fait avec soin</span><strong>Et toujours avec gourmandise.</strong></figcaption>
+      </figure>
+    </section>
+
+    <section class="about-values" aria-labelledby="about-values-title">
+      <div class="about-values-heading">
+        <span class="about-section-eyebrow">Ce qui nous anime</span>
+        <h2 id="about-values-title">Une maison à notre image</h2>
+      </div>
+      <div class="about-values-grid">
+        <article class="about-value">
+          <span class="about-value-icon" aria-hidden="true"><i class="fa-solid fa-seedling"></i></span>
+          <h3>Le goût du bon produit</h3>
+          <p>Des ingrédients choisis avec attention et une carte qui évolue au fil des saisons.</p>
+        </article>
+        <article class="about-value">
+          <span class="about-value-icon" aria-hidden="true"><i class="fa-solid fa-fire-burner"></i></span>
+          <h3>La cuisine du cœur</h3>
+          <p>Des plats préparés chaque jour, généreux et pensés pour le plaisir de la table.</p>
+        </article>
+        <article class="about-value">
+          <span class="about-value-icon" aria-hidden="true"><i class="fa-solid fa-handshake-angle"></i></span>
+          <h3>L’accueil avant tout</h3>
+          <p>En tête-à-tête, en famille ou entre amis, vous êtes ici chez vous.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-invitation" aria-labelledby="about-invitation-title">
+      <span class="about-section-eyebrow">À bientôt autour d’une table</span>
+      <h2 id="about-invitation-title">La meilleure façon de nous découvrir ?</h2>
+      <p>Choisissez votre date, on s’occupe du reste.</p>
+      <a class="about-booking-button" href="/#reservation">Réserver une table</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer_section">
+      <div class="block-footer">
+        <div class="A-propos-footer">
+          <h3>À propos</h3>
+          <p>Une cuisine sincère, des produits de saison et le plaisir de vous recevoir comme à la maison.</p>
+          <a class="footer-about-link" href="/about.html">Découvrir notre histoire <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="liens-rapides">
+          <h3>Liens rapides</h3>
+          <div class="liens">
+            <a href="/#presentation">Accueil</a>
+            <a href="/#menu">Menu</a>
+            <a href="/about.html" aria-current="page">À propos</a>
+            <a href="/#reservation">Réservation</a>
+            <a href="/#contact">Contact</a>
+          </div>
+        </div>
+        <div class="contact-footer">
+          <h3>Contactez-nous</h3>
+          <p><i class="fa-solid fa-phone"></i>&nbsp;Téléphone: 01 23 45 67 89</p>
+          <p><i class="fa-solid fa-envelope"></i>&nbsp;Email: info@restaurantxyz.com</p>
+          <p><i class="fa-solid fa-location-dot"></i>&nbsp;Adresse: 123 rue de la Fontaine, 75001 Paris</p>
+        </div>
+      </div>
+      <p>&#169; <span id="year"></span> Copyright | All Rights Reserved to Restaurant XYZ</p>
+    </div>
+  </footer>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
