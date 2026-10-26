@@ -142,7 +142,8 @@ nav a {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.theme-toggle span {
+.theme-toggle span,
+.theme-toggle i[hidden] {
   display: none;
 }
 
