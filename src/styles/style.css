@@ -750,6 +750,372 @@ header .hamburger:focus-visible {
   opacity: 0.8;
 }
 
+.footer-about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.footer-about-link:hover {
+  color: var(--accent-hover);
+}
+
+.about-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 34rem;
+  min-height: min(44rem, 82svh);
+  place-items: center;
+  overflow: hidden;
+  padding: 8rem 1.5rem 5rem;
+  background: #191714 url("/img/section.jpg") center 52% / cover no-repeat;
+  text-align: center;
+}
+
+.about-hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(19, 17, 14, 0.68), rgba(19, 17, 14, 0.32) 52%, rgba(19, 17, 14, 0.56));
+  content: "";
+}
+
+.about-hero-content {
+  width: min(100%, 52rem);
+  color: #fff;
+}
+
+.about-eyebrow,
+.about-section-eyebrow {
+  display: block;
+  margin-bottom: 1rem;
+  color: #e6ab8c;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.about-hero h2 {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(2.2rem, 5.4vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.16;
+  text-shadow: 0 3px 24px rgba(0, 0, 0, 0.45);
+}
+
+.about-hero-content > p {
+  max-width: 35rem;
+  margin: 1.25rem auto 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.about-hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.about-hero-link:hover {
+  color: #f1c7a9;
+}
+
+.about-hero-note {
+  position: absolute;
+  right: 2rem;
+  bottom: 1.75rem;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.about-story {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
+  align-items: center;
+  gap: clamp(3rem, 8vw, 8rem);
+  padding: 7rem 12%;
+  background: var(--paper);
+}
+
+.about-story-copy {
+  max-width: 34rem;
+}
+
+.about-story .about-section-eyebrow,
+.about-values .about-section-eyebrow,
+.about-invitation .about-section-eyebrow {
+  color: var(--accent);
+}
+
+.about-story h2,
+.about-values h2,
+.about-invitation h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.about-story h2::after {
+  display: block;
+  width: 3rem;
+  height: 2px;
+  margin: 1.2rem 0 1.5rem;
+  background: #d9a441;
+  content: "";
+}
+
+.about-story-copy p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.9;
+}
+
+.about-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  color: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.about-text-link:hover {
+  color: var(--accent-hover);
+}
+
+.about-story-photo {
+  position: relative;
+  min-height: 27rem;
+  margin: 0;
+}
+
+.about-story-photo::before {
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  width: 68%;
+  height: 75%;
+  border: 1px solid #d9a441;
+  content: "";
+}
+
+.about-story-photo img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 27rem;
+  object-fit: cover;
+}
+
+.about-story-photo figcaption {
+  position: absolute;
+  right: -1rem;
+  bottom: -1rem;
+  display: grid;
+  gap: 0.25rem;
+  min-width: min(18rem, 80%);
+  padding: 1.25rem 1.5rem;
+  background: #f4f0e8;
+  color: var(--ink);
+}
+
+.about-story-photo figcaption span {
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.about-story-photo figcaption strong {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+}
+
+.about-values {
+  padding: 5.5rem 10%;
+  background: var(--soft);
+  text-align: center;
+}
+
+.about-values-heading {
+  margin-bottom: 3.25rem;
+}
+
+.about-values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.5rem;
+  max-width: 70rem;
+  margin: 0 auto;
+}
+
+.about-value {
+  padding: 0 1rem;
+}
+
+.about-value-icon {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  place-items: center;
+  margin: 0 auto 1.25rem;
+  border: 1px solid #e9dfd2;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--accent);
+  font-size: 1.15rem;
+}
+
+.about-value h3 {
+  margin: 0 0 0.7rem;
+  color: var(--ink);
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.about-value p {
+  max-width: 19rem;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.8;
+}
+
+.about-invitation {
+  padding: 5.5rem 1.5rem;
+  background: var(--paper);
+  text-align: center;
+}
+
+.about-invitation h2 {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.about-invitation > p {
+  margin: 1rem auto 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.about-booking-button {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.7rem;
+  border: 1px solid var(--accent);
+  border-radius: 2rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease;
+}
+
+.about-booking-button:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  color: #fff;
+}
+
+.about-text-link:focus-visible,
+.about-hero-link:focus-visible,
+.about-booking-button:focus-visible,
+.footer-about-link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .about-story {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 5rem 8%;
+  }
+
+  .about-story-copy {
+    max-width: 42rem;
+  }
+
+  .about-values-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-hero {
+    min-height: 34rem;
+    padding: 7rem 1.25rem 4rem;
+  }
+
+  .about-hero h2 {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+
+  .about-hero-content > p {
+    font-size: 0.9rem;
+  }
+
+  .about-hero-note {
+    right: 1rem;
+    bottom: 1rem;
+    font-size: 0.58rem;
+  }
+
+  .about-story {
+    gap: 2.5rem;
+    padding: 3.5rem 6%;
+  }
+
+  .about-story-photo,
+  .about-story-photo img {
+    min-height: 20rem;
+    height: 20rem;
+  }
+
+  .about-values {
+    padding: 3.5rem 7%;
+  }
+
+  .about-values-heading {
+    margin-bottom: 2.5rem;
+  }
+
+  .about-values-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .about-invitation {
+    padding: 3.5rem 1.25rem;
+  }
+}
+
 .bton {
   position: fixed;
   z-index: 1000;
@@ -1087,6 +1453,20 @@ body.home-dark .card-3 {
 
 body.home-dark .footer_section {
   background: #302d27;
+}
+
+body.home-dark .about-values {
+  background: var(--soft);
+}
+
+body.home-dark .about-story-photo figcaption {
+  background: #302d27;
+  color: var(--ink);
+}
+
+body.home-dark .about-value-icon {
+  border-color: #454139;
+  background: #33302a;
 }
 
 body.home-dark .block-footer h3::after {

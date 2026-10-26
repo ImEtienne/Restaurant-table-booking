@@ -25,6 +25,7 @@ Le projet "Site de Réservation de Table" est une application web interactive d�
 ## Structure du projet
 
 - `index.html` : point d'entrée de la page d'accueil.
+- `about.html` : page de présentation du restaurant.
 - `src/main.js` : point d'entrée JavaScript et CSS de Vite.
 - `src/scripts/` : logique JavaScript.
 - `src/styles/` : feuilles de style.
