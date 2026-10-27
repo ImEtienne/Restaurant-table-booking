@@ -1470,6 +1470,21 @@ body.home-dark .about-value-icon {
   background: #33302a;
 }
 
+body.home-dark .nav-bar .nav-links .nav-login,
+body.home-dark .nav-bar .nav-links .nav-login:hover,
+body.home-dark .site-account-avatar,
+body.home-dark .services-button,
+body.home-dark .services-button:hover,
+body.home-dark .about-booking-button,
+body.home-dark .about-booking-button:hover,
+body.home-dark .services-list li:hover .service-icon {
+  color: #201e1b !important;
+}
+
+body.home-dark .bton .icone {
+  filter: brightness(0);
+}
+
 body.home-dark .block-footer h3::after {
   background: var(--ink);
 }
