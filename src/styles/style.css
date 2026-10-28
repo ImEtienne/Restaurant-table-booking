@@ -115,10 +115,12 @@ nav a {
   font-size: 0.95rem;
 }
 
-.nav-bar .nav-links,
-.page-item2 {
-  flex-wrap: nowrap;
-  white-space: nowrap;
+@media (min-width: 1201px) {
+  .nav-bar .nav-links,
+  .page-item2 {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
 }
 
 @media (min-width: 1201px) and (max-width: 1500px) {
@@ -135,9 +137,6 @@ nav a {
     font-size: 0.88rem;
   }
 
-  .nav-bar .nav-links .nav-login {
-    padding: 0.55rem 0.9rem;
-  }
 }
 
 .nav-bar .nav-links a {
@@ -293,6 +292,12 @@ nav a {
   background: var(--accent);
   color: #fff !important;
   text-transform: none;
+}
+
+@media (min-width: 1201px) and (max-width: 1500px) {
+  .nav-bar .nav-links .nav-login {
+    padding: 0.55rem 0.9rem;
+  }
 }
 
 .nav-bar .nav-links .nav-login:hover {
