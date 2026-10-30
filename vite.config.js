@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => {
   server: {
     proxy: {
       "/api/admin": { target, changeOrigin: true },
+      "/api/availability": { target, changeOrigin: true },
+      "/api/reservations": { target, changeOrigin: true },
       "/api/client": { target, changeOrigin: true },
       "/api/login": { target, changeOrigin: true },
       "/api/logout": { target, changeOrigin: true },
