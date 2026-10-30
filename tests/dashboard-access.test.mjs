@@ -37,6 +37,7 @@ for (const isAdmin of [true, false]) {
       validatePeriod: () => "", searchReservations: (rows) => rows,
       mountAccounts: () => ({ activate: (section) => { activated.push(section); } }),
       mountClient: () => ({ activate: () => { activated.push("client"); }, deactivate() {} }),
+      mountServices: () => ({ activate() {}, deactivate() {} }),
     };
     vm.runInNewContext(source, context);
     for (let i = 0; i < 12; i++) await Promise.resolve();

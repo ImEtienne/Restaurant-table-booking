@@ -1,17 +1,61 @@
 "use strict";
 
 import { getTodayLocalDate, validateReservation } from "./reservation-validation.mjs";
-import { createReservation, ReservationServiceError } from "../services/reservationService.mjs";
+import { createReservation, getAvailability, ReservationServiceError } from "../services/reservationService.mjs";
+import { parseSlotValue, renderSlotOptions } from "./availability-slots.mjs";
 
 const reservationForm = document.querySelector("#reservation-form");
 const reservationStatus = document.querySelector("#reservation-status");
 
 if (reservationForm && reservationStatus) {
   const dateInput = reservationForm.elements.namedItem("date");
+  const guestsInput = reservationForm.elements.namedItem("personnes");
+  const timeSelect = reservationForm.elements.namedItem("heure");
+  const timeHelp = document.getElementById("heure-help");
+  let availabilityVersion = 0;
 
   if (dateInput instanceof HTMLInputElement) {
     dateInput.min = getTodayLocalDate();
   }
+
+  function resetSlots(message = "Choisissez d’abord une date") {
+    availabilityVersion++;
+    if (!(timeSelect instanceof HTMLSelectElement)) return;
+    timeSelect.replaceChildren(new Option(message, ""));
+    timeSelect.disabled = true;
+    if (timeHelp) timeHelp.textContent = "";
+  }
+
+  async function loadSlots() {
+    if (!(timeSelect instanceof HTMLSelectElement) || !(dateInput instanceof HTMLInputElement)) return;
+    const date = dateInput.value;
+    if (!date || date < getTodayLocalDate()) return resetSlots();
+
+    const version = ++availabilityVersion;
+    const previous = timeSelect.value;
+    const guests = Number(guestsInput?.value);
+    timeSelect.disabled = true;
+    if (timeHelp) timeHelp.textContent = "Recherche des créneaux disponibles…";
+
+    try {
+      const slots = await getAvailability({ date, guests: Number.isInteger(guests) && guests >= 1 && guests <= 10 ? guests : undefined });
+      if (version !== availabilityVersion) return;
+      renderSlotOptions(timeSelect, slots);
+      if (slots.some((slot) => `${slot.service_key}|${slot.time}` === previous)) timeSelect.value = previous;
+      if (timeHelp) timeHelp.textContent = slots.length ? "" : "Aucun créneau n’est disponible pour cette date. Essayez un autre jour ou un autre nombre de personnes.";
+    } catch (error) {
+      if (version !== availabilityVersion) return;
+      resetSlots("Créneaux indisponibles");
+      if (timeHelp) {
+        timeHelp.textContent = error instanceof ReservationServiceError && error.code === "VALIDATION_FAILED"
+          ? Object.values(error.validationErrors).flat().join(" ") || error.message
+          : "Impossible de charger les créneaux. Réessayez dans un instant.";
+      }
+    }
+  }
+
+  dateInput?.addEventListener("change", loadSlots);
+  guestsInput?.addEventListener("change", loadSlots);
 
   reservationForm.addEventListener("input", () => {
     reservationStatus.textContent = "";
@@ -23,12 +67,13 @@ if (reservationForm && reservationStatus) {
     if (!reservationForm.reportValidity()) return;
 
     const fields = Object.fromEntries(new FormData(reservationForm));
+    const slot = parseSlotValue(fields.heure);
     const result = validateReservation({
       name: fields.nom,
       email: fields.email,
       phone: fields.telephone,
       date: fields.date,
-      time: fields.heure,
+      time: slot.time,
       guests: fields.personnes,
     });
 
@@ -47,11 +92,13 @@ if (reservationForm && reservationStatus) {
         email: fields.email.trim(),
         phone: fields.telephone.trim(),
         date: fields.date,
-        time: fields.heure,
+        time: slot.time,
+        service_key: slot.serviceKey,
         guests: Number(fields.personnes),
       });
 
       reservationForm.reset();
+      resetSlots();
       reservationStatus.textContent =
         typeof response?.message === "string"
           ? response.message
@@ -87,6 +134,7 @@ if (reservationForm && reservationStatus) {
         reservationStatus.textContent = messages.length
           ? messages.join(" ")
           : "L'API a refusé certaines informations. Vérifiez les champs et réessayez.";
+        loadSlots();
       } else {
         reservationStatus.textContent =
           "Impossible de transmettre la demande. Aucune confirmation reçue ; vos champs sont conservés.";

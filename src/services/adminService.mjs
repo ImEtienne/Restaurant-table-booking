@@ -106,6 +106,14 @@ export function createAdminService({
       }
       return request(`/admin/reservations/${id}`, { method: "PATCH", body: { status }, csrf: true });
     },
+    serviceSchedules: () => request("/admin/service-schedules"),
+    createServiceSchedule: (body) => request("/admin/service-schedules", { method: "POST", body, csrf: true }),
+    updateServiceSchedule: (id, body) => request(`/admin/service-schedules/${userId(id)}`, { method: "PUT", body, csrf: true }),
+    deleteServiceSchedule: (id) => request(`/admin/service-schedules/${userId(id)}`, { method: "DELETE", csrf: true }),
+    serviceExceptions: () => request("/admin/service-exceptions"),
+    createServiceException: (body) => request("/admin/service-exceptions", { method: "POST", body, csrf: true }),
+    updateServiceException: (id, body) => request(`/admin/service-exceptions/${userId(id)}`, { method: "PUT", body, csrf: true }),
+    deleteServiceException: (id) => request(`/admin/service-exceptions/${userId(id)}`, { method: "DELETE", csrf: true }),
   };
 }
 

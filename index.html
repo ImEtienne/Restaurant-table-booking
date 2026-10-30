@@ -277,13 +277,16 @@
         </div>
 
         <div class="mb-3">
-          <label for="heure">Heure</label>
-          <input type="time" class="form-control" id="heure" name="heure" required />
+          <label for="personnes">Nombre de personnes</label>
+          <input type="number" class="form-control" id="personnes" name="personnes" min="1" max="10" step="1" required />
         </div>
 
         <div class="mb-3">
-          <label for="personnes">Nombre de personnes</label>
-          <input type="number" class="form-control" id="personnes" name="personnes" min="1" max="10" step="1" required />
+          <label for="heure">Heure</label>
+          <select class="form-select" id="heure" name="heure" required disabled aria-describedby="heure-help">
+            <option value="">Choisissez d’abord une date</option>
+          </select>
+          <small id="heure-help" class="form-text" role="status" aria-live="polite"></small>
         </div>
         <button type="submit" class="button-2">Envoyer la demande</button>
       </form>

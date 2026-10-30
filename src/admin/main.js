@@ -8,6 +8,7 @@ import { sortReservations } from "./sort.mjs";
 import { mountFiltersToggle } from "./mobileFilters.mjs";
 import { mountAccounts } from "./accounts.js";
 import { mountClient } from "./client.js";
+import { mountServices } from "./services.js";
 import { applyPlaceholders } from "../scripts/placeholders.mjs";
 import { renderSidebarProfile, mountProfileMenu } from "./sidebarProfile.mjs";
 import { mountMobileMenu } from "./mobileMenu.mjs";
@@ -27,6 +28,7 @@ let statsBusy = false;
 let currentUser = null;
 let accounts = null;
 let client = null;
+let services = null;
 let assigning = false;
 $("assignment").addEventListener("submit", async (event) => {
   event.preventDefault(); if (assigning) return;
@@ -208,19 +210,22 @@ $("logout").addEventListener("click", async () => {
 });
 function section() {
   let selectedSection = location.hash.slice(1) || "dashboard";
-  if (!["dashboard", "reservations", "users", "profile", "client"].includes(selectedSection)) selectedSection = "dashboard";
+  if (!["dashboard", "reservations", "users", "profile", "client", "services"].includes(selectedSection)) selectedSection = "dashboard";
   if (currentUser && !currentUser.is_admin && selectedSection !== "profile") selectedSection = "client";
   if (currentUser?.is_admin && selectedSection === "client") selectedSection = "dashboard";
   const accountSection = ["users", "profile"].includes(selectedSection);
   $("statistics").hidden = selectedSection !== "dashboard";
-  $("reservation-section").hidden = accountSection || selectedSection === "client";
+  $("reservation-section").hidden = accountSection || ["client", "services"].includes(selectedSection);
   $("accounts").hidden = !accountSection;
   $("client").hidden = selectedSection !== "client";
-  $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil", client: "Mes réservations" }[selectedSection];
+  $("services").hidden = selectedSection !== "services";
+  $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil", client: "Mes réservations", services: "Services et horaires" }[selectedSection];
   document.title = `${$("title").textContent} | Restaurant XYZ`;
   accounts?.activate(selectedSection);
   if (selectedSection === "client") client?.activate();
   else client?.deactivate();
+  if (selectedSection === "services") services?.activate();
+  else services?.deactivate();
   document.querySelectorAll("[data-section]").forEach((link) => {
     if (link.dataset.section === selectedSection) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -249,7 +254,7 @@ async function initialize() {
     function updateIdentity(updated) {
       $("identity").textContent = updated.name;
       renderSidebarProfile(updated);
-      document.querySelectorAll('[data-section="dashboard"], [data-section="reservations"], [data-section="users"]').forEach((link) => { link.hidden = !updated.is_admin; });
+      document.querySelectorAll('[data-section="dashboard"], [data-section="reservations"], [data-section="users"], [data-section="services"]').forEach((link) => { link.hidden = !updated.is_admin; });
       document.querySelectorAll('[data-section="client"]').forEach((link) => { link.hidden = updated.is_admin; });
       $("global-search").hidden = !updated.is_admin;
       $("search-toggle").hidden = !updated.is_admin;
@@ -264,6 +269,7 @@ async function initialize() {
     updateIdentity(user);
     accounts = mountAccounts({ api, currentUser, onIdentity: updateIdentity, onSessionError: handleError });
     client = mountClient({ api, user: currentUser, onSessionError: handleError });
+    services = mountServices({ api, onSessionError: handleError });
     $("logout").disabled = false;
     $("global-search").querySelectorAll("input, button").forEach((control) => { control.disabled = !user.is_admin; });
     $("private").hidden = false;

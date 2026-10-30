@@ -18,6 +18,7 @@
         <a href="#dashboard" class="admin-nav-dashboard" data-section="dashboard" aria-current="page">Tableau de bord</a>
         <a href="#reservations" class="admin-nav-reservations" data-section="reservations">Réservations</a>
         <a href="#users" class="admin-nav-users" data-section="users">Utilisateurs</a>
+        <a href="#services" class="admin-nav-reservations" data-section="services">Services</a>
         <a href="#client" class="admin-nav-reservations" data-section="client" hidden>Mes réservations</a>
         <a href="/" class="admin-nav-external">Voir le restaurant ↗</a>
       </nav>
@@ -76,6 +77,7 @@
         <div id="admin-private" hidden>
           <section id="admin-client" class="admin-reservations" hidden aria-label="Espace client"></section>
           <section id="admin-accounts" class="admin-reservations" hidden aria-label="Gestion du compte"></section>
+          <section id="admin-services" class="admin-reservations" hidden aria-label="Services et horaires"></section>
           <section id="admin-global-results" class="admin-reservations" aria-labelledby="admin-global-title" hidden>
             <div class="admin-section-heading">
               <h2 id="admin-global-title">Recherche globale</h2><button type="button" id="admin-close-search">Fermer</button>
@@ -112,36 +114,36 @@
             <div class="admin-stats-wrap">
               <button type="button" class="admin-stats-nav is-prev" id="admin-stats-prev" aria-label="Voir les cartes précédentes" aria-controls="admin-stats" hidden>‹</button>
               <div class="admin-stats" id="admin-stats" aria-label="Résumé de la période">
-              <article class="admin-card"><span class="admin-metric-icon icon-calendar" aria-hidden="true"></span>
-                <h2>Réservations</h2><strong id="admin-total">—</strong>
-                <p>Sur la période sélectionnée</p>
-              </article>
-              <article class="admin-card"><span class="admin-metric-icon icon-clock" aria-hidden="true"></span>
-                <h2>En attente</h2><strong id="admin-pending">—</strong>
-              </article>
-              <article class="admin-card"><span class="admin-metric-icon icon-check" aria-hidden="true"></span>
-                <h2>Confirmées</h2><strong id="admin-confirmed">—</strong>
-              </article>
-              <article class="admin-card"><span class="admin-metric-icon icon-close" aria-hidden="true"></span>
-                <h2>Refusées</h2><strong id="admin-rejected">—</strong>
-              </article>
-              <article class="admin-card"><span class="admin-metric-icon icon-close" aria-hidden="true"></span>
-                <h2>Annul&#233;es</h2><strong id="admin-cancelled">—</strong>
-              </article>
-              <article class="admin-card"><span class="admin-metric-icon icon-users" aria-hidden="true"></span>
-                <h2>Personnes demandées</h2><strong id="admin-guests">—</strong>
-                <p>Tous statuts, refus compris</p>
-              </article>
-              <article class="admin-card"><span class="admin-metric-icon icon-usercheck" aria-hidden="true"></span>
-                <h2>Personnes confirmées</h2><strong id="admin-confirmed-guests">—</strong>
-                <p>Ne mesure pas la présence effective</p>
-              </article>
-              <article class="admin-card"><span class="admin-metric-icon icon-chart" aria-hidden="true"></span>
-                <h2>Taille moyenne des groupes</h2><strong id="admin-average">—</strong>
-              </article>
-              <article class="admin-card"><span class="admin-metric-icon icon-percent" aria-hidden="true"></span>
-                <h2>Taux de confirmation</h2><strong id="admin-rate">—</strong>
-              </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-calendar" aria-hidden="true"></span>
+                  <h2>Réservations</h2><strong id="admin-total">—</strong>
+                  <p>Sur la période sélectionnée</p>
+                </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-clock" aria-hidden="true"></span>
+                  <h2>En attente</h2><strong id="admin-pending">—</strong>
+                </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-check" aria-hidden="true"></span>
+                  <h2>Confirmées</h2><strong id="admin-confirmed">—</strong>
+                </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-close" aria-hidden="true"></span>
+                  <h2>Refusées</h2><strong id="admin-rejected">—</strong>
+                </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-close" aria-hidden="true"></span>
+                  <h2>Annul&#233;es</h2><strong id="admin-cancelled">—</strong>
+                </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-users" aria-hidden="true"></span>
+                  <h2>Personnes demandées</h2><strong id="admin-guests">—</strong>
+                  <p>Tous statuts, refus compris</p>
+                </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-usercheck" aria-hidden="true"></span>
+                  <h2>Personnes confirmées</h2><strong id="admin-confirmed-guests">—</strong>
+                  <p>Ne mesure pas la présence effective</p>
+                </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-chart" aria-hidden="true"></span>
+                  <h2>Taille moyenne des groupes</h2><strong id="admin-average">—</strong>
+                </article>
+                <article class="admin-card"><span class="admin-metric-icon icon-percent" aria-hidden="true"></span>
+                  <h2>Taux de confirmation</h2><strong id="admin-rate">—</strong>
+                </article>
               </div>
               <button type="button" class="admin-stats-nav is-next" id="admin-stats-next" aria-label="Voir les cartes suivantes" aria-controls="admin-stats" hidden>›</button>
             </div>
