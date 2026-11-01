@@ -33,7 +33,7 @@ for (const isAdmin of [true, false]) {
       document: { getElementById: node, body: node("body"), querySelectorAll: (selector) => selector === "[data-section]" ? nav : selector === '[data-section="client"]' ? [nav[4]] : nav.slice(0, 3) },
       location: { hash: "", replace() { assert.fail("Unexpected redirect"); } },
       window: { addEventListener() {} }, localStorage: { getItem() {} }, sessionStorage: { getItem() {} },
-      createAdminService: () => api, applyPlaceholders() {}, renderSidebarProfile() {}, mountProfileMenu() {}, mountMobileMenu() {}, mountTableLabels() {}, mountStatsScroller() {}, mountSearchToggle() {}, sortReservations: (rows) => rows, mountFiltersToggle() {}, showToast() {}, renderReservations() {}, renderMetrics() {},
+      createAdminService: () => api, applyPlaceholders() {}, renderSidebarProfile() {}, mountProfileMenu() {}, mountMobileMenu() {}, mountTableLabels() {}, mountStatsScroller() {}, mountSearchToggle() {}, sortReservations: (rows) => rows, mountFiltersToggle() {}, showToast() {}, renderReservations() {}, renderStackedBars: () => "", renderAreaChart: () => "", renderSparkline: () => "", kpiSeries: () => ({}), trendOf: () => null, formatTrend: () => "", kpiTone: () => "neutral", animateCards() {}, animateCharts() {}, countUp() {}, mountChartInteractions() {}, renderDonut: () => "", renderLegend: () => ({}), recentReservations: (rows) => rows, statusLabels: {}, renderCalendarDay: () => "", isoDate: () => "2026-01-01", shiftDate: () => "2026-01-02",
       validatePeriod: () => "", searchReservations: (rows) => rows,
       mountAccounts: () => ({ activate: (section) => { activated.push(section); } }),
       mountClient: () => ({ activate: () => { activated.push("client"); }, deactivate() {} }),
@@ -44,7 +44,7 @@ for (const isAdmin of [true, false]) {
     assert.equal(node("admin-private").hidden, false);
     assert.equal(node("admin-global-search").hidden, !isAdmin);
     if (isAdmin) {
-      assert.deepEqual([...calls].sort(), ["profile", "me", "reservations", "stats", "daily", "hourly"].sort());
+      assert.deepEqual([...calls].sort(), ["profile", "me", "reservations", "reservations", "reservations", "reservations", "stats", "daily", "hourly"].sort());
       assert.equal(node("admin-accounts").hidden, true);
       assert.ok(activated.includes("dashboard"));
     } else {

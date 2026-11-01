@@ -1,7 +1,9 @@
 import "../styles/admin.css";
 import { createAdminService } from "../services/adminService.mjs";
 import { renderReservations } from "./reservationTable.mjs";
-import { renderMetrics, validatePeriod } from "./statistics.mjs";
+import { renderStackedBars, renderAreaChart, renderSparkline, kpiSeries, trendOf, formatTrend, kpiTone, renderDonut, renderLegend, recentReservations, renderCalendarDay, isoDate, shiftDate } from "./statistics.mjs";
+import { statusLabels } from "./reservationTable.mjs";
+import { animateCards, animateCharts, countUp, mountChartInteractions } from "./chartMotion.mjs";
 import { showToast } from "../scripts/toast.js";
 import { searchReservations } from "./search.mjs";
 import { sortReservations } from "./sort.mjs";
@@ -23,8 +25,10 @@ let page = 1;
 let lastPage = 1;
 let busy = false;
 let filters = {};
-let period = {};
+let calendarStart = isoDate(new Date());
+let calendarRun = 0;
 let statsBusy = false;
+let cardsAnimated = false;
 let currentUser = null;
 let accounts = null;
 let client = null;
@@ -98,44 +102,114 @@ $("search").addEventListener("input", renderSearch);
 $("sort").addEventListener("change", renderSearch);
 mountFiltersToggle();
 
+const dayLabel = (value, long = false) => {
+  const date = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) return String(value).slice(5);
+  return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", ...(long ? { year: "numeric" } : {}), timeZone: "UTC" }).format(date);
+};
+
+function renderKpiTrends(daily) {
+  const series = kpiSeries(daily);
+  for (const [id, values] of Object.entries(series)) {
+    const trend = trendOf(values, id === "rate" ? "avg" : "sum");
+    const tone = kpiTone(trend, id === "pending");
+    $(`${id}-spark`).innerHTML = renderSparkline(values, tone);
+    const badge = $(`${id}-trend`);
+    badge.textContent = formatTrend(trend);
+    badge.className = `kpi-trend is-${tone}`;
+    badge.hidden = !trend;
+  }
+}
+
+async function loadActivity(pending) {
+  const link = $("todo-link");
+  link.textContent = pending > 0 ? `${pending} en attente →` : "Voir tout";
+  try {
+    const result = await api.reservations({ page: 1 });
+    const items = recentReservations(result.data).map((reservation) => {
+      const item = document.createElement("li");
+      const text = document.createElement("div");
+      const name = document.createElement("strong");
+      name.textContent = reservation.name;
+      const meta = document.createElement("small");
+      meta.textContent = `${reservation.guests} pers. · ${reservation.date} à ${reservation.time}`;
+      text.append(name, meta);
+      const badge = document.createElement("span");
+      badge.className = `admin-badge ${Object.hasOwn(statusLabels, reservation.status) ? reservation.status : ""}`;
+      badge.textContent = statusLabels[reservation.status] || "Inconnu";
+      item.append(text, badge);
+      return item;
+    });
+    $("activity").replaceChildren(...items);
+    if (!items.length) $("activity").textContent = "Aucune réservation pour le moment.";
+  } catch {
+    $("activity").replaceChildren();
+  }
+}
+
 async function loadStats() {
   if (statsBusy) return;
-  const error = validatePeriod(period);
-  if (error) { $("stats-notice").textContent = error; return; }
   statsBusy = true;
   $("statistics").setAttribute("aria-busy", "true");
-  $("period").querySelectorAll("button, input").forEach((control) => { control.disabled = true; });
   $("stats-notice").textContent = "Chargement des statistiques…";
   try {
-    const results = await Promise.allSettled([api.stats(period), api.dailyStats(period), api.hourlyStats(period)]);
+    const results = await Promise.allSettled([api.stats(), api.dailyStats(), api.hourlyStats()]);
     const failed = results.find((result) => result.status === "rejected");
     if (failed) throw failed.reason;
     const [summary, daily, hourly] = results.map((result) => result.value);
-    for (const [id, key] of Object.entries({ total: "total_reservations", pending: "pending", confirmed: "confirmed", rejected: "rejected", cancelled: "cancelled", guests: "total_guests", "confirmed-guests": "confirmed_guests", average: "average_party_size", rate: "confirmation_rate" })) {
-      $(id).textContent = `${new Intl.NumberFormat("fr-FR").format(summary.data[key])}${id === "rate" ? " %" : ""}`;
+    for (const [id, key] of Object.entries({ total: "total_reservations", pending: "pending", confirmed: "confirmed", "confirmed-guests": "confirmed_guests", rate: "confirmation_rate" })) {
+      const suffix = id === "rate" ? " %" : "";
+      $(id).textContent = `${new Intl.NumberFormat("fr-FR").format(summary.data[key])}${suffix}`;
+      countUp($(id), summary.data[key], suffix);
     }
-    $("period-label").textContent = `Du ${summary.meta.start_date} au ${summary.meta.end_date} inclus · ${summary.meta.timezone} · Date prévue de réservation`;
-    renderMetrics($("daily"), daily.data, "date");
-    renderMetrics($("hourly"), hourly.data, "hour");
+    $("daily").innerHTML = renderAreaChart(daily.data, "date", (value) => dayLabel(value), (value) => dayLabel(value, true));
+    $("daily-range").textContent = `${dayLabel(summary.meta.start_date, true)} – ${dayLabel(summary.meta.end_date, true)}`;
+    $("hourly").innerHTML = renderStackedBars(hourly.data, "hour", (value) => String(value).slice(0, 5), { width: 360 });
+    renderKpiTrends(daily.data);
+    $("donut").innerHTML = renderDonut(summary.data) || "<p>Aucune donnée sur la période.</p>";
+    $("legend").replaceChildren(renderLegend(summary.data));
+    animateCharts($("statistics"));
+    if (!cardsAnimated) { cardsAnimated = true; animateCards($("statistics")); }
     $("stats-notice").textContent = "";
+    loadActivity(summary.data.pending);
   } catch (error) {
     $("stats").querySelectorAll("strong").forEach((node) => { node.textContent = "—"; });
+    $("stats").querySelectorAll(".kpi-spark").forEach((node) => node.replaceChildren());
+    $("stats").querySelectorAll(".kpi-trend").forEach((node) => { node.hidden = true; });
+    $("daily-range").textContent = "";
     $("daily").replaceChildren();
     $("hourly").replaceChildren();
+    $("donut").replaceChildren();
+    $("legend").replaceChildren();
     $("stats-notice").textContent = error.message;
     if ([401, 403, 419].includes(error.status)) handleError(error);
   } finally {
     statsBusy = false;
     $("statistics").setAttribute("aria-busy", "false");
-    $("period").querySelectorAll("button, input").forEach((control) => { control.disabled = false; });
   }
 }
-$("period").addEventListener("submit", (event) => {
-  event.preventDefault();
-  period = Object.fromEntries(new FormData(event.currentTarget));
-  loadStats();
-});
-$("period").addEventListener("reset", () => { period = {}; loadStats(); });
+
+const calendarLabel = (value) => {
+  const date = new Date(`${value}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return String(value);
+  const text = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long" }).format(date);
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};
+
+async function loadCalendar() {
+  const run = ++calendarRun;
+  const days = [calendarStart, shiftDate(calendarStart, 1)];
+  try {
+    const results = await Promise.all(days.map((date) => api.reservations({ date, page: 1 })));
+    if (run !== calendarRun) return;
+    $("calendar-days").innerHTML = results.map((result, index) => renderCalendarDay(days[index], result.data, result.meta?.total ?? result.data.length, calendarLabel)).join("");
+  } catch {
+    if (run === calendarRun) $("calendar-days").textContent = "Calendrier indisponible.";
+  }
+}
+$("cal-prev").addEventListener("click", () => { calendarStart = shiftDate(calendarStart, -2); loadCalendar(); });
+$("cal-next").addEventListener("click", () => { calendarStart = shiftDate(calendarStart, 2); loadCalendar(); });
+$("cal-today").addEventListener("click", () => { calendarStart = isoDate(new Date()); loadCalendar(); });
 
 function handleError(error) {
   if ([401, 403, 419].includes(error.status)) {
@@ -193,7 +267,7 @@ $("rows").addEventListener("click", async (event) => {
   finally { setBusy(false); }
   if (!failure || [404, 409].includes(failure.status)) {
     await load();
-    await loadStats();
+    await Promise.all([loadStats(), loadCalendar()]);
   }
   if (failure) handleError(failure);
   else $("notice").textContent = "Statut mis à jour. Aucun email n’a été envoyé.";
@@ -203,6 +277,7 @@ mountMobileMenu();
 mountTableLabels();
 mountStatsScroller();
 mountSearchToggle();
+mountChartInteractions($("statistics"));
 $("logout").addEventListener("click", async () => {
   $("logout").disabled = true;
   try { await api.userLogout(); location.replace("/login.html"); }
@@ -215,7 +290,8 @@ function section() {
   if (currentUser?.is_admin && selectedSection === "client") selectedSection = "dashboard";
   const accountSection = ["users", "profile"].includes(selectedSection);
   $("statistics").hidden = selectedSection !== "dashboard";
-  $("reservation-section").hidden = accountSection || ["client", "services"].includes(selectedSection);
+  $("caption").hidden = selectedSection === "dashboard";
+  $("reservation-section").hidden = selectedSection !== "reservations";
   $("accounts").hidden = !accountSection;
   $("client").hidden = selectedSection !== "client";
   $("services").hidden = selectedSection !== "services";
@@ -282,7 +358,7 @@ async function initialize() {
     section();
     if (user.is_admin) {
       await api.me();
-      await Promise.allSettled([load(), loadStats()]);
+      await Promise.allSettled([load(), loadStats(), loadCalendar()]);
     }
   } catch (error) { handleError(error); }
 }
