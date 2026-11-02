@@ -3,17 +3,6 @@
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
 
-const backToTop = document.querySelector(".bton");
-if (backToTop) {
-  window.addEventListener("scroll", () => {
-    backToTop.style.display = window.scrollY > 200 ? "flex" : "none";
-  });
-
-  backToTop.addEventListener("click", () => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  });
-}
-
 const hamburger = document.querySelector(".hamburger");
 const navBar = document.querySelector(".nav-bar");
 if (hamburger && navBar) {
