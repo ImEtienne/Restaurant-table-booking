@@ -1,10 +1,14 @@
 import { defineConfig, loadEnv } from "vite";
 import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
+
+const { version } = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "VITE_");
   const target = new URL(env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api").origin;
   return {
+  define: { __APP_VERSION__: JSON.stringify(version) },
   server: {
     proxy: {
       "/api/admin": { target, changeOrigin: true },
