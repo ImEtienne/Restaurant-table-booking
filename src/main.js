@@ -13,3 +13,5 @@ mountCookieBanner();
 mountHomeTheme();
 mountDishesCarousel();
 mountScrollTop();
+const versionLabel = document.getElementById("app-version");
+if (versionLabel) versionLabel.textContent = `· v${__APP_VERSION__}`;
