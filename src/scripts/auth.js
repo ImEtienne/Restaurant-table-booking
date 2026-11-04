@@ -1,5 +1,3 @@
-import "../styles/style.css";
-import "../styles/auth.css";
 import { createAdminService } from "../services/adminService.mjs";
 
 import { validateAuth, authErrorMessage } from "./auth-validation.mjs";

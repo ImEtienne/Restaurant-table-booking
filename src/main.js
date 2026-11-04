@@ -1,4 +1,3 @@
-import "./styles/style.css";
 import "./scripts/app.js";
 import "./scripts/reservation.js";
 import "./scripts/site-account.js";
@@ -7,7 +6,6 @@ import { applyPlaceholders } from "./scripts/placeholders.mjs";
 import { mountCookieBanner } from "./scripts/cookie-consent.mjs";
 import { mountHomeTheme } from "./scripts/home-theme.mjs";
 import { mountScrollTop } from "./scripts/scroll-top.mjs";
-import "./styles/cookie.css";
 applyPlaceholders();
 mountCookieBanner();
 mountHomeTheme();

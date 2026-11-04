@@ -1,6 +1,5 @@
 /* Adaptation du dashboard ZinoBlog : sidebar, cartes, tableau et thème.
    Feuille chargée uniquement par l'entrée admin, sans styles du site public. */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@500;600;700&family=Yellowtail&display=swap");
 @import "./admin-icons.css";
 .admin-page { --admin-bg: #f4f2ed; --admin-panel: #fff; --admin-text: #292b27; --admin-muted: #625f57; --admin-line: #e7e3da; --admin-accent: #a4472d; --admin-sidebar-bg: #ece9e1; margin: 0; background: var(--admin-bg); color: var(--admin-text); font: 13px/1.6 Poppins, sans-serif; }
 .admin-page * { box-sizing: border-box; }

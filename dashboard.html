@@ -5,6 +5,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Administration | Restaurant XYZ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@500;600;700&family=Yellowtail&display=swap">
+  <link rel="stylesheet" href="/src/styles/admin.css">
   <link rel="icon" href="/img/fav.jpeg">
 </head>
 
@@ -109,44 +113,72 @@
               <button type="button" class="admin-stats-nav is-prev" id="admin-stats-prev" aria-label="Voir les cartes précédentes" aria-controls="admin-stats" hidden>‹</button>
               <div class="admin-stats" id="admin-stats" aria-label="Résumé de la période">
                 <article class="admin-card admin-kpi">
-                  <div class="kpi-main"><h2>Réservations</h2><strong id="admin-total">—</strong></div>
-                  <div class="kpi-side"><span class="kpi-trend" id="admin-total-trend" hidden></span><div class="kpi-spark" id="admin-total-spark"></div></div>
+                  <div class="kpi-main">
+                    <h2>Réservations</h2><strong id="admin-total">—</strong>
+                  </div>
+                  <div class="kpi-side"><span class="kpi-trend" id="admin-total-trend" hidden></span>
+                    <div class="kpi-spark" id="admin-total-spark"></div>
+                  </div>
                 </article>
                 <article class="admin-card admin-kpi">
-                  <div class="kpi-main"><h2>En attente</h2><strong id="admin-pending">—</strong></div>
-                  <div class="kpi-side"><span class="kpi-trend" id="admin-pending-trend" hidden></span><div class="kpi-spark" id="admin-pending-spark"></div></div>
+                  <div class="kpi-main">
+                    <h2>En attente</h2><strong id="admin-pending">—</strong>
+                  </div>
+                  <div class="kpi-side"><span class="kpi-trend" id="admin-pending-trend" hidden></span>
+                    <div class="kpi-spark" id="admin-pending-spark"></div>
+                  </div>
                 </article>
                 <article class="admin-card admin-kpi">
-                  <div class="kpi-main"><h2>Confirmées</h2><strong id="admin-confirmed">—</strong></div>
-                  <div class="kpi-side"><span class="kpi-trend" id="admin-confirmed-trend" hidden></span><div class="kpi-spark" id="admin-confirmed-spark"></div></div>
+                  <div class="kpi-main">
+                    <h2>Confirmées</h2><strong id="admin-confirmed">—</strong>
+                  </div>
+                  <div class="kpi-side"><span class="kpi-trend" id="admin-confirmed-trend" hidden></span>
+                    <div class="kpi-spark" id="admin-confirmed-spark"></div>
+                  </div>
                 </article>
                 <article class="admin-card admin-kpi" title="Ne mesure pas la présence effective">
-                  <div class="kpi-main"><h2>Personnes confirmées</h2><strong id="admin-confirmed-guests">—</strong></div>
-                  <div class="kpi-side"><span class="kpi-trend" id="admin-confirmed-guests-trend" hidden></span><div class="kpi-spark" id="admin-confirmed-guests-spark"></div></div>
+                  <div class="kpi-main">
+                    <h2>Personnes confirmées</h2><strong id="admin-confirmed-guests">—</strong>
+                  </div>
+                  <div class="kpi-side"><span class="kpi-trend" id="admin-confirmed-guests-trend" hidden></span>
+                    <div class="kpi-spark" id="admin-confirmed-guests-spark"></div>
+                  </div>
                 </article>
                 <article class="admin-card admin-kpi">
-                  <div class="kpi-main"><h2>Taux de confirmation</h2><strong id="admin-rate">—</strong></div>
-                  <div class="kpi-side"><span class="kpi-trend" id="admin-rate-trend" hidden></span><div class="kpi-spark" id="admin-rate-spark"></div></div>
+                  <div class="kpi-main">
+                    <h2>Taux de confirmation</h2><strong id="admin-rate">—</strong>
+                  </div>
+                  <div class="kpi-side"><span class="kpi-trend" id="admin-rate-trend" hidden></span>
+                    <div class="kpi-spark" id="admin-rate-spark"></div>
+                  </div>
                 </article>
               </div>
               <button type="button" class="admin-stats-nav is-next" id="admin-stats-next" aria-label="Voir les cartes suivantes" aria-controls="admin-stats" hidden>›</button>
             </div>
             <div class="admin-charts">
               <article class="admin-card">
-                <div class="admin-card-head"><h2>Statuts</h2></div>
+                <div class="admin-card-head">
+                  <h2>Statuts</h2>
+                </div>
                 <div class="admin-donut" id="admin-donut"></div>
                 <div id="admin-legend"></div>
               </article>
               <article class="admin-card">
-                <div class="admin-card-head"><h2>Activité récente</h2><a href="#reservations" id="admin-todo-link">Voir tout</a></div>
+                <div class="admin-card-head">
+                  <h2>Activité récente</h2><a href="#reservations" id="admin-todo-link">Voir tout</a>
+                </div>
                 <ul class="admin-activity" id="admin-activity"></ul>
               </article>
               <article class="admin-card">
-                <div class="admin-card-head"><h2>Affluence par heure</h2></div>
+                <div class="admin-card-head">
+                  <h2>Affluence par heure</h2>
+                </div>
                 <div class="admin-chart-scroll" id="admin-hourly" tabindex="0" role="region" aria-label="Histogramme horaire"></div>
               </article>
               <article class="admin-card admin-chart-area">
-                <div class="admin-card-head"><h2>Réservations reçues</h2><span id="admin-daily-range" title="30 derniers jours par défaut, selon la date prévue de réservation"></span></div>
+                <div class="admin-card-head">
+                  <h2>Réservations reçues</h2><span id="admin-daily-range" title="30 derniers jours par défaut, selon la date prévue de réservation"></span>
+                </div>
                 <div class="admin-chart-scroll" id="admin-daily" tabindex="0" role="region" aria-label="Évolution quotidienne"></div>
               </article>
               <article class="admin-card admin-calendar">

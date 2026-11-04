@@ -1,4 +1,3 @@
-import "../styles/admin.css";
 import { createAdminService } from "../services/adminService.mjs";
 import { renderReservations } from "./reservationTable.mjs";
 import { renderStackedBars, renderAreaChart, renderSparkline, kpiSeries, trendOf, formatTrend, kpiTone, renderDonut, renderLegend, recentReservations, renderCalendarDay, isoDate, shiftDate } from "./statistics.mjs";
