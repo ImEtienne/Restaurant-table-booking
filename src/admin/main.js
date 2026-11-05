@@ -2,7 +2,7 @@ import { createAdminService } from "../services/adminService.mjs";
 import { renderReservations } from "./reservationTable.mjs";
 import { renderStackedBars, renderAreaChart, renderSparkline, kpiSeries, trendOf, formatTrend, kpiTone, renderDonut, renderLegend, recentReservations, renderCalendarDay, isoDate, shiftDate } from "./statistics.mjs";
 import { statusLabels } from "./reservationTable.mjs";
-import { animateCards, animateCharts, countUp, mountChartInteractions } from "./chartMotion.mjs";
+import { animateCards, animateCharts, animateSection, animateTitle, countUp, mountChartInteractions } from "./chartMotion.mjs";
 import { showToast } from "../scripts/toast.js";
 import { searchReservations } from "./search.mjs";
 import { sortReservations } from "./sort.mjs";
@@ -16,6 +16,7 @@ import { mountMobileMenu } from "./mobileMenu.mjs";
 import { mountTableLabels } from "./tableLabels.mjs";
 import { mountStatsScroller } from "./statsScroller.mjs";
 import { mountSearchToggle } from "./searchToggle.mjs";
+import { greetingFor } from "./greeting.mjs";
 applyPlaceholders();
 
 const api = createAdminService();
@@ -29,6 +30,7 @@ let calendarRun = 0;
 let statsBusy = false;
 let cardsAnimated = false;
 let currentUser = null;
+let greeting = null;
 let accounts = null;
 let client = null;
 let services = null;
@@ -282,6 +284,7 @@ $("logout").addEventListener("click", async () => {
   try { await api.userLogout(); location.replace("/login.html"); }
   catch (error) { handleError(error); $("logout").disabled = false; }
 });
+let shownSection = null;
 function section() {
   let selectedSection = location.hash.slice(1) || "dashboard";
   if (!["dashboard", "reservations", "users", "profile", "client", "services"].includes(selectedSection)) selectedSection = "dashboard";
@@ -291,11 +294,28 @@ function section() {
   $("statistics").hidden = selectedSection !== "dashboard";
   $("caption").hidden = selectedSection === "dashboard";
   $("reservation-section").hidden = selectedSection !== "reservations";
+  $("assignment-section").hidden = selectedSection !== "reservations";
   $("accounts").hidden = !accountSection;
   $("client").hidden = selectedSection !== "client";
   $("services").hidden = selectedSection !== "services";
   $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil", client: "Mes réservations", services: "Services et horaires" }[selectedSection];
   document.title = `${$("title").textContent} | Restaurant XYZ`;
+  $("crumb-current").textContent = $("title").textContent;
+  $("tagline").hidden = !(selectedSection === "dashboard" && greeting);
+  $("export").hidden = $("tagline").hidden;
+  if (selectedSection === "dashboard" && greeting) $("title").textContent = greeting;
+  if (selectedSection !== shownSection) {
+    const wasShown = shownSection !== null;
+    shownSection = selectedSection;
+    if (wasShown) {
+      animateTitle($("title"));
+      if (selectedSection === "dashboard") {
+        if (cardsAnimated) { animateCards($("statistics")); animateCharts($("statistics")); }
+      } else {
+        animateSection({ reservations: $("reservation-section"), client: $("client"), services: $("services"), users: $("accounts"), profile: $("accounts") }[selectedSection]);
+      }
+    }
+  }
   accounts?.activate(selectedSection);
   if (selectedSection === "client") client?.activate();
   else client?.deactivate();
@@ -326,6 +346,8 @@ async function initialize() {
   try {
     const { data: user } = await api.profile();
     currentUser = user;
+    try { greeting = user.is_admin ? greetingFor(user, localStorage) : null; } catch { greeting = null; }
+    if (greeting && !$("statistics").hidden) { $("title").textContent = greeting; $("tagline").hidden = false; $("export").hidden = false; animateTitle($("title")); }
     function updateIdentity(updated) {
       $("identity").textContent = updated.name;
       renderSidebarProfile(updated);

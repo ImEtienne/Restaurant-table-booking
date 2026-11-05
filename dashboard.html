@@ -75,8 +75,21 @@
         </div>
       </header>
       <div class="admin-content">
-        <p class="admin-caption" id="admin-caption">Restaurant XYZ / Administration</p>
-        <h1 id="admin-title">Tableau de bord</h1>
+        <nav class="admin-crumbs" id="admin-caption" aria-label="Fil d'ariane">
+          <a href="/">Restaurant XYZ</a>
+          <span>Administration</span>
+          <span id="admin-crumb-current" aria-current="page">Tableau de bord</span>
+        </nav>
+        <div class="admin-heading">
+          <div class="admin-heading-text">
+            <h1 id="admin-title">Tableau de bord</h1>
+            <p id="admin-tagline" class="admin-tagline" hidden>Voici l'essentiel de votre restaurant en un coup d'œil.</p>
+          </div>
+          <button type="button" id="admin-export" class="admin-export" hidden>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            <span>Exporter</span>
+          </button>
+        </div>
         <p id="admin-notice" role="status" aria-live="polite">Chargement de votre espace…</p>
         <div id="admin-private" hidden>
           <section id="admin-client" class="admin-reservations" hidden aria-label="Espace client"></section>
@@ -195,16 +208,6 @@
             </div>
           </section>
           <section id="admin-reservation-section" class="admin-reservations" aria-labelledby="reservation-title">
-            <details>
-              <summary>Rattacher une réservation à un client</summary>
-              <form id="admin-assignment" class="admin-account-form">
-                <label>Identifiant de la réservation<input type="number" name="reservation_id" min="1" step="1" required></label>
-                <label>Identifiant du client<input type="number" name="user_id" min="1" step="1" required></label>
-                <p>Consultez les identifiants dans les réservations et la liste des utilisateurs. Le client peut être inactif ; un administrateur ne peut pas être propriétaire client.</p>
-                <button type="submit">Rattacher au client</button>
-                <p id="admin-assignment-status" role="status" aria-live="polite"></p>
-              </form>
-            </details>
             <div class="admin-section-heading">
               <h2 id="reservation-title">Gestion des réservations</h2><button type="button" id="admin-refresh">Actualiser</button>
             </div>
@@ -254,6 +257,21 @@
             </div>
             <p>La confirmation modifie le statut. Aucun email n’est envoyé automatiquement.</p>
             <nav class="admin-pagination" aria-label="Pages des réservations"><button type="button" id="admin-prev" disabled>Précédent</button><span id="admin-page-number"></span><button type="button" id="admin-next" disabled>Suivant</button></nav>
+          </section>
+          <section id="admin-assignment-section" class="admin-reservations admin-assign" aria-labelledby="assignment-title" hidden>
+            <div class="admin-section-heading">
+              <div>
+                <h2 id="assignment-title">Rattacher une réservation à un client</h2>
+                <p class="admin-assign-help">Reliez une réservation existante au compte d’un client. Son statut reste inchangé.</p>
+              </div>
+            </div>
+            <form id="admin-assignment" class="admin-account-form admin-assign-form">
+              <label>Identifiant de la réservation<input type="number" name="reservation_id" min="1" step="1" placeholder="Ex. 128" required></label>
+              <label>Identifiant du client<input type="number" name="user_id" min="1" step="1" placeholder="Ex. 42" required></label>
+              <button type="submit">Rattacher au client</button>
+            </form>
+            <p class="admin-assign-note">Consultez les identifiants dans le tableau des réservations et la liste des utilisateurs. Le client peut être inactif ; un administrateur ne peut pas être propriétaire client.</p>
+            <p id="admin-assignment-status" role="status" aria-live="polite"></p>
           </section>
         </div>
       </div>

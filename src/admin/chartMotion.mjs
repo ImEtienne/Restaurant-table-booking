@@ -15,6 +15,18 @@ export function countUp(element, target, suffix = "") {
   });
 }
 
+export function animateSection(element) {
+  if (!element || reducedMotion()) return;
+  animate(element, { opacity: [0, 1], y: [12, 0] }, { duration: 0.38, ease: [0.22, 1, 0.36, 1] });
+  const items = element.querySelectorAll(".admin-card, tbody tr, .admin-reservation-card, form, .admin-filters");
+  if (items.length) animate(items, { opacity: [0, 1], y: [10, 0] }, { duration: 0.4, delay: stagger(0.035, { startDelay: 0.08 }), ease: "easeOut" });
+}
+
+export function animateTitle(element) {
+  if (!element || reducedMotion()) return;
+  animate(element, { opacity: [0, 1], x: [-8, 0] }, { duration: 0.3, ease: "easeOut" });
+}
+
 export function animateCards(root) {
   if (reducedMotion()) return;
   animate(root.querySelectorAll(".admin-card"), { opacity: [0, 1], y: [14, 0] }, { duration: 0.5, delay: stagger(0.06), ease: "easeOut" });
