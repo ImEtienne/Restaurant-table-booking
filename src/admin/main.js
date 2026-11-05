@@ -16,6 +16,7 @@ import { mountMobileMenu } from "./mobileMenu.mjs";
 import { mountTableLabels } from "./tableLabels.mjs";
 import { mountStatsScroller } from "./statsScroller.mjs";
 import { mountSearchToggle } from "./searchToggle.mjs";
+import { greetingFor } from "./greeting.mjs";
 applyPlaceholders();
 
 const api = createAdminService();
@@ -29,6 +30,7 @@ let calendarRun = 0;
 let statsBusy = false;
 let cardsAnimated = false;
 let currentUser = null;
+let greeting = null;
 let accounts = null;
 let client = null;
 let services = null;
@@ -297,6 +299,10 @@ function section() {
   $("services").hidden = selectedSection !== "services";
   $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil", client: "Mes réservations", services: "Services et horaires" }[selectedSection];
   document.title = `${$("title").textContent} | Restaurant XYZ`;
+  $("crumb-current").textContent = $("title").textContent;
+  $("tagline").hidden = !(selectedSection === "dashboard" && greeting);
+  $("export").hidden = $("tagline").hidden;
+  if (selectedSection === "dashboard" && greeting) $("title").textContent = greeting;
   if (selectedSection !== shownSection) {
     const wasShown = shownSection !== null;
     shownSection = selectedSection;
@@ -339,6 +345,8 @@ async function initialize() {
   try {
     const { data: user } = await api.profile();
     currentUser = user;
+    try { greeting = user.is_admin ? greetingFor(user, localStorage) : null; } catch { greeting = null; }
+    if (greeting && !$("statistics").hidden) { $("title").textContent = greeting; $("tagline").hidden = false; $("export").hidden = false; animateTitle($("title")); }
     function updateIdentity(updated) {
       $("identity").textContent = updated.name;
       renderSidebarProfile(updated);
