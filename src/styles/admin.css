@@ -70,7 +70,16 @@
 .admin-card p { margin: 0; font-size: .75rem; color: var(--admin-muted); }
 .admin-reservations { padding: 1.5rem; border: 1px solid var(--admin-line); border-radius: 10px; background: var(--admin-panel); }
 .admin-reservations + .admin-reservations, #admin-statistics { margin-bottom: 1.5rem; }
-.admin-reservations summary { cursor: pointer; font-weight: 600; }
+.admin-assign[hidden] { display: none; }
+.admin-assign { margin-top: 1.5rem; }
+.admin-assign-help { margin: .25rem 0 0; color: var(--admin-muted); font-size: .85rem; }
+.admin-assign-form { max-width: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; align-items: end; gap: 1rem; margin-top: 1.25rem; }
+.admin-assign-form label { margin: 0; font-size: .85rem; font-weight: 500; }
+.admin-assign-form input { margin-top: .35rem; }
+.admin-assign-form button { padding: .8rem 1.4rem; white-space: nowrap; }
+.admin-assign .admin-assign-note { margin: 1rem 0 0; }
+#admin-assignment-status:empty { display: none; }
+@media (max-width: 720px) { .admin-assign-form { grid-template-columns: 1fr; } }
 .admin-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
 .admin-section-heading h2 { font-size: 1.25rem; }
 .admin-filters { display: flex; flex-wrap: wrap; align-items: end; gap: .8rem; margin: 1rem 0 1.5rem; }

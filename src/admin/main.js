@@ -294,6 +294,7 @@ function section() {
   $("statistics").hidden = selectedSection !== "dashboard";
   $("caption").hidden = selectedSection === "dashboard";
   $("reservation-section").hidden = selectedSection !== "reservations";
+  $("assignment-section").hidden = selectedSection !== "reservations";
   $("accounts").hidden = !accountSection;
   $("client").hidden = selectedSection !== "client";
   $("services").hidden = selectedSection !== "services";
