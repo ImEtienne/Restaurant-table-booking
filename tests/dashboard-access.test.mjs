@@ -34,7 +34,7 @@ for (const isAdmin of [true, false]) {
       location: { hash: "", replace() { assert.fail("Unexpected redirect"); } },
       window: { addEventListener() {} }, localStorage: { getItem() {} }, sessionStorage: { getItem() {} },
       createAdminService: () => api, applyPlaceholders() {}, renderSidebarProfile() {}, mountProfileMenu() {}, mountMobileMenu() {}, mountTableLabels() {}, mountStatsScroller() {}, mountSearchToggle() {}, sortReservations: (rows) => rows, mountFiltersToggle() {}, showToast() {}, renderReservations() {}, renderStackedBars: () => "", renderAreaChart: () => "", renderSparkline: () => "", kpiSeries: () => ({}), trendOf: () => null, formatTrend: () => "", kpiTone: () => "neutral", animateCards() {}, animateCharts() {}, animateSection() {}, animateTitle() {}, greetingFor: () => null, countUp() {}, mountChartInteractions() {}, renderDonut: () => "", renderLegend: () => ({}), recentReservations: (rows) => rows, statusLabels: {}, renderCalendarDay: () => "", isoDate: () => "2026-01-01", shiftDate: () => "2026-01-02",
-      validatePeriod: () => "", searchReservations: (rows) => rows,
+      validatePeriod: () => "", searchReservations: (rows) => rows, mountNotifications() {},
       mountAccounts: () => ({ activate: (section) => { activated.push(section); } }),
       mountClient: () => ({ activate: () => { activated.push("client"); }, deactivate() {} }),
       mountServices: () => ({ activate() {}, deactivate() {} }),

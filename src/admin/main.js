@@ -16,6 +16,7 @@ import { mountMobileMenu } from "./mobileMenu.mjs";
 import { mountTableLabels } from "./tableLabels.mjs";
 import { mountStatsScroller } from "./statsScroller.mjs";
 import { mountSearchToggle } from "./searchToggle.mjs";
+import { mountNotifications } from "./notifications.mjs";
 import { greetingFor } from "./greeting.mjs";
 applyPlaceholders();
 
@@ -278,6 +279,7 @@ mountMobileMenu();
 mountTableLabels();
 mountStatsScroller();
 mountSearchToggle();
+mountNotifications();
 mountChartInteractions($("statistics"));
 $("logout").addEventListener("click", async () => {
   $("logout").disabled = true;
