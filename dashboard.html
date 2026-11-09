@@ -59,10 +59,10 @@
               <circle cx="10.5" cy="10.5" r="6.5" />
               <path d="m16 16 4.5 4.5" />
             </svg></button>
-          <button type="button" class="admin-icon-button" id="admin-notifications" aria-label="Notifications" title="Notifications" aria-expanded="false" aria-controls="admin-notifications-panel"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <button type="button" class="admin-icon-button" id="admin-notifications" aria-label="Notifications" title="Notifications" aria-expanded="false" aria-controls="admin-notifications-panel" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
               <path d="M10.3 21a1.9 1.9 0 0 0 3.4 0" />
-            </svg></button>
+            </svg><span id="admin-notifications-badge" class="admin-notifications-badge" aria-hidden="true" hidden></span></button>
           <button type="button" class="admin-icon-button" id="admin-theme" aria-pressed="false" aria-label="Activer le mode sombre" title="Mode sombre">
             <svg id="admin-theme-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 13a9 9 0 0 1-10-10A9 9 0 1 0 21 13Z" />
@@ -73,16 +73,20 @@
             </svg>
           </button>
           <section id="admin-notifications-panel" class="admin-notifications-panel" aria-labelledby="admin-notifications-title" hidden>
-            <h2 id="admin-notifications-title">Notifications</h2>
-            <div class="admin-notifications-empty">
-              <span class="admin-notifications-symbol" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                  <path d="M10.3 21a1.9 1.9 0 0 0 3.4 0" />
-                </svg>
-              </span>
-              <p>Les notifications seront disponibles prochainement.</p>
+            <div class="admin-notifications-head">
+              <h2 id="admin-notifications-title">Notifications</h2>
+              <button type="button" id="admin-notifications-read-all" hidden>Tout marquer comme lu</button>
             </div>
+            <p id="admin-notifications-summary" class="admin-notifications-summary" hidden></p>
+            <p id="admin-notifications-status" class="admin-notifications-status" role="status" aria-live="polite"></p>
+            <button type="button" id="admin-notifications-retry" class="admin-notifications-retry" hidden>Réessayer</button>
+            <ul id="admin-notifications-list" class="admin-notifications-list"></ul>
+            <nav id="admin-notifications-pagination" class="admin-notifications-pagination" aria-label="Pages des notifications" hidden>
+              <button type="button" id="admin-notifications-prev">Précédent</button>
+              <span id="admin-notifications-page"></span>
+              <button type="button" id="admin-notifications-next">Suivant</button>
+            </nav>
+            <button type="button" id="admin-notifications-view-all" class="admin-notifications-view-all">Voir toutes les notifications <span aria-hidden="true">→</span></button>
           </section>
         </div>
       </header>
@@ -98,7 +102,9 @@
             <p id="admin-tagline" class="admin-tagline" hidden>Voici l'essentiel de votre restaurant en un coup d'œil.</p>
           </div>
           <button type="button" id="admin-export" class="admin-export" hidden>
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+            </svg>
             <span>Exporter</span>
           </button>
         </div>
@@ -107,6 +113,27 @@
           <section id="admin-client" class="admin-reservations" hidden aria-label="Espace client"></section>
           <section id="admin-accounts" class="admin-reservations" hidden aria-label="Gestion du compte"></section>
           <section id="admin-services" class="admin-reservations" hidden aria-label="Services et horaires"></section>
+          <section id="admin-notifications-center" class="admin-notification-center" aria-label="Centre de notifications" hidden>
+            <div class="admin-notification-center-head">
+              <p id="admin-notifications-center-summary" class="admin-notification-center-summary"></p>
+              <button type="button" id="admin-notifications-center-read-all" hidden>Tout marquer comme lu</button>
+            </div>
+            <p id="admin-notifications-center-status" class="admin-notification-center-status" role="status" aria-live="polite"></p>
+            <button type="button" id="admin-notifications-center-retry" hidden>Réessayer</button>
+            <div class="admin-notification-center-grid">
+              <div class="admin-notification-center-list-panel">
+                <ul id="admin-notifications-center-list" class="admin-notification-center-list" aria-label="Liste des notifications"></ul>
+                <nav id="admin-notifications-center-pagination" class="admin-notification-center-pagination" aria-label="Pages des notifications" hidden>
+                  <button type="button" id="admin-notifications-center-prev">Précédent</button>
+                  <span id="admin-notifications-center-page"></span>
+                  <button type="button" id="admin-notifications-center-next">Suivant</button>
+                </nav>
+              </div>
+              <div id="admin-notifications-center-detail" class="admin-notification-center-detail" aria-live="polite">
+                <p>Sélectionnez une notification pour voir son détail.</p>
+              </div>
+            </div>
+          </section>
           <section id="admin-global-results" class="admin-reservations" aria-labelledby="admin-global-title" hidden>
             <div class="admin-section-heading">
               <h2 id="admin-global-title">Recherche globale</h2><button type="button" id="admin-close-search">Fermer</button>

@@ -132,6 +132,43 @@ test("inactive clients can be activated and the list is refreshed", async () => 
   assert.ok(h.find("Désactiver"));
 });
 
+test("notification opens the specified client, confirms activation and refreshes the account", async () => {
+  const user = { id: 42, name: "Ada", email: "a@example.com", is_admin: false, is_active: false };
+  const calls = [];
+  const h = harness({
+    user: async (id) => { calls.push(["user", id]); return { data: { ...user } }; },
+    activateUser: async (id, active) => { calls.push(["activate", id, active]); user.is_active = active; },
+  });
+  await h.controller.activate("users", 42);
+  assert.deepEqual(calls, [["user", 42]]);
+  assert.ok(h.find("En attente / Inactif"));
+  await h.find("Activer").events.click();
+  assert.deepEqual(calls, [["user", 42], ["activate", 42, true], ["user", 42]]);
+  assert.ok(h.find("Accès actif"));
+  assert.ok(h.find("Désactiver"));
+});
+
+test("notification account lookup failure is visible and can be retried", async () => {
+  let attempts = 0;
+  const h = harness({ user: async () => {
+    attempts++;
+    if (attempts === 1) throw { status: 404, message: "Utilisateur introuvable." };
+    return { data: { id: 42, name: "Ada", email: "a@example.com", is_admin: false, is_active: false } };
+  } });
+  await h.controller.activate("users", 42);
+  assert.ok(h.find("Utilisateur introuvable."));
+  await h.find("Réessayer").events.click();
+  assert.ok(h.find("Activer"));
+  assert.equal(attempts, 2);
+});
+
+test("non-admin cannot open a notification account", async () => {
+  let calls = 0;
+  const h = harness({ user: async () => { calls++; } }, { id: 2, is_admin: false });
+  await h.controller.activate("users", 42);
+  assert.equal(calls, 0);
+});
+
 test("cancelling the activation modal makes no API call and restores the button", async () => {
   let calls = 0;
   const h = harness({ users: async () => page([{ id: 2, name: "Ada", email: "a@example.com", is_admin: false, is_active: false }]), activateUser: async () => { calls++; } }, undefined, false);

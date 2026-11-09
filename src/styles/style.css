@@ -401,6 +401,15 @@ header .hamburger:focus-visible {
   background: var(--soft);
 }
 
+.reservation-key-row { display: flex; align-items: stretch; gap: .5rem; margin: .4rem 0; }
+.reservation-key-row .form-control { flex: 1; min-width: 0; }
+.reservation-key-copy { padding: .5rem 1rem; border: 1px solid var(--accent); border-radius: .375rem; background: var(--soft); color: var(--ink); font: inherit; font-weight: 600; }
+.reservation-key-copy:hover:not(:disabled) { background: var(--accent); color: #fff; }
+.reservation-key-copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.reservation-key-copy:disabled { opacity: .6; }
+.reservation-key-copy-status { margin: .35rem 0; font-size: .85rem; }
+.reservation-key-copy-status:empty { display: none; }
+
 .form-control:focus {
   border-color: beige !important;
   box-shadow: 0 0 0 0.2rem beige !important;

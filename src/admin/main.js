@@ -279,7 +279,19 @@ mountMobileMenu();
 mountTableLabels();
 mountStatsScroller();
 mountSearchToggle();
-mountNotifications();
+let notificationClientId = null;
+const notifications = mountNotifications({
+  api, onSessionError: handleError,
+  onOpenCenter() {
+    if (location.hash === "#notifications") section();
+    else location.hash = "notifications";
+  },
+  onOpenClient(id) {
+    notificationClientId = id;
+    if (location.hash === "#users") section();
+    else location.hash = "users";
+  },
+});
 mountChartInteractions($("statistics"));
 $("logout").addEventListener("click", async () => {
   $("logout").disabled = true;
@@ -289,7 +301,7 @@ $("logout").addEventListener("click", async () => {
 let shownSection = null;
 function section() {
   let selectedSection = location.hash.slice(1) || "dashboard";
-  if (!["dashboard", "reservations", "users", "profile", "client", "services"].includes(selectedSection)) selectedSection = "dashboard";
+  if (!["dashboard", "reservations", "users", "profile", "client", "services", "notifications"].includes(selectedSection)) selectedSection = "dashboard";
   if (currentUser && !currentUser.is_admin && selectedSection !== "profile") selectedSection = "client";
   if (currentUser?.is_admin && selectedSection === "client") selectedSection = "dashboard";
   const accountSection = ["users", "profile"].includes(selectedSection);
@@ -300,7 +312,8 @@ function section() {
   $("accounts").hidden = !accountSection;
   $("client").hidden = selectedSection !== "client";
   $("services").hidden = selectedSection !== "services";
-  $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil", client: "Mes réservations", services: "Services et horaires" }[selectedSection];
+  $("notifications-center").hidden = selectedSection !== "notifications";
+  $("title").textContent = { dashboard: "Tableau de bord", reservations: "Réservations", users: "Utilisateurs", profile: "Mon profil", client: "Mes réservations", services: "Services et horaires", notifications: "Notifications" }[selectedSection];
   document.title = `${$("title").textContent} | Restaurant XYZ`;
   $("crumb-current").textContent = $("title").textContent;
   $("tagline").hidden = !(selectedSection === "dashboard" && greeting);
@@ -314,11 +327,14 @@ function section() {
       if (selectedSection === "dashboard") {
         if (cardsAnimated) { animateCards($("statistics")); animateCharts($("statistics")); }
       } else {
-        animateSection({ reservations: $("reservation-section"), client: $("client"), services: $("services"), users: $("accounts"), profile: $("accounts") }[selectedSection]);
+        animateSection({ reservations: $("reservation-section"), client: $("client"), services: $("services"), users: $("accounts"), profile: $("accounts"), notifications: $("notifications-center") }[selectedSection]);
       }
     }
   }
-  accounts?.activate(selectedSection);
+  const clientId = selectedSection === "users" ? notificationClientId : null;
+  notificationClientId = null;
+  accounts?.activate(selectedSection, clientId);
+  notifications.setCenterActive(selectedSection === "notifications");
   if (selectedSection === "client") client?.activate();
   else client?.deactivate();
   if (selectedSection === "services") services?.activate();
@@ -357,6 +373,7 @@ async function initialize() {
       document.querySelectorAll('[data-section="client"]').forEach((link) => { link.hidden = updated.is_admin; });
       $("global-search").hidden = !updated.is_admin;
       $("search-toggle").hidden = !updated.is_admin;
+      notifications.setEnabled(updated.is_admin);
       if (!updated.is_admin) {
         searchVersion++;
         $("global-results").hidden = true;
