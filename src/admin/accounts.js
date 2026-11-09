@@ -26,6 +26,48 @@ export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) 
     showToast(message);
     if ([401, 419].includes(error.status)) onSessionError(error);
   }
+  function activationButton(user, parent, token, notice, refresh) {
+    if (user.is_admin) return;
+    const active = user.is_active !== false;
+    const toggle = button(active ? "Désactiver" : "Activer", parent, async () => {
+      if (saving) return;
+      saving = true; toggle.disabled = true;
+      try {
+        const accepted = await confirmDialog({
+          title: active ? "Désactiver l’accès client" : "Activer l’accès client",
+          message: active ? `${user.name} (${user.email}) ne pourra plus accéder à son espace client. Ses réservations seront conservées.` : `${user.name} (${user.email}) pourra se connecter à son espace et gérer ses réservations.`,
+          confirmLabel: active ? "Désactiver l’accès" : "Activer le compte",
+        });
+        if (!accepted || revision !== token) return;
+        await api.activateUser(user.id, !active);
+        showToast("Accès client mis à jour.", "success");
+        if (revision === token) await refresh();
+      } catch (error) { if (revision === token) fail(error, notice); }
+      finally { saving = false; toggle.disabled = false; }
+    });
+  }
+  async function clientDetail(id) {
+    if (!currentUser.is_admin) return;
+    const token = ++revision;
+    root.replaceChildren();
+    el("h2", "Compte client");
+    const notice = el("p", "Chargement du compte…"); notice.setAttribute("role", "status");
+    try {
+      const { data: user } = await api.user(id);
+      if (revision !== token) return;
+      notice.textContent = "";
+      el("p", `#${user.id} · ${user.name}`);
+      el("p", user.email);
+      el("p", user.is_admin || user.is_active !== false ? "Accès actif" : "En attente / Inactif");
+      activationButton(user, root, token, notice, () => clientDetail(id));
+      button("Retour à la liste", root, () => { if (!saving) list(); });
+    } catch (error) {
+      if (revision !== token) return;
+      fail(error, notice);
+      button("Réessayer", root, () => clientDetail(id));
+      button("Retour à la liste", root, () => list());
+    }
+  }
   async function editor(user, profile = false) {
     const token = ++revision;
     root.replaceChildren();
@@ -119,24 +161,7 @@ export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) 
         for (const value of [`#${user.id} · ${user.name}`, user.email, user.is_admin ? "Administrateur" : "Client"]) el("td", value, row);
         el("td", user.is_admin || user.is_active !== false ? "Actif" : "En attente / Inactif", row);
         const actions = el("td", null, row);
-        if (!user.is_admin) {
-          const active = user.is_active !== false;
-          const toggle = button(active ? "Désactiver" : "Activer", actions, async () => {
-            if (saving) return;
-            saving = true; toggle.disabled = true;
-            try {
-              const accepted = await confirmDialog({
-                title: active ? "Désactiver l’accès client" : "Activer l’accès client",
-                message: active ? `${user.name} (${user.email}) ne pourra plus accéder à son espace client. Ses réservations seront conservées.` : `${user.name} (${user.email}) pourra se connecter à son espace et gérer ses réservations.`,
-                confirmLabel: active ? "Désactiver l’accès" : "Activer le compte",
-              });
-              if (!accepted || revision !== token) return;
-              await api.activateUser(user.id, !active); showToast("Accès client mis à jour.", "success"); if (revision === token) await list();
-            }
-            catch (error) { fail(error, notice); }
-            finally { saving = false; toggle.disabled = false; }
-          });
-        }
+        activationButton(user, actions, token, notice, list);
         button("Voir / Modifier", actions, async () => {
           const version = revision;
           try { const response = await api.user(user.id); if (revision === version) editor(response.data); }
@@ -160,8 +185,8 @@ export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) 
     } catch (error) { if (revision === token) fail(error, notice); }
   }
   return {
-    async activate(section) {
-      if (section === "users") return list();
+    async activate(section, clientId = null) {
+      if (section === "users") return clientId !== null ? clientDetail(clientId) : list();
       if (section === "profile") {
         const token = ++revision;
         root.replaceChildren();

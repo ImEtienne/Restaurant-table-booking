@@ -3,6 +3,7 @@
 import { getTodayLocalDate, validateReservation } from "./reservation-validation.mjs";
 import { createReservation, getAvailability, ReservationServiceError } from "../services/reservationService.mjs";
 import { parseSlotValue, renderSlotOptions } from "./availability-slots.mjs";
+import { mountReservationKeyCopy } from "./reservation-key-copy.mjs";
 
 const reservationForm = document.querySelector("#reservation-form");
 const reservationStatus = document.querySelector("#reservation-status");
@@ -118,12 +119,23 @@ if (reservationForm && reservationStatus) {
         label.htmlFor = "reservation-registration-key"; label.textContent = "Clé confidentielle";
         const key = document.createElement("input");
         key.id = "reservation-registration-key"; key.type = "password"; key.value = response.registration_token; key.readOnly = true; key.autocomplete = "off"; key.className = "form-control";
+        const keyRow = document.createElement("div");
+        keyRow.className = "reservation-key-row";
+        const copy = document.createElement("button");
+        copy.type = "button"; copy.className = "reservation-key-copy"; copy.textContent = "Copier";
+        copy.setAttribute("aria-label", "Copier la clé confidentielle");
+        const copyStatus = document.createElement("p");
+        copyStatus.className = "reservation-key-copy-status";
+        copyStatus.setAttribute("role", "status");
+        copyStatus.setAttribute("aria-live", "polite");
+        mountReservationKeyCopy({ key, button: copy, status: copyStatus });
+        keyRow.append(key, copy);
         const reveal = document.createElement("button");
         reveal.type = "button"; reveal.textContent = "Afficher la clé";
         reveal.addEventListener("click", () => { key.type = key.type === "password" ? "text" : "password"; reveal.textContent = key.type === "password" ? "Afficher la clé" : "Masquer la clé"; });
         const link = document.createElement("a");
         link.href = "/login.html#register"; link.textContent = "Créer mon compte client";
-        access.append(explanation, label, key, reveal, document.createTextNode(" · "), link);
+        access.append(explanation, label, keyRow, copyStatus, reveal, document.createTextNode(" · "), link);
       }
     } catch (error) {
       if (error instanceof ReservationServiceError && error.code === "API_NOT_CONFIGURED") {

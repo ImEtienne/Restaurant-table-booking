@@ -2,6 +2,24 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createAdminService, AdminApiError } from "../src/services/adminService.mjs";
 
+test("notification endpoints use pagination, UUID and Sanctum CSRF", async () => {
+  const calls = [];
+  const api = createAdminService({ baseUrl: "/api", getCookie: () => "XSRF-TOKEN=token",
+    fetchImpl: async (url, options) => { calls.push({ url, options }); return { ok: true, status: 204 }; },
+  });
+  const id = "550e8400-e29b-41d4-a716-446655440000";
+  await api.notifications(2);
+  await api.readNotification(id);
+  await api.readAllNotifications();
+  assert.deepEqual(calls.map(({ url }) => url), ["/api/admin/notifications?page=2", `/api/admin/notifications/${id}/read`, "/api/admin/notifications/read-all"]);
+  assert.deepEqual(calls.map(({ options }) => options.method), ["GET", "PATCH", "PATCH"]);
+  assert.ok(calls.every(({ options }) => options.credentials === "include"));
+  assert.equal(calls[1].options.headers["X-XSRF-TOKEN"], "token");
+  assert.equal(calls[2].options.headers["X-XSRF-TOKEN"], "token");
+  assert.throws(() => api.readNotification("../read-all"));
+  assert.throws(() => api.notifications(0));
+});
+
 test("global search uses q and per-type limit with encoded literal characters", async () => {
   let requested;
   const result = { data: { users: [], reservations: [] }, meta: { has_more: { users: true, reservations: false } } };

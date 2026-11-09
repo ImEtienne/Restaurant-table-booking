@@ -83,6 +83,9 @@ export function createAdminService({
       return request("/admin/login", { method: "POST", body: { email, password }, csrf: true });
     },
     me: () => request("/admin/me"),
+    notifications: (page = 1) => request(`/admin/notifications?${new URLSearchParams({ page: String(userId(page)) })}`),
+    readNotification: (id) => request(`/admin/notifications/${notificationId(id)}/read`, { method: "PATCH", csrf: true }),
+    readAllNotifications: () => request("/admin/notifications/read-all", { method: "PATCH", csrf: true }),
     logout: () => request("/admin/logout", { method: "POST", csrf: true }),
     stats: (period) => stats("/admin/stats", period),
     dailyStats: (period) => stats("/admin/stats/daily", period),
@@ -119,5 +122,12 @@ export function createAdminService({
 
 function userId(id) {
   if (!Number.isSafeInteger(id) || id < 1) throw new AdminApiError("Identifiant utilisateur invalide.", 422);
+  return id;
+}
+
+function notificationId(id) {
+  if (typeof id !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+    throw new AdminApiError("Identifiant de notification invalide.", 422);
+  }
   return id;
 }

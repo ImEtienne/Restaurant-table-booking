@@ -28,14 +28,18 @@ for (const isAdmin of [true, false]) {
       hourlyStats: async () => { calls.push("hourly"); return { data: [] }; },
     };
     const activated = [];
+    const accountTargets = [];
+    const windowEvents = {};
+    let openClient;
+    let openCenter;
     const nav = ["dashboard", "reservations", "users", "profile", "client"].map((section) => Object.assign(node(section), { dataset: { section } }));
     const context = {
       document: { getElementById: node, body: node("body"), querySelectorAll: (selector) => selector === "[data-section]" ? nav : selector === '[data-section="client"]' ? [nav[4]] : nav.slice(0, 3) },
       location: { hash: "", replace() { assert.fail("Unexpected redirect"); } },
-      window: { addEventListener() {} }, localStorage: { getItem() {} }, sessionStorage: { getItem() {} },
+      window: { addEventListener(type, handler) { windowEvents[type] = handler; } }, localStorage: { getItem() {} }, sessionStorage: { getItem() {} },
       createAdminService: () => api, applyPlaceholders() {}, renderSidebarProfile() {}, mountProfileMenu() {}, mountMobileMenu() {}, mountTableLabels() {}, mountStatsScroller() {}, mountSearchToggle() {}, sortReservations: (rows) => rows, mountFiltersToggle() {}, showToast() {}, renderReservations() {}, renderStackedBars: () => "", renderAreaChart: () => "", renderSparkline: () => "", kpiSeries: () => ({}), trendOf: () => null, formatTrend: () => "", kpiTone: () => "neutral", animateCards() {}, animateCharts() {}, animateSection() {}, animateTitle() {}, greetingFor: () => null, countUp() {}, mountChartInteractions() {}, renderDonut: () => "", renderLegend: () => ({}), recentReservations: (rows) => rows, statusLabels: {}, renderCalendarDay: () => "", isoDate: () => "2026-01-01", shiftDate: () => "2026-01-02",
-      validatePeriod: () => "", searchReservations: (rows) => rows, mountNotifications() {},
-      mountAccounts: () => ({ activate: (section) => { activated.push(section); } }),
+      validatePeriod: () => "", searchReservations: (rows) => rows, mountNotifications: ({ onOpenClient, onOpenCenter }) => { openClient = onOpenClient; openCenter = onOpenCenter; return { setEnabled() {}, setCenterActive() {} }; },
+      mountAccounts: () => ({ activate: (section, id) => { activated.push(section); accountTargets.push([section, id]); } }),
       mountClient: () => ({ activate: () => { activated.push("client"); }, deactivate() {} }),
       mountServices: () => ({ activate() {}, deactivate() {} }),
     };
@@ -47,6 +51,19 @@ for (const isAdmin of [true, false]) {
       assert.deepEqual([...calls].sort(), ["profile", "me", "reservations", "reservations", "reservations", "reservations", "stats", "daily", "hourly"].sort());
       assert.equal(node("admin-accounts").hidden, true);
       assert.ok(activated.includes("dashboard"));
+      openClient(42);
+      assert.equal(context.location.hash, "users");
+      context.location.hash = "#users";
+      windowEvents.hashchange();
+      assert.deepEqual(accountTargets.at(-1), ["users", 42]);
+      openClient(77);
+      assert.deepEqual(accountTargets.at(-1), ["users", 77]);
+      openCenter();
+      assert.equal(context.location.hash, "notifications");
+      context.location.hash = "#notifications";
+      windowEvents.hashchange();
+      assert.equal(node("admin-notifications-center").hidden, false);
+      assert.equal(node("admin-reservation-section").hidden, true);
     } else {
       assert.deepEqual(calls, ["profile"]);
       assert.equal(node("admin-accounts").hidden, true);
