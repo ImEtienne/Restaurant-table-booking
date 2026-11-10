@@ -128,7 +128,7 @@ async function loadActivity(pending) {
   link.textContent = pending > 0 ? `${pending} en attente →` : "Voir tout";
   try {
     const result = await api.reservations({ page: 1 });
-    const items = recentReservations(result.data).map((reservation) => {
+    const items = recentReservations(result.data, 3).map((reservation) => {
       const item = document.createElement("li");
       const text = document.createElement("div");
       const name = document.createElement("strong");
