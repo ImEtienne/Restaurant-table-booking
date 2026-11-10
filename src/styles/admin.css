@@ -291,13 +291,24 @@ svg.has-active .chart-col:not(.is-active) .chart-seg { opacity: .45; }
 .chart-tooltip p { margin: .4rem 0 0; padding-top: .4rem; border-top: 1px solid var(--admin-line); font-weight: 600; }
 .chart-pending { --dot: var(--c-pending); } .chart-confirmed { --dot: var(--c-confirmed); } .chart-rejected { --dot: var(--c-rejected); } .chart-cancelled { --dot: var(--c-cancelled); }
 .chart-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem .8rem; list-style: none; margin: 0; padding: 0; font-size: .7rem; }
-.admin-activity { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; gap: .1rem; font-size: .74rem; }
-.admin-activity li { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .4rem .5rem; border-radius: 10px; transition: background .2s; }
-.admin-activity li:hover { background: color-mix(in srgb, var(--admin-accent) 7%, transparent); }
-.admin-activity li div { display: grid; min-width: 0; }
-.admin-activity li strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.admin-activity li small { color: var(--admin-muted); font-size: .68rem; }
-.admin-activity .admin-badge { font-size: .65rem; padding: .1rem .5rem; }
+.admin-activity-card .admin-card-head { align-items: center; gap: .65rem; }
+.admin-activity-card .admin-card-head h2 { letter-spacing: -.02em; }
+.admin-activity-card .admin-card-head a { flex: none; padding: .3rem .55rem; border: 1px solid var(--admin-line); border-radius: 6px; color: var(--admin-text); font-size: .66rem; font-weight: 500; transition: background .15s; }
+.admin-activity-card .admin-card-head a:hover { background: var(--admin-bg); }
+.admin-activity-card .admin-activity-description { margin: .4rem 0 1rem; white-space: normal; font-size: .7rem; line-height: 1.6; }
+.admin-activity-card .admin-activity { list-style: none; margin: 0; padding: 0; display: grid; font-size: .74rem; }
+.admin-activity-card .admin-activity li { display: flex; align-items: center; justify-content: space-between; gap: .7rem; padding: .85rem 0; }
+.admin-activity-card .admin-activity li + li { border-top: 1px solid var(--admin-line); }
+.admin-activity-card .admin-activity li:last-child { padding-bottom: .15rem; }
+.admin-activity-card .admin-activity li div { display: grid; gap: .2rem; min-width: 0; }
+.admin-activity-card .admin-activity li strong { margin: 0; font: 500 .76rem/1.5 Poppins, sans-serif; letter-spacing: -.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-activity-card .admin-activity li small { color: var(--admin-muted); font-size: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
+.admin-activity-card .admin-activity .admin-badge { flex: none; display: inline-flex; align-items: center; gap: .35rem; border: 1px solid var(--admin-line); border-radius: 6px; background: var(--admin-panel); color: var(--admin-muted); font-size: .6rem; font-weight: 500; line-height: 1.5; padding: .2rem .4rem; }
+.admin-activity-card .admin-activity .admin-badge::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--activity-dot, var(--admin-muted)); }
+.admin-activity-card .admin-badge.pending { --activity-dot: var(--c-pending); }
+.admin-activity-card .admin-badge.confirmed { --activity-dot: var(--c-confirmed); }
+.admin-activity-card .admin-badge.rejected { --activity-dot: var(--c-rejected); }
+.admin-activity-card .admin-badge.cancelled { --activity-dot: var(--c-cancelled); }
 .admin-chart-area { grid-column: span 2; }
 .admin-calendar { min-width: 0; }
 .cal-nav { display: flex; align-items: center; gap: .3rem; }
@@ -318,6 +329,7 @@ svg.has-active .chart-col:not(.is-active) .chart-seg { opacity: .45; }
 .admin-caption[hidden] + h1, .admin-crumbs[hidden] + h1 { margin-top: 0; }
 #admin-statistics .admin-card { border-radius: 16px; border-color: transparent; padding: 1rem 1.1rem; box-shadow: 0 8px 24px #292b270d, 0 1px 2px #292b2708; }
 .admin-dark #admin-statistics .admin-card { border-color: var(--admin-line); box-shadow: none; }
+#admin-statistics .admin-activity-card { border: 1px solid var(--admin-line); border-radius: 12px; box-shadow: 0 1px 3px #292b2708; }
 .admin-kpi { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
 .kpi-main { min-width: 0; }
 .admin-stats .admin-kpi h2 { font-size: .72rem; font-weight: 500; color: var(--admin-muted); letter-spacing: .02em; }
