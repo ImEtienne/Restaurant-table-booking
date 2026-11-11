@@ -15,6 +15,8 @@ export function mountServices({ api, onSessionError }) {
   const root = document.getElementById("admin-services");
   let version = 0;
   let saving = false;
+  const pages = { schedules: 1, exceptions: 1 };
+  const pageSize = 5;
 
   const node = (tag, text, parent = root) => {
     const el = document.createElement(tag);
@@ -89,6 +91,9 @@ export function mountServices({ api, onSessionError }) {
   function table(parent, headers) {
     const wrap = node("div", null, parent);
     wrap.className = "admin-table-wrap";
+    wrap.tabIndex = 0;
+    wrap.setAttribute("role", "region");
+    wrap.setAttribute("aria-label", parent.id === "schedules" ? "Liste des services hebdomadaires" : "Liste des exceptions de calendrier");
     const tableEl = node("table", null, wrap);
     const row = node("tr", null, node("thead", null, tableEl));
     for (const label of headers) node("th", label, row).scope = "col";
@@ -103,6 +108,41 @@ export function mountServices({ api, onSessionError }) {
       if (typeof text === "function") text(cell);
       else cell.textContent = text;
     });
+  }
+
+  function paginatedTable(section, headers, items, renderRow) {
+    const body = table(section, headers);
+    const navigation = node("nav", null, section);
+    navigation.className = "admin-pagination admin-services-pagination";
+    navigation.setAttribute("aria-label", `Pagination : ${section.id === "schedules" ? "services hebdomadaires" : "exceptions de calendrier"}`);
+    const summary = node("span", "", navigation);
+    summary.setAttribute("role", "status");
+    const previous = button("Précédent", navigation, () => changePage(-1));
+    const indicator = node("span", "", navigation);
+    const next = button("Suivant", navigation, () => changePage(1));
+    const lastPage = Math.max(1, Math.ceil(items.length / pageSize));
+    pages[section.id] = Math.min(pages[section.id], lastPage);
+    function render() {
+      const page = pages[section.id];
+      const start = (page - 1) * pageSize;
+      body.replaceChildren();
+      items.slice(start, start + pageSize).forEach((item) => renderRow(body, item));
+      summary.textContent = items.length ? `${start + 1}–${Math.min(start + pageSize, items.length)} sur ${items.length}` : "0 résultat";
+      indicator.textContent = `Page ${page} sur ${lastPage}`;
+      previous.disabled = page === 1;
+      next.disabled = page === lastPage;
+      navigation.hidden = items.length <= pageSize;
+    }
+    function changePage(direction) {
+      const page = Math.max(1, Math.min(lastPage, pages[section.id] + direction));
+      if (page === pages[section.id]) return;
+      closeMenu?.();
+      pages[section.id] = page;
+      render();
+      // Le bouton utilisé peut devenir désactivé à la première/dernière page.
+      (direction > 0 && next.disabled ? previous : direction < 0 && previous.disabled ? next : direction > 0 ? next : previous).focus();
+    }
+    render();
   }
 
   async function submit(form, notice, action, success) {
@@ -220,8 +260,7 @@ export function mountServices({ api, onSessionError }) {
     section.id = "schedules";
     panelHead(section, "Services hebdomadaires", "+ Ajouter un service", () => scheduleModal(null));
     const headers = ["Jour", "Service", "Horaires", "Créneaux", "Durée", "Capacité", "Actions"];
-    const body = table(section, headers);
-    for (const item of schedules) {
+    paginatedTable(section, headers, schedules, (body, item) => {
       addRow(body, headers, [
         DAYS[item.day_of_week] || String(item.day_of_week),
         `${item.service_name} (${item.service_key})`,
@@ -236,7 +275,7 @@ export function mountServices({ api, onSessionError }) {
           ]);
         },
       ]);
-    }
+    });
     if (!schedules.length) node("p", "Aucun service configuré : aucune réservation ne peut être acceptée tant qu’un service n’existe pas.", section);
 
   }
@@ -268,8 +307,7 @@ export function mountServices({ api, onSessionError }) {
     section.id = "exceptions";
     panelHead(section, "Exceptions de calendrier", "+ Ajouter une exception", () => exceptionModal(null));
     const headers = ["Service", "Période", "Régime", "Actions"];
-    const body = table(section, headers);
-    for (const item of exceptions) {
+    paginatedTable(section, headers, exceptions, (body, item) => {
       addRow(body, headers, [
         item.service_key === "*" ? "Tout le restaurant" : `${item.service_name || item.service_key} (${item.service_key})`,
         item.start_date === item.end_date ? item.start_date : `${item.start_date} → ${item.end_date}`,
@@ -281,7 +319,7 @@ export function mountServices({ api, onSessionError }) {
           ]);
         },
       ]);
-    }
+    });
     if (!exceptions.length) node("p", "Aucune exception de calendrier.", section);
 
   }
@@ -317,6 +355,7 @@ export function mountServices({ api, onSessionError }) {
   let grid = root;
 
   async function activate() {
+    closeMenu?.();
     const token = ++version;
     root.hidden = false;
     root.replaceChildren();
@@ -340,6 +379,7 @@ export function mountServices({ api, onSessionError }) {
   return {
     activate,
     deactivate() {
+      closeMenu?.();
       version++;
       root.replaceChildren();
     },
