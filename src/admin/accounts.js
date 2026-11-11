@@ -150,7 +150,7 @@ export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) 
       const result = await api.users(page);
       if (revision !== token) return;
       notice.textContent = `${result.meta.total} utilisateur(s)`;
-      button("Créer un utilisateur", root, () => editor(null));
+      button("Créer un utilisateur", root, () => editor(null)).className = "admin-add-button";
       const wrap = el("div"); wrap.className = "admin-table-wrap";
       const table = el("table", null, wrap);
       const head = el("tr", null, el("thead", null, table));
@@ -160,7 +160,8 @@ export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) 
         const row = el("tr", null, body);
         for (const value of [`#${user.id} · ${user.name}`, user.email, user.is_admin ? "Administrateur" : "Client"]) el("td", value, row);
         el("td", user.is_admin || user.is_active !== false ? "Actif" : "En attente / Inactif", row);
-        const actions = el("td", null, row);
+        const actions = el("div", null, el("td", null, row));
+        actions.className = "admin-account-actions";
         activationButton(user, actions, token, notice, list);
         button("Voir / Modifier", actions, async () => {
           const version = revision;
@@ -174,6 +175,7 @@ export function mountAccounts({ api, currentUser, onIdentity, onSessionError }) 
           catch (error) { fail(error, notice); }
           finally { saving = false; remove.disabled = user.id === currentUser.id; }
         });
+        remove.className = "is-danger";
         remove.disabled = user.id === currentUser.id;
         if (remove.disabled) remove.title = "Vous ne pouvez pas supprimer votre propre compte.";
       }
