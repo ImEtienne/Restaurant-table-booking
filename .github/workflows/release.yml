@@ -1,36 +1,33 @@
 name: Release
 
 on:
-  workflow_call:
-    inputs:
-      tag:
-        required: true
-        type: string
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+
 jobs:
   release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    env:
-      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ env.RELEASE_TAG }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run check
-      - run: tar -czf "restaurant-xyz-${RELEASE_TAG}.tar.gz" -C dist .
-      - uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ env.RELEASE_TAG }}
-          generate_release_notes: true
-          files: restaurant-xyz-${{ env.RELEASE_TAG }}.tar.gz
+      - name: Publish tag and GitHub release
+        run: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
