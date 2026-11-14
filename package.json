@@ -9,11 +9,12 @@
     "test": "node --test tests/*.test.mjs",
     "test:coverage": "node --test --experimental-test-coverage tests/*.test.mjs",
     "check": "npm test && npm run build",
-    "release:patch": "npm run check && npm version patch -m \"chore(release): v%s\"",
-    "release:minor": "npm run check && npm version minor -m \"chore(release): v%s\"",
-    "release:major": "npm run check && npm version major -m \"chore(release): v%s\""
+    "release": "semantic-release"
   },
   "devDependencies": {
+    "@semantic-release/exec": "^7.1.0",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "semantic-release": "^25.0.9",
     "vite": "^6.0.0"
   },
   "dependencies": {
